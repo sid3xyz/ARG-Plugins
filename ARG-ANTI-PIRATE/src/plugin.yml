@@ -1,0 +1,17 @@
+name: ARGAntiPirate
+main: com.bukkit.Magick.ARGAntiPirate.ARGAntiPirate
+version: 1.0.1
+author: Magick
+description: >
+            ARG! Anti Chest Pirate and general guest protection
+commands:
+  adduser:
+    description: Assign a numeric group ID to the player
+    usage: |
+           /<command> [player] [groupID]
+           Example: /<command> [player] [groupID] - Add player to group.
+  unlock:
+    description: Unlock a chest
+    usage: |
+           /<command> 
+           Example: /<command> - Unlock Chest

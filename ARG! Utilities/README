@@ -1,0 +1,42 @@
+ARG! Utilities
+
+Various simple commands to improve a players minecraft experience.
+
+Public Commands:
+	
+	/teleport 
+		|---> Teleport player to target block up to 35 blocks away.
+		|-----> example: /teleport
+		
+	/setcompass 
+		|---> Sets players compass to their current position
+		|-----> example: /setcompass
+		
+	/who 
+		|---> List players currently online
+		|-----> example: /who
+
+Op Commands:
+	
+	/spawnmob 
+		|--> Allows an op to spawn a specific mob
+		|
+		|-----> example: /spawnmob pigzombie
+		|
+		|  Valid Mob Types 
+		|
+		|---> pigzombie
+		|---> zombie
+		|---> creeper
+		|---> skeleton
+		|---> spider
+		|---> ghast (Does now Spawn)
+		|---> pig
+		|---> cow
+		|---> sheep
+		|---> squid
+		|---> slime (Does not spawn)
+		|---> chicken
+		
+	/setspawn 
+		|--> Allows an op to set the server spawn point to their current location

@@ -30,7 +30,29 @@ public class ARG_ThiefProtect {
 			e.printStackTrace();
 		}
 	}
+public boolean Load(){
+	try {
+		
+			FileInputStream chestDataFile = new FileInputStream(ChestData);
+			ChestDatabase.load(chestDataFile);
+			return true;
+	} catch (IOException e) {
+		e.printStackTrace();
+		return false;
+	}
+	
+}
+public boolean Save(){
+	try {
 
+		FileOutputStream inn = new FileOutputStream(ChestData);
+		ChestDatabase.store(inn,null);
+		return true;
+	} catch (IOException e) {
+		e.printStackTrace();
+		return false;
+	}
+}
 	public String getOwner(Location l) {
 		String myLocation = l.toString();
 		String owner = ChestDatabase.getProperty(myLocation);
@@ -97,8 +119,9 @@ public class ARG_ThiefProtect {
 	public boolean openChest(Player player, Block targetChest) {
 
 		String myOwner = ARGAntiPirate.chestMachine.getOwner(targetChest.getLocation());
+		player.sendMessage("Owner: " + myOwner);
 		if (myOwner.equals(player.getName()) || ARGAntiPirate.rankMachine.getRank(player) > 4){
-			player.sendMessage("Owner:" + myOwner);
+			
 			return true;
 		} else if(myOwner.equals("null") || myOwner.equalsIgnoreCase("Public")){
 			player.sendMessage("This is a Public Chest");
@@ -122,6 +145,7 @@ public class ARG_ThiefProtect {
 						return true;
 					} else if (!myOwner.equalsIgnoreCase(p.getName())) {
 						p.sendMessage(ChatColor.RED + "You do not have permission to place a chest here");
+						
 						return false;
 					}
 				}

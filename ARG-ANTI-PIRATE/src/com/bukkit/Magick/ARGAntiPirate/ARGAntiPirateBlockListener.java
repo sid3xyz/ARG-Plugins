@@ -17,6 +17,7 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 	public ARGAntiPirateBlockListener(final ARGAntiPirate plugin) {
 		// this.plugin = plugin;
 	}
+
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
@@ -24,30 +25,42 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 			p.sendMessage(ChatColor.RED + "You do not have permission to place blocks, please contact an Admin");
 			event.setCancelled(true);
 			return;
-		} else {
-			Block placedBlock = event.getBlock();
-			Location chestLocation = placedBlock.getLocation();
-			// Special case for placing chest on top of snow
-			if ((event.getItemInHand().getTypeId() == 54 && event.getBlockReplacedState().getTypeId() == 78)) {
-				double Ypos = placedBlock.getLocation().getY();
-				chestLocation.setY(Ypos - 1);
-			} else if (placedBlock.getTypeId() == 54) {
-				placedBlock = placedBlock.getWorld().getBlockAt(chestLocation);
-				ARGAntiPirate.chestMachine.lockIt(p, placedBlock);
+		}
+		Block placedBlock = event.getBlock();
+		Location chestLocation = placedBlock.getLocation();
+
+		if (placedBlock.getTypeId() == 54) {
+			if (ARGAntiPirate.chestMachine.lockIt(p, placedBlock)) {
+				return;
+			} else {
+				event.setCancelled(true);
+			}
+		} else if ((event.getItemInHand().getTypeId() == 54 && event.getBlockReplacedState().getTypeId() == 78)) {
+			double Ypos = placedBlock.getLocation().getY();
+			chestLocation.setY(Ypos - 1);
+			placedBlock = placedBlock.getWorld().getBlockAt(chestLocation);
+			if (ARGAntiPirate.chestMachine.lockIt(p, placedBlock)) {
+				return;
+			} else {
+				event.setCancelled(true);
 			}
 		}
+
 	}
+
 	@Override
 	public void onBlockInteract(BlockInteractEvent event) {
 		// if the event is caused by a player
 		if (event.isPlayer()) {
 			Player player = (Player) event.getEntity();
 			if (ARGAntiPirate.rankMachine.getRank(player) <= 0) {
-				player.sendMessage(ChatColor.RED + "You do not have permission to place blocks, please contact an Admin");
+				player.sendMessage(ChatColor.RED
+						+ "You do not have permission to place blocks, please contact an Admin");
 				event.setCancelled(true);
 				return;
-			} 
-			if (event.getBlock().getTypeId() == 54 && ARGAntiPirate.chestMachine.openChest(player, event.getBlock()) == true) {
+			}
+			if (event.getBlock().getTypeId() == 54
+					&& ARGAntiPirate.chestMachine.openChest(player, event.getBlock()) == true) {
 				player.sendMessage(ChatColor.GREEN + "Access Granted");
 				return;
 			} else if (event.getBlock().getTypeId() == 54) {
@@ -57,10 +70,12 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 			}
 		}
 	}
+
 	@Override
 	public void onBlockDamage(BlockDamageEvent event) {
 
 	}
+
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player p = event.getPlayer();

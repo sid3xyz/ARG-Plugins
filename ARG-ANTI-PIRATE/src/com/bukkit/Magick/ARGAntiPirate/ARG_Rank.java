@@ -27,6 +27,29 @@ public class ARG_Rank {
 			plugin.getServer().broadcastMessage("Problem creating Player Rank File");
 		}
 	}
+	
+	public boolean Load(){
+		try {
+
+			FileInputStream inn = new FileInputStream(playerRanksFile);
+			PlayerRanks.load(inn);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean Save(){
+		try {
+
+			FileOutputStream inn = new FileOutputStream(playerRanksFile);
+			PlayerRanks.store(inn,null);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public int getRank(Player p) {
 		String player = p.getName().toLowerCase();

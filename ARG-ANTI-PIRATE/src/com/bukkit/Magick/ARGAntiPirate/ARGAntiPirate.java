@@ -21,6 +21,7 @@ public class ARGAntiPirate extends JavaPlugin {
 	static File									ChestLogger		= new File(maindirectory + "Chest.log");
 	public static ARG_Rank						rankMachine		= new ARG_Rank();
 	public static ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect();
+	public ARGAntiPirate						plugin;
 
 	@Override
 	public void onEnable() {
@@ -33,6 +34,10 @@ public class ARGAntiPirate extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Priority.Lowest, this);
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+
+		chestMachine.Load();
+		
+		rankMachine.Load();
 	}
 
 	@Override
@@ -45,7 +50,7 @@ public class ARGAntiPirate extends JavaPlugin {
 			// admin commands
 			if (commandName.equals("adduser")) {
 				if (rankMachine.setRank(args) > -1) {
-					sender.sendMessage(trimmedArgs[0] + " has been given rank" + args[1]);
+					sender.sendMessage(trimmedArgs[0] + " has been given rank " + args[1]);
 					return true;
 				} else {
 					sender.sendMessage(ChatColor.RED + "Player already exists");
@@ -67,6 +72,9 @@ public class ARGAntiPirate extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		chestMachine.Save();
+		
+		rankMachine.Save();
 		System.out.println("ARGAntiPirate Disabeled.");
 	}
 }

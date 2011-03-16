@@ -54,7 +54,7 @@ public class ARG_Rank {
 	public int getRank(Player p) {
 		String player = p.getName().toLowerCase();
 		String prank = PlayerRanks.getProperty(player);
-		if (prank == null) {
+		if (prank == "null") {
 			return -1;
 		} else {
 			return Integer.parseInt(prank);

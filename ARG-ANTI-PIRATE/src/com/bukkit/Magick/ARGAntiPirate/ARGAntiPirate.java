@@ -17,6 +17,7 @@ public class ARGAntiPirate extends JavaPlugin {
 
 	private final ARGAntiPiratePlayerListener	playerListener	= new ARGAntiPiratePlayerListener(this);
 	private final ARGAntiPirateBlockListener	blockListener	= new ARGAntiPirateBlockListener(this);
+	private final NoExplodeListener				explodeListener	= new NoExplodeListener(this);
 	static String								maindirectory	= "argantipirate/";
 	static File									ChestLogger		= new File(maindirectory + "Chest.log");
 	public static ARG_Rank						rankMachine		= new ARG_Rank();
@@ -26,6 +27,8 @@ public class ARGAntiPirate extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Priority.Low, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, this.playerListener, Priority.Low, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Priority.Lowest, this);
@@ -36,7 +39,7 @@ public class ARGAntiPirate extends JavaPlugin {
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 
 		chestMachine.Load();
-		
+
 		rankMachine.Load();
 	}
 
@@ -73,7 +76,7 @@ public class ARGAntiPirate extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		chestMachine.Save();
-		
+
 		rankMachine.Save();
 		System.out.println("ARGAntiPirate Disabeled.");
 	}

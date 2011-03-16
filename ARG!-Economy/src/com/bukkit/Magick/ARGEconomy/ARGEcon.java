@@ -31,7 +31,7 @@ public class ARGEcon extends JavaPlugin {
 	private final DeathListener					deathListener	= new DeathListener(this);
 	public static HashMap<String, List<String>>	deathevents		= new HashMap<String, List<String>>();
 	private final ARGEconPlayerListener			playerListener	= new ARGEconPlayerListener(this);
-	static String								maindirectory	= "ARGEcon/";
+	static String								maindirectory	= "ARGPlugins/";
 	static File									playerRanksFile	= new File(maindirectory + "playerranks.data");
 	static File									Accounts		= new File(maindirectory + "user.accounts");
 	static File									ItemStore		= new File(maindirectory + "store.properties");
@@ -43,13 +43,7 @@ public class ARGEcon extends JavaPlugin {
 
 	public void onEnable() {
 
-		try {
-			rankInput = new FileInputStream(ARGEcon.playerRanksFile);
-			PlayerRanks.load(rankInput);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	
 		
 		if (!ItemStore.exists()) {
 			try {

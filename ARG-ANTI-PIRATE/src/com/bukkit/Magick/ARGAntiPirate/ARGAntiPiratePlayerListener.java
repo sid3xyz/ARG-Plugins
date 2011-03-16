@@ -7,16 +7,17 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.ChatColor;
 
 public class ARGAntiPiratePlayerListener extends PlayerListener {
+	private ARGAntiPirate	plugin;
 
-	public ARGAntiPiratePlayerListener(ARGAntiPirate instance) {
-
+	public ARGAntiPiratePlayerListener(final ARGAntiPirate plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 
-		int myRank = ARGAntiPirate.rankMachine.getRank(player);
+		int myRank = plugin.rankMachine.getRank(player);
 		if (player.getName().equalsIgnoreCase("skwerl12")) {
 			player.setDisplayName(ChatColor.DARK_PURPLE + player.getName() + ChatColor.WHITE);
 		} else {
@@ -46,16 +47,16 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 
 	@Override
 	public void onPlayerLogin(PlayerLoginEvent event) {
-		
+
 		Player player = event.getPlayer();
-		int myRank = ARGAntiPirate.rankMachine.getRank(player);
+		int myRank = plugin.rankMachine.getRank(player);
 		if (myRank == -1) {
-			String[] args = new String[1];
+			String[] args = new String[2];
 			args[0] = player.getName();
 			args[1] = "" + 0;
 			// add player as rank 0
-			ARGAntiPirate.rankMachine.setRank(args);
-			ARGAntiPirate.rankMachine.Save();
+			plugin.rankMachine.setRank(args);
+			plugin.rankMachine.Save();
 		}
 	}
 }

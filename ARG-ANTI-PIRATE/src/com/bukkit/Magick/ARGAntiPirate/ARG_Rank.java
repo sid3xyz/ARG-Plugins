@@ -1,5 +1,6 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,43 +10,53 @@ import java.util.Properties;
 import org.bukkit.entity.Player;
 
 public class ARG_Rank {
-	static String		maindirectory	= "argantipirate/";
-	static File			playerRanksFile	= new File(maindirectory + "playerranks.data");
-	private Properties	PlayerRanks		= new Properties();
-	private ARGAntiPirate plugin;
 	
-	public ARG_Rank() {
+	private Properties		PlayerRanks		= null;
+	private ARGAntiPirate	plugin;
+
+	public ARG_Rank(final ARGAntiPirate plugin,Properties PlayerRanks) {
+		System.out.println("RANK SYSTEM INIT");
+		this.plugin = plugin;
+		this.PlayerRanks = PlayerRanks;
+		
+		
 		try {
-			if (!playerRanksFile.exists()) {
-				new File(maindirectory).mkdir();
-				playerRanksFile.createNewFile();
+			if (!ARGAntiPirate.playerRanksFile.exists()) {
+				new File(ARGAntiPirate.maindirectory).mkdir();
+				ARGAntiPirate.playerRanksFile.createNewFile();
 			}
-			FileInputStream inn = new FileInputStream(playerRanksFile);
+			FileInputStream inn = new FileInputStream(ARGAntiPirate.playerRanksFile);
 			PlayerRanks.load(inn);
+		
 		} catch (IOException e) {
 			e.printStackTrace();
-			plugin.getServer().broadcastMessage("Problem creating Player Rank File");
+		
 		}
 	}
-	
-	public boolean Load(){
+
+	public boolean Load() {
 		try {
 
-			FileInputStream inn = new FileInputStream(playerRanksFile);
+			FileInputStream inn = new FileInputStream(ARGAntiPirate.playerRanksFile);
 			PlayerRanks.load(inn);
+		
 			return true;
 		} catch (IOException e) {
+			
 			e.printStackTrace();
 			return false;
 		}
 	}
-	public boolean Save(){
+
+	public boolean Save() {
 		try {
 
-			FileOutputStream inn = new FileOutputStream(playerRanksFile);
-			PlayerRanks.store(inn,null);
+			FileOutputStream inn = new FileOutputStream(ARGAntiPirate.playerRanksFile);
+			PlayerRanks.store(inn, null);
+			System.out.println("Rank file Saved");
 			return true;
 		} catch (IOException e) {
+			System.out.println("Rank file failed to save");
 			e.printStackTrace();
 			return false;
 		}
@@ -53,9 +64,9 @@ public class ARG_Rank {
 
 	public int getRank(Player p) {
 		String player = p.getName().toLowerCase();
-		
-		if(PlayerRanks.getProperty(player) == null){
-			return -1;	
+
+		if (PlayerRanks.getProperty(player) == null) {
+			return -1;
 		} else {
 			return Integer.parseInt(PlayerRanks.getProperty(player));
 		}
@@ -70,31 +81,29 @@ public class ARG_Rank {
 		}
 	}
 
-	
-
 	public int setRank(String[] args) {
 		try {
 			PlayerRanks.setProperty(args[0].toLowerCase(), args[1]);
-			PlayerRanks.store(new FileOutputStream(playerRanksFile), null);
+			PlayerRanks.store(new FileOutputStream(ARGAntiPirate.playerRanksFile), null);
 			return Integer.valueOf(args[1]);
 		} catch (IOException e) {
 			plugin.getServer().broadcastMessage("Problem setting Rank data.");
+			System.out.println("ERROR SETTING RANK");
 			return -1;
 		}
 	}
-	
+
 	public boolean removeUser(String player) {
 		try {
 			PlayerRanks.remove(player);
-			PlayerRanks.store(new FileOutputStream(playerRanksFile), null);
-			//Load();
-			plugin.getServer().broadcastMessage("removing player "+player);
+			PlayerRanks.store(new FileOutputStream(ARGAntiPirate.playerRanksFile), null);
+			
+			plugin.getServer().broadcastMessage("Removing player " + player + "from rank database");
 			return true;
 		} catch (IOException e) {
-			plugin.getServer().broadcastMessage("Problem removing player.");
+			plugin.getServer().broadcastMessage("Problem removing player");
 			return false;
 		}
 	}
-	
-	
+
 }

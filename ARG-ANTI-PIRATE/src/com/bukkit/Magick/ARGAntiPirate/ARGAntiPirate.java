@@ -1,6 +1,7 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,14 +19,19 @@ public class ARGAntiPirate extends JavaPlugin {
 	private final ARGAntiPiratePlayerListener	playerListener	= new ARGAntiPiratePlayerListener(this);
 	private final ARGAntiPirateBlockListener	blockListener	= new ARGAntiPirateBlockListener(this);
 	private final NoExplodeListener				explodeListener	= new NoExplodeListener(this);
-	static String								maindirectory	= "argantipirate/";
+	static String								maindirectory	= "ARGPlugins/";
+	static File									ChestData		= new File(maindirectory + "Chest.dat");
+	static File									playerRanksFile	= new File(maindirectory + "playerranks.data");
 	static File									ChestLogger		= new File(maindirectory + "Chest.log");
-	public static ARG_Rank						rankMachine		= new ARG_Rank();
-	public static ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect();
+	public Properties							PlayerRanks		= new Properties();
+	public Properties							ChestDatabase	= new Properties();
+	public final ARG_Rank						rankMachine		= new ARG_Rank(this, PlayerRanks);
+	public final ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect(this, ChestDatabase);
 	public ARGAntiPirate						plugin;
 
 	@Override
 	public void onEnable() {
+
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Lowest, this);
@@ -38,9 +44,6 @@ public class ARGAntiPirate extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 
-		chestMachine.Load();
-
-		rankMachine.Load();
 	}
 
 	@Override
@@ -59,19 +62,19 @@ public class ARGAntiPirate extends JavaPlugin {
 					sender.sendMessage(ChatColor.RED + "Player already exists");
 					return true;
 				}
-			}else if (commandName.equals("argreload") && rank > 4) {
+			} else if (commandName.equals("argreload") && rank > 4) {
 				this.getServer().broadcastMessage("Reloading chest and rank data");
-				
-				chestMachine.Load();
+
+				// chestMachine.Load();
 				rankMachine.Load();
 				return true;
-			}else if (commandName.equals("argsave") && rank > 4) {
+			} else if (commandName.equals("argsave") && rank > 4) {
 				this.getServer().broadcastMessage("Saving chest and rank data");
-				chestMachine.Save();
+				// chestMachine.Save();
 				rankMachine.Save();
 				return true;
-				
-			}else if(commandName.equals("removeplayer")&& rank > 4){
+
+			} else if (commandName.equals("removeplayer") && rank > 4) {
 				rankMachine.removeUser(trimmedArgs[0].toString());
 				return true;
 			}
@@ -90,7 +93,7 @@ public class ARGAntiPirate extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		chestMachine.Save();
+		// chestMachine.Save();
 
 		rankMachine.Save();
 		System.out.println("ARGAntiPirate Disabeled.");

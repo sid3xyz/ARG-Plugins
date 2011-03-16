@@ -15,3 +15,18 @@ commands:
     usage: |
            /<command> 
            Example: /<command> - Unlock Chest
+  argreload:
+    description: reload chest and rank data
+    usage: |
+           /<command> 
+           Example: /<command> - reload chest and rank data
+  argsave:
+    description: save chest and rank data
+    usage: |
+           /<command> 
+           Example: /<command> -save chest and rank data
+  removeplayer:
+    description: remove player from ranks
+    usage: |
+           /<command> 
+           Example: /<command> -remove player from ranks

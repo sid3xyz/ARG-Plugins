@@ -46,14 +46,16 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 
 	@Override
 	public void onPlayerLogin(PlayerLoginEvent event) {
+		
 		Player player = event.getPlayer();
 		int myRank = ARGAntiPirate.rankMachine.getRank(player);
 		if (myRank == -1) {
 			String[] args = new String[1];
 			args[0] = player.getName();
-			args[1] = "" + myRank;
+			args[1] = "" + 0;
 			// add player as rank 0
 			ARGAntiPirate.rankMachine.setRank(args);
+			ARGAntiPirate.rankMachine.Save();
 		}
 	}
 }

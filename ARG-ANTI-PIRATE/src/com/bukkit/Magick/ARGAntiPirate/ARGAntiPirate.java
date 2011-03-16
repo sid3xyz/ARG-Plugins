@@ -27,8 +27,8 @@ public class ARGAntiPirate extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Lowest, this);
+		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Priority.Low, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, this.playerListener, Priority.Low, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Priority.Lowest, this);
@@ -59,6 +59,21 @@ public class ARGAntiPirate extends JavaPlugin {
 					sender.sendMessage(ChatColor.RED + "Player already exists");
 					return true;
 				}
+			}else if (commandName.equals("argreload") && rank > 4) {
+				this.getServer().broadcastMessage("Reloading chest and rank data");
+				
+				chestMachine.Load();
+				rankMachine.Load();
+				return true;
+			}else if (commandName.equals("argsave") && rank > 4) {
+				this.getServer().broadcastMessage("Saving chest and rank data");
+				chestMachine.Save();
+				rankMachine.Save();
+				return true;
+				
+			}else if(commandName.equals("removeplayer")&& rank > 4){
+				rankMachine.removeUser(trimmedArgs[0].toString());
+				return true;
 			}
 		}
 		// user commands

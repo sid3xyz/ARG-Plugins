@@ -18,8 +18,12 @@ public class ARGUtilities extends JavaPlugin {
 	private final Utilities					myUtilities	= new Utilities(this);
 	private AutoSaveThread					saveThread	= null;
 	
+	
+	
 	public void onEnable() {
-		
+		// Register events
+		//PluginManager pm = getServer().getPluginManager();
+
 		//Start the auto save thread
 		startSaveThread();
 		System.out.println("ARG! Utilities is enabled!");
@@ -85,4 +89,5 @@ public class ARGUtilities extends JavaPlugin {
 		}
 		return i;
 	}
+	
 }

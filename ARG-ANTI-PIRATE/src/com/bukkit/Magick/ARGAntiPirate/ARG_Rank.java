@@ -53,11 +53,11 @@ public class ARG_Rank {
 
 	public int getRank(Player p) {
 		String player = p.getName().toLowerCase();
-		String prank = PlayerRanks.getProperty(player);
-		if (prank == "null") {
-			return -1;
+		
+		if(PlayerRanks.getProperty(player) == null){
+			return -1;	
 		} else {
-			return Integer.parseInt(prank);
+			return Integer.parseInt(PlayerRanks.getProperty(player));
 		}
 	}
 
@@ -70,16 +70,7 @@ public class ARG_Rank {
 		}
 	}
 
-	public boolean reloadRanks() {
-		try {
-			PlayerRanks.store(new FileOutputStream(playerRanksFile),null);
-			PlayerRanks.load(new FileInputStream(playerRanksFile));
-			return true;
-		} catch (IOException e) {
-			plugin.getServer().broadcastMessage("Problem reloading Rank data.");
-			return false;
-		}
-	}
+	
 
 	public int setRank(String[] args) {
 		try {
@@ -92,11 +83,18 @@ public class ARG_Rank {
 		}
 	}
 	
-	public void save() {
+	public boolean removeUser(String player) {
 		try {
+			PlayerRanks.remove(player);
 			PlayerRanks.store(new FileOutputStream(playerRanksFile), null);
-		} catch (IOException ex) {
-			plugin.getServer().broadcastMessage("Problem saving Rank data.");
+			//Load();
+			plugin.getServer().broadcastMessage("removing player "+player);
+			return true;
+		} catch (IOException e) {
+			plugin.getServer().broadcastMessage("Problem removing player.");
+			return false;
 		}
 	}
+	
+	
 }

@@ -25,6 +25,7 @@ public class ARGUtilities extends JavaPlugin {
 		//PluginManager pm = getServer().getPluginManager();
 
 		//Start the auto save thread
+		System.out.println("Auto Save Thread Starting...");
 		startSaveThread();
 		System.out.println("ARG! Utilities is enabled!");
 	}

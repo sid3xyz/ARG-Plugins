@@ -13,7 +13,7 @@ public class AutoSaveThread extends Thread {
 
 	private Date lastSave = null;
 
-	// Constructor to define number of seconds to sleep
+	
 	AutoSaveThread(ARGUtilities plugin) {
 		this.plugin = plugin;
 		
@@ -31,7 +31,7 @@ public class AutoSaveThread extends Thread {
 	// The code to run...weee
     public void run() {
     
-    	
+    	System.out.println("AutoSaveThread Started: Interval is 900 seconds");
     	//log.info(String.format("[%s] AutoSaveThread Started: Interval is %s seconds", plugin.getDescription().getName(), config.varInterval));
     	while(run) {
     		// Do our Sleep stuff!
@@ -48,6 +48,7 @@ public class AutoSaveThread extends Thread {
 			// Save the worlds
 			int saved = 0;
 			saved += plugin.saveWorlds();
+			System.out.println("Saved Worlds");
 			//log.info(String.format("[%s] Saved %d Worlds", plugin.getDescription().getName(), saved));
 			lastSave = new Date();
 			plugin.getServer().broadcastMessage(String.format("%s%s", ChatColor.BLUE, "World and Player data saved"));	

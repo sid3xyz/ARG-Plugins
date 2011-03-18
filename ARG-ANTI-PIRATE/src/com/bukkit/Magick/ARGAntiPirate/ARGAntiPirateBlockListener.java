@@ -1,5 +1,6 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -14,6 +15,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class ARGAntiPirateBlockListener extends BlockListener {
 	private ARGAntiPirate	plugin;
+	//private static Logger suspiciousLog = Logger.getLogger("pirateLog");
+	
 	public ARGAntiPirateBlockListener(final ARGAntiPirate plugin) {
 		 this.plugin = plugin;
 	}
@@ -28,7 +31,10 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 		}
 		Block placedBlock = event.getBlock();
 		Location chestLocation = placedBlock.getLocation();
-
+		if (placedBlock.getTypeId() == 46){
+			ARGAntiPirate.suspiciousLog.info(p.getName()+" placed TNT at: X "+ placedBlock.getX() + " Y "+ placedBlock.getY() + " Z "+ placedBlock.getZ() + " ");
+			
+		}
 		if (placedBlock.getTypeId() == 54) {
 			if (plugin.chestMachine.lockIt(p, placedBlock)) {
 				return;
@@ -91,6 +97,7 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 					return;
 				} else {
 					p.sendMessage(ChatColor.RED + "You are not allowed to remove this chest.");
+					
 					event.setCancelled(true);
 					return;
 				}

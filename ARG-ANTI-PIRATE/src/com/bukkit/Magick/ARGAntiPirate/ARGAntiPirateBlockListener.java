@@ -1,6 +1,5 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -9,18 +8,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockInteractEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class ARGAntiPirateBlockListener extends BlockListener {
 	private ARGAntiPirate	plugin;
-	//private static Logger suspiciousLog = Logger.getLogger("pirateLog");
-	
-	public ARGAntiPirateBlockListener(final ARGAntiPirate plugin) {
-		 this.plugin = plugin;
-	}
 
+	// private static Logger suspiciousLog = Logger.getLogger("pirateLog");
+
+	public ARGAntiPirateBlockListener(final ARGAntiPirate plugin) {
+		this.plugin = plugin;
+	}
+	 public void onBlockIgnite(BlockIgniteEvent event) {
+		 if(event.getCause() == IgniteCause.FLINT_AND_STEEL){
+			 		 Player p = event.getPlayer();
+		 Block placedBlock = event.getBlock();
+		 ARGAntiPirate.suspiciousLog.warning(p.getName() + "made FIRE at: X " + placedBlock.getX() + " Y " + placedBlock.getY() + " Z " + placedBlock.getZ() + " ");
+
+		 }
+	
+		 return; 
+	 }
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
@@ -31,17 +42,20 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 		}
 		Block placedBlock = event.getBlock();
 		Location chestLocation = placedBlock.getLocation();
-		if (placedBlock.getTypeId() == 46){
-			ARGAntiPirate.suspiciousLog.info(p.getName()+" placed TNT at: X "+ placedBlock.getX() + " Y "+ placedBlock.getY() + " Z "+ placedBlock.getZ() + " ");
-			
-		}
-		if (placedBlock.getTypeId() == 54) {
-			if (plugin.chestMachine.lockIt(p, placedBlock)) {
+
+		switch (placedBlock.getTypeId()) {
+			case 46: // TNT placement
+				ARGAntiPirate.suspiciousLog.warning(p.getName() + " placed TNT at: X " + placedBlock.getX() + " Y " + placedBlock.getY() + " Z " + placedBlock.getZ() + " ");
 				return;
-			} else {
+			case 54: // Chest placement
+				if (plugin.chestMachine.lockIt(p, placedBlock)) {
+					return;
+				}
 				event.setCancelled(true);
-			}
-		} else if ((event.getItemInHand().getTypeId() == 54 && event.getBlockReplacedState().getTypeId() == 78)) {
+				return;
+		}
+		// special case for placing chest on snow
+		if ((event.getItemInHand().getTypeId() == 54 && event.getBlockReplacedState().getTypeId() == 78)) {
 			double Ypos = placedBlock.getLocation().getY();
 			chestLocation.setY(Ypos - 1);
 			placedBlock = placedBlock.getWorld().getBlockAt(chestLocation);
@@ -60,13 +74,11 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 		if (event.isPlayer()) {
 			Player player = (Player) event.getEntity();
 			if (plugin.rankMachine.getRank(player) <= 0) {
-				player.sendMessage(ChatColor.RED
-						+ "You do not have permission to place blocks, please contact an Admin");
+				player.sendMessage(ChatColor.RED + "You do not have permission to place blocks, please contact an Admin");
 				event.setCancelled(true);
 				return;
 			}
-			if (event.getBlock().getTypeId() == 54
-					&& plugin.chestMachine.openChest(player, event.getBlock()) == true) {
+			if (event.getBlock().getTypeId() == 54 && plugin.chestMachine.openChest(player, event.getBlock()) == true) {
 				player.sendMessage(ChatColor.GREEN + "Access Granted");
 				return;
 			} else if (event.getBlock().getTypeId() == 54) {
@@ -97,7 +109,7 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 					return;
 				} else {
 					p.sendMessage(ChatColor.RED + "You are not allowed to remove this chest.");
-					
+
 					event.setCancelled(true);
 					return;
 				}

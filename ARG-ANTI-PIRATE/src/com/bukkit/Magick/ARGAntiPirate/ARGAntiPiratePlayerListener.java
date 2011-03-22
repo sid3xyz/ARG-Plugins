@@ -58,5 +58,6 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 			plugin.rankMachine.setRank(args);
 			plugin.rankMachine.Save();
 		}
+		
 	}
 }

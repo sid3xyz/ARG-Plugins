@@ -1,9 +1,7 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,49 +23,43 @@ public class ARGAntiPirate extends JavaPlugin {
 	public static final File					ChestData		= new File(maindirectory + "Chest.dat");
 	public static final File					playerRanksFile	= new File(maindirectory + "playerranks.data");
 	// static final File ChestLogger = new File(maindirectory + "Chest.log");
-	public static Logger						suspiciousLog;
+	// public static Logger suspiciousLog;
 	public Properties							PlayerRanks		= new Properties();
 	public Properties							ChestDatabase	= new Properties();
 	public final ARG_Rank						rankMachine		= new ARG_Rank(this, PlayerRanks);
 	public final ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect(this, ChestDatabase);
-
+	public boolean								globalProtect	= false;
 	public ARGAntiPirate						plugin;
 
 	@Override
 	public void onEnable() {
 
-		try {
-			boolean append = true;
-			FileHandler fh = new FileHandler(maindirectory + "suspicious.Log", append);
-			fh.setFormatter(new Formatter() {
-				public String format(LogRecord rec) {
-					StringBuffer buf = new StringBuffer(1000);
-					buf.append(new java.util.Date());
-					buf.append(' ');
-					buf.append(rec.getLevel());
-					buf.append(' ');
-					buf.append(formatMessage(rec));
-					buf.append('\n');
-					return buf.toString();
-				}
-			});
-			suspiciousLog = Logger.getLogger("suspiciousLogger");
-			suspiciousLog.addHandler(fh);
-			suspiciousLog.info("Logging Started...");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		/*
+		 * try { boolean append = true; FileHandler fh = new
+		 * FileHandler(maindirectory + "suspicious.Log", append);
+		 * fh.setFormatter(new Formatter() { public String format(LogRecord rec)
+		 * { StringBuffer buf = new StringBuffer(1000); buf.append(new
+		 * java.util.Date()); buf.append(' '); buf.append(rec.getLevel());
+		 * buf.append(' '); buf.append(formatMessage(rec)); buf.append('\n');
+		 * return buf.toString(); } }); //suspiciousLog =
+		 * Logger.getLogger("suspiciousLogger"); //suspiciousLog.addHandler(fh);
+		 * //suspiciousLog.info("Logging Started...");
+		 * 
+		 * } catch (IOException e) { e.printStackTrace(); }
+		 */
 
 		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Lowest, this);
+		
+		pm.registerEvent(Event.Type.BLOCK_IGNITE, this.blockListener, Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Lowest, this);
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, this.playerListener, Priority.Low, this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, this.playerListener, Priority.Low, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACED, this.blockListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_INTERACT, this.blockListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGED, this.blockListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Low, this);
+		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Low, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.BLOCK_INTERACT, blockListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 
@@ -104,6 +96,19 @@ public class ARGAntiPirate extends JavaPlugin {
 			} else if (commandName.equals("removeplayer") && rank > 4) {
 				rankMachine.removeUser(trimmedArgs[0].toString());
 				return true;
+			} else if (commandName.equals("globalprotect") && rank > 4) {
+
+				if (args[0].equalsIgnoreCase("on")) {
+					globalProtect = true;
+					this.getServer().broadcastMessage("Global world protect on");
+					return true;
+				} else if (args[0].equalsIgnoreCase("off")) {
+					globalProtect = false;
+					this.getServer().broadcastMessage("Global world protect off");
+					return true;
+				}
+
+				return true;
 			}
 		}
 		// user commands
@@ -124,5 +129,14 @@ public class ARGAntiPirate extends JavaPlugin {
 
 		rankMachine.Save();
 		System.out.println("ARGAntiPirate Disabeled.");
+	}
+
+	public boolean isWorldProtected() {
+		return globalProtect;
+	}
+
+	public void setWorldProtect(boolean state) {
+		globalProtect = state;
+
 	}
 }

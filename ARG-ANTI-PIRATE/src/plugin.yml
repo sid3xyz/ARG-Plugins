@@ -30,3 +30,8 @@ commands:
     usage: |
            /<command> 
            Example: /<command> -remove player from ranks
+  globalprotect:
+    description: toggle global world protect true/false
+    usage: |
+           /<command>
+           Example: /<command> true - turns global world protection on

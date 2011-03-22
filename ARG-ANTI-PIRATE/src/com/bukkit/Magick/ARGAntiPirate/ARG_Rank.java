@@ -1,25 +1,24 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class ARG_Rank {
-	
-	private Properties		PlayerRanks		= null;
+
+	private Properties		PlayerRanks	= null;
 	private ARGAntiPirate	plugin;
 
-	public ARG_Rank(final ARGAntiPirate plugin,Properties PlayerRanks) {
+	public ARG_Rank(final ARGAntiPirate plugin, Properties PlayerRanks) {
 		System.out.println("RANK SYSTEM INIT");
 		this.plugin = plugin;
 		this.PlayerRanks = PlayerRanks;
-		
-		
+
 		try {
 			if (!ARGAntiPirate.playerRanksFile.exists()) {
 				new File(ARGAntiPirate.maindirectory).mkdir();
@@ -27,10 +26,10 @@ public class ARG_Rank {
 			}
 			FileInputStream inn = new FileInputStream(ARGAntiPirate.playerRanksFile);
 			PlayerRanks.load(inn);
-		
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		
+
 		}
 	}
 
@@ -39,10 +38,10 @@ public class ARG_Rank {
 
 			FileInputStream inn = new FileInputStream(ARGAntiPirate.playerRanksFile);
 			PlayerRanks.load(inn);
-		
+
 			return true;
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 			return false;
 		}
@@ -97,7 +96,7 @@ public class ARG_Rank {
 		try {
 			PlayerRanks.remove(player);
 			PlayerRanks.store(new FileOutputStream(ARGAntiPirate.playerRanksFile), null);
-			
+
 			plugin.getServer().broadcastMessage("Removing player " + player + "from rank database");
 			return true;
 		} catch (IOException e) {
@@ -106,4 +105,35 @@ public class ARG_Rank {
 		}
 	}
 
+	public boolean canBuild(Player player) {
+		int prank = 0;
+		if (PlayerRanks.getProperty(player.getName().toLowerCase()) != null) {
+			prank = Integer.parseInt(PlayerRanks.getProperty(player.getName().toLowerCase()));
+		}
+		if (prank == 5) {
+			return true;
+		}else if (prank > 0 && !inSpawn(player) && !plugin.isWorldProtected()) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	boolean inSpawn(Player player) {
+		Location Spawn = player.getServer().getWorld("world").getSpawnLocation();
+		double myx = Math.abs(player.getLocation().getX());
+		double myz = Math.abs(player.getLocation().getZ());
+
+		double SpawnX = Math.abs(Spawn.getX());
+		double SpawnZ = Math.abs(Spawn.getZ());
+
+		double protectedX = SpawnX + 100; // actual size is 2x
+		double protectedZ = SpawnZ + 100;
+
+		if (myx <= protectedX && myz <= protectedZ) {
+			return true;
+		}
+		return false;
+	}
 }

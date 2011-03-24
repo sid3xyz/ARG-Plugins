@@ -33,6 +33,57 @@ public class ARG_Rank {
 		}
 	}
 
+	public boolean canBuild(Player player) {
+		int prank = 0;
+		if (PlayerRanks.getProperty(player.getName().toLowerCase()) != null) {
+			prank = Integer.parseInt(PlayerRanks.getProperty(player.getName().toLowerCase()));
+		}
+		if (prank == 5) {
+			return true;
+		} else if (prank > 0 && !inSpawn(player) && !plugin.isWorldProtected()) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public int getRank(Player p) {
+		String player = p.getName().toLowerCase();
+
+		if (PlayerRanks.getProperty(player) == null) {
+			return -1;
+		} else {
+			return Integer.parseInt(PlayerRanks.getProperty(player));
+		}
+	}
+
+	boolean inSpawn(Player player) {
+		Location Spawn = player.getServer().getWorld("world").getSpawnLocation();
+		double myx = Math.abs(player.getLocation().getX());
+		double myz = Math.abs(player.getLocation().getZ());
+
+		double SpawnX = Math.abs(Spawn.getX());
+		double SpawnZ = Math.abs(Spawn.getZ());
+
+		double protectedX = SpawnX + 100; // actual size is 2x
+		double protectedZ = SpawnZ + 100;
+
+		if (myx <= protectedX && myz <= protectedZ) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isAdmin(String player) {
+		String prank = PlayerRanks.getProperty(player);
+		if (Integer.parseInt(prank) >= 4) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public boolean Load() {
 		try {
 
@@ -43,6 +94,19 @@ public class ARG_Rank {
 		} catch (IOException e) {
 
 			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean removeUser(String player) {
+		try {
+			PlayerRanks.remove(player);
+			PlayerRanks.store(new FileOutputStream(ARGAntiPirate.playerRanksFile), null);
+
+			plugin.getServer().broadcastMessage("Removing player " + player + "from rank database");
+			return true;
+		} catch (IOException e) {
+			plugin.getServer().broadcastMessage("Problem removing player");
 			return false;
 		}
 	}
@@ -61,25 +125,6 @@ public class ARG_Rank {
 		}
 	}
 
-	public int getRank(Player p) {
-		String player = p.getName().toLowerCase();
-
-		if (PlayerRanks.getProperty(player) == null) {
-			return -1;
-		} else {
-			return Integer.parseInt(PlayerRanks.getProperty(player));
-		}
-	}
-
-	public boolean isAdmin(String player) {
-		String prank = PlayerRanks.getProperty(player);
-		if (Integer.parseInt(prank) >= 4) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	public int setRank(String[] args) {
 		try {
 			PlayerRanks.setProperty(args[0].toLowerCase(), args[1]);
@@ -90,50 +135,5 @@ public class ARG_Rank {
 			System.out.println("ERROR SETTING RANK");
 			return -1;
 		}
-	}
-
-	public boolean removeUser(String player) {
-		try {
-			PlayerRanks.remove(player);
-			PlayerRanks.store(new FileOutputStream(ARGAntiPirate.playerRanksFile), null);
-
-			plugin.getServer().broadcastMessage("Removing player " + player + "from rank database");
-			return true;
-		} catch (IOException e) {
-			plugin.getServer().broadcastMessage("Problem removing player");
-			return false;
-		}
-	}
-
-	public boolean canBuild(Player player) {
-		int prank = 0;
-		if (PlayerRanks.getProperty(player.getName().toLowerCase()) != null) {
-			prank = Integer.parseInt(PlayerRanks.getProperty(player.getName().toLowerCase()));
-		}
-		if (prank == 5) {
-			return true;
-		}else if (prank > 0 && !inSpawn(player) && !plugin.isWorldProtected()) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
-	boolean inSpawn(Player player) {
-		Location Spawn = player.getServer().getWorld("world").getSpawnLocation();
-		double myx = Math.abs(player.getLocation().getX());
-		double myz = Math.abs(player.getLocation().getZ());
-
-		double SpawnX = Math.abs(Spawn.getX());
-		double SpawnZ = Math.abs(Spawn.getZ());
-
-		double protectedX = SpawnX + 100; // actual size is 2x
-		double protectedZ = SpawnZ + 100;
-
-		if (myx <= protectedX && myz <= protectedZ) {
-			return true;
-		}
-		return false;
 	}
 }

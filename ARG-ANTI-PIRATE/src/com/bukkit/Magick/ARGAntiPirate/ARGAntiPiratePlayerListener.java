@@ -1,13 +1,13 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.ChatColor;
 
 public class ARGAntiPiratePlayerListener extends PlayerListener {
-	private ARGAntiPirate	plugin;
+	private final ARGAntiPirate	plugin;
 
 	public ARGAntiPiratePlayerListener(final ARGAntiPirate plugin) {
 		this.plugin = plugin;
@@ -15,6 +15,9 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 
 	@Override
 	public void onPlayerChat(PlayerChatEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
 		Player player = event.getPlayer();
 
 		int myRank = plugin.rankMachine.getRank(player);
@@ -58,6 +61,6 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 			plugin.rankMachine.setRank(args);
 			plugin.rankMachine.Save();
 		}
-		
+
 	}
 }

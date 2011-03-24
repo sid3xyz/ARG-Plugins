@@ -32,8 +32,6 @@ public class ARG_ThiefProtect {
 		}
 	}
 
-	
-
 	public String getOwner(Location l) {
 		String myLocation = l.toString();
 		String owner = ChestDatabase.getProperty(myLocation);
@@ -42,73 +40,6 @@ public class ARG_ThiefProtect {
 		}
 		return owner;
 
-	}
-
-	public boolean unlockIt(Player p) {
-
-		Block chestToLock = p.getTargetBlock(null, 5);
-		if (chestToLock.getTypeId() == 54) {
-			String myOwner = getOwner(chestToLock.getLocation());
-			if (myOwner.equalsIgnoreCase(p.getName())) {
-
-				try {
-
-					BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
-							BlockFace.WEST };
-					for (BlockFace blockFace : faces) {
-						Block face = chestToLock.getFace(blockFace);
-						// They're placing it beside a chest
-						if (face.getTypeId() == 54) {
-							if (myOwner.toString().equalsIgnoreCase(p.getName())) {
-								ChestDatabase.setProperty(face.getLocation().toString(), "Public");
-							}
-						}
-					}
-					p.sendMessage(ChatColor.RED + "This Chest is now PUBLIC.");
-					ChestDatabase.setProperty(chestToLock.getLocation().toString(), "Public");
-					ChestDatabase.store(new FileOutputStream(ARGAntiPirate.ChestData), null);
-				} catch (IOException e) {
-					p.sendMessage(ChatColor.RED + "Something went wrong!");
-				}
-				return true;
-			} else {
-				p.sendMessage(ChatColor.RED + "This is not your chest");
-				return true;
-			}
-		} else {
-			return true;
-		}
-	}
-
-	public boolean removeChest(Player p, Block chestLocation) {
-		try {
-			String myOwner = getOwner(chestLocation.getLocation());
-			if (myOwner.equals(p.getName()) || myOwner.equals("Public") || myOwner.equals("null")) {
-				ChestDatabase.remove(chestLocation.getLocation().toString());
-				ChestDatabase.store(new FileOutputStream(ARGAntiPirate.ChestData), null);
-				return true;
-			} else {
-				return false;
-			}
-		} catch (IOException e) {
-			p.sendMessage(ChatColor.RED + "Something went wrong");
-			return false;
-		}
-
-	}
-
-	public boolean openChest(Player player, Block targetChest) {
-
-		String myOwner = getOwner(targetChest.getLocation());
-		player.sendMessage("Owner: " + myOwner);
-		if (myOwner.equals(player.getName()) || plugin.rankMachine.getRank(player) > 4) {
-
-			return true;
-		} else if (myOwner.equals("null") || myOwner.equalsIgnoreCase("Public")) {
-			player.sendMessage("This is a Public Chest");
-			return true;
-		}
-		return false;
 	}
 
 	public boolean lockIt(Player p, Block placedBlock) {
@@ -138,6 +69,72 @@ public class ARG_ThiefProtect {
 		} catch (IOException e) {
 			p.sendMessage(ChatColor.RED + "Something went wrong!");
 			return false;
+		}
+	}
+
+	public boolean openChest(Player player, Block targetChest) {
+
+		String myOwner = getOwner(targetChest.getLocation());
+		player.sendMessage("Owner: " + myOwner);
+		if (myOwner.equals(player.getName()) || plugin.rankMachine.getRank(player) > 4) {
+
+			return true;
+		} else if (myOwner.equals("null") || myOwner.equalsIgnoreCase("Public")) {
+			player.sendMessage("This is a Public Chest");
+			return true;
+		}
+		return false;
+	}
+
+	public boolean removeChest(Player p, Block chestLocation) {
+		try {
+			String myOwner = getOwner(chestLocation.getLocation());
+			if (myOwner.equals(p.getName()) || myOwner.equals("Public") || myOwner.equals("null")) {
+				ChestDatabase.remove(chestLocation.getLocation().toString());
+				ChestDatabase.store(new FileOutputStream(ARGAntiPirate.ChestData), null);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (IOException e) {
+			p.sendMessage(ChatColor.RED + "Something went wrong");
+			return false;
+		}
+
+	}
+
+	public boolean unlockIt(Player p) {
+
+		Block chestToLock = p.getTargetBlock(null, 5);
+		if (chestToLock.getTypeId() == 54) {
+			String myOwner = getOwner(chestToLock.getLocation());
+			if (myOwner.equalsIgnoreCase(p.getName())) {
+
+				try {
+
+					BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
+					for (BlockFace blockFace : faces) {
+						Block face = chestToLock.getFace(blockFace);
+						// They're placing it beside a chest
+						if (face.getTypeId() == 54) {
+							if (myOwner.toString().equalsIgnoreCase(p.getName())) {
+								ChestDatabase.setProperty(face.getLocation().toString(), "Public");
+							}
+						}
+					}
+					p.sendMessage(ChatColor.RED + "This Chest is now PUBLIC.");
+					ChestDatabase.setProperty(chestToLock.getLocation().toString(), "Public");
+					ChestDatabase.store(new FileOutputStream(ARGAntiPirate.ChestData), null);
+				} catch (IOException e) {
+					p.sendMessage(ChatColor.RED + "Something went wrong!");
+				}
+				return true;
+			} else {
+				p.sendMessage(ChatColor.RED + "This is not your chest");
+				return true;
+			}
+		} else {
+			return true;
 		}
 	}
 }

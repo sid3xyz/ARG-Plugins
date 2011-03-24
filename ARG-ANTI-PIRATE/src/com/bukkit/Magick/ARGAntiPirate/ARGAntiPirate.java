@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.Properties;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
-
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,39 +30,10 @@ public class ARGAntiPirate extends JavaPlugin {
 	public final ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect(this, ChestDatabase);
 	public boolean								globalProtect	= false;
 	public ARGAntiPirate						plugin;
+	public Location								Spawn			= null;
 
-	@Override
-	public void onEnable() {
-
-		/*
-		 * try { boolean append = true; FileHandler fh = new
-		 * FileHandler(maindirectory + "suspicious.Log", append);
-		 * fh.setFormatter(new Formatter() { public String format(LogRecord rec)
-		 * { StringBuffer buf = new StringBuffer(1000); buf.append(new
-		 * java.util.Date()); buf.append(' '); buf.append(rec.getLevel());
-		 * buf.append(' '); buf.append(formatMessage(rec)); buf.append('\n');
-		 * return buf.toString(); } }); //suspiciousLog =
-		 * Logger.getLogger("suspiciousLogger"); //suspiciousLog.addHandler(fh);
-		 * //suspiciousLog.info("Logging Started...");
-		 * 
-		 * } catch (IOException e) { e.printStackTrace(); }
-		 */
-
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Lowest, this);
-		
-		pm.registerEvent(Event.Type.BLOCK_IGNITE, this.blockListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Lowest, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Low, this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Low, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_INTERACT, blockListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Lowest, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);
-		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-
+	public boolean isWorldProtected() {
+		return globalProtect;
 	}
 
 	@Override
@@ -131,8 +102,39 @@ public class ARGAntiPirate extends JavaPlugin {
 		System.out.println("ARGAntiPirate Disabeled.");
 	}
 
-	public boolean isWorldProtected() {
-		return globalProtect;
+	@Override
+	public void onEnable() {
+		Spawn = this.getServer().getWorld("world").getSpawnLocation();
+		/*
+		 * try { boolean append = true; FileHandler fh = new
+		 * FileHandler(maindirectory + "suspicious.Log", append);
+		 * fh.setFormatter(new Formatter() { public String format(LogRecord rec)
+		 * { StringBuffer buf = new StringBuffer(1000); buf.append(new
+		 * java.util.Date()); buf.append(' '); buf.append(rec.getLevel());
+		 * buf.append(' '); buf.append(formatMessage(rec)); buf.append('\n');
+		 * return buf.toString(); } }); //suspiciousLog =
+		 * Logger.getLogger("suspiciousLogger"); //suspiciousLog.addHandler(fh);
+		 * //suspiciousLog.info("Logging Started...");
+		 * 
+		 * } catch (IOException e) { e.printStackTrace(); }
+		 */
+
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, this.blockListener, Event.Priority.Highest, this);
+
+		pm.registerEvent(Event.Type.BLOCK_IGNITE, this.blockListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.EXPLOSION_PRIMED, explodeListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACED, blockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_INTERACT, blockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_DAMAGED, blockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
+		PluginDescriptionFile pdfFile = this.getDescription();
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+
 	}
 
 	public void setWorldProtect(boolean state) {

@@ -163,7 +163,7 @@ public class Utilities {
 			double yloc = loc.getY();
 			loc.setY(yloc + 1);
 			player.sendMessage("Teleporting now...");
-			player.teleportTo(loc);
+			player.teleport(loc);
 			return true;
 		} else {
 			player.sendMessage("It would be unwise to teleport there...");
@@ -185,7 +185,7 @@ public class Utilities {
 				// Player player = (Player) sender;
 				targetLocation.setY(y + 1);
 				sender.sendMessage("Teleporting now...");
-				((Player) sender).teleportTo(targetLocation);
+				((Player) sender).teleport(targetLocation);
 				return true;
 			} else {
 				sender.sendMessage("It would be unwise to teleport there...");

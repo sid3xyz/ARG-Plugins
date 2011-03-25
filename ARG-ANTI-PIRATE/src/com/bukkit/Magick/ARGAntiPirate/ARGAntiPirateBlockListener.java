@@ -1,7 +1,6 @@
 package com.bukkit.Magick.ARGAntiPirate;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -16,27 +15,6 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 
 	public ARGAntiPirateBlockListener(final ARGAntiPirate plugin) {
 		this.plugin = plugin;
-	}
-
-	boolean inSpawn(Player player) {
-
-		double x = plugin.Spawn.getX() - player.getLocation().getX();
-		double y = plugin.Spawn.getY() - player.getLocation().getY();
-		double z = plugin.Spawn.getZ() - player.getLocation().getZ();
-		double distance = x * x + y * y + z * z;
-
-		return (distance <= 100 * 100);
-
-	}
-
-	@SuppressWarnings("unused")
-	private boolean isPlayerWithinRadius(Player player, Location loc, double radius) {
-		double x = loc.getX() - player.getLocation().getX();
-		double y = loc.getY() - player.getLocation().getY();
-		double z = loc.getZ() - player.getLocation().getZ();
-		double distance = x * x + y * y + z * z;
-
-		return (distance <= radius * radius);
 	}
 
 	@Override
@@ -59,7 +37,7 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 			return;
 
 		}
-		if (inSpawn(p) && myRank < 4) {
+		if (plugin.inSpawn(p.getLocation()) && myRank < 4) {
 			p.sendMessage(ChatColor.RED + "You are in the Protected Habitat");
 			event.setCancelled(true);
 			return;

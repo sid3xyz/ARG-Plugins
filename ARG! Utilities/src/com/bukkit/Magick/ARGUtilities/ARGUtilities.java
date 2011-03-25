@@ -6,7 +6,10 @@ import java.util.List;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Event;
 
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -27,6 +30,15 @@ public class ARGUtilities extends JavaPlugin {
 		//Start the auto save thread
 		System.out.println("Auto Save Thread Starting...");
 		startSaveThread();
+		PluginManager pm = getServer().getPluginManager();
+		Plugin[] pluginList = pm.getPlugins();
+		for (Plugin plugin : pluginList) {
+			System.out.println("Detected Plugin:");
+			System.out.println(plugin.getDescription().getName());
+			
+		}
+		//pm.registerEvent(Event.Type.CREATURE_SPAWN, this.spawnManager, Event.Priority.Highest, this);
+		
 		System.out.println("ARG! Utilities is enabled!");
 	}
 

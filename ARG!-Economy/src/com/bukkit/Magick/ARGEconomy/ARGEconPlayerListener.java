@@ -19,8 +19,7 @@ public class ARGEconPlayerListener extends PlayerListener {
 	public void onPlayerLogin(PlayerLoginEvent event) {
 
 		Player player = event.getPlayer();
-		// WaypointsInit
-
+		
 		// On Login, check to see if player has an account
 		int startingvalue = LoadSettings.startingbalance;
 		boolean hasaccount = Accounting.containskey(player, ARGEcon.Accounts);

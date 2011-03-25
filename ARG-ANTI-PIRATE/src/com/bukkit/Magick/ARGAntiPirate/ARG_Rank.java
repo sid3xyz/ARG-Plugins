@@ -6,13 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class ARG_Rank {
 
-	private Properties		PlayerRanks	= null;
-	private ARGAntiPirate	plugin;
+	private Properties			PlayerRanks	= null;
+	private final ARGAntiPirate	plugin;
 
 	public ARG_Rank(final ARGAntiPirate plugin, Properties PlayerRanks) {
 		System.out.println("RANK SYSTEM INIT");
@@ -40,7 +39,7 @@ public class ARG_Rank {
 		}
 		if (prank == 5) {
 			return true;
-		} else if (prank > 0 && !inSpawn(player) && !plugin.isWorldProtected()) {
+		} else if (prank > 0 && !plugin.inSpawn(player.getLocation()) && !plugin.isWorldProtected()) {
 			return true;
 		} else {
 			return false;
@@ -56,23 +55,6 @@ public class ARG_Rank {
 		} else {
 			return Integer.parseInt(PlayerRanks.getProperty(player));
 		}
-	}
-
-	boolean inSpawn(Player player) {
-		Location Spawn = player.getServer().getWorld("world").getSpawnLocation();
-		double myx = Math.abs(player.getLocation().getX());
-		double myz = Math.abs(player.getLocation().getZ());
-
-		double SpawnX = Math.abs(Spawn.getX());
-		double SpawnZ = Math.abs(Spawn.getZ());
-
-		double protectedX = SpawnX + 100; // actual size is 2x
-		double protectedZ = SpawnZ + 100;
-
-		if (myx <= protectedX && myz <= protectedZ) {
-			return true;
-		}
-		return false;
 	}
 
 	public boolean isAdmin(String player) {

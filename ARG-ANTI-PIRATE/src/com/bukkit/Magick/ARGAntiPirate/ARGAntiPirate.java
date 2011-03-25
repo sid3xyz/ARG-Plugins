@@ -143,4 +143,25 @@ public class ARGAntiPirate extends JavaPlugin {
 		globalProtect = state;
 
 	}
+
+	boolean inSpawn(Location myLocation) {
+
+		double x = Spawn.getX() - myLocation.getX();
+		double y = Spawn.getY() - myLocation.getY();
+		double z = Spawn.getZ() - myLocation.getZ();
+		double distance = x * x + y * y + z * z;
+
+		return (distance <= 100 * 100);
+
+	}
+
+	@SuppressWarnings("unused")
+	private boolean isPlayerWithinRadius(Player player, Location loc, double radius) {
+		double x = loc.getX() - player.getLocation().getX();
+		double y = loc.getY() - player.getLocation().getY();
+		double z = loc.getZ() - player.getLocation().getZ();
+		double distance = x * x + y * y + z * z;
+
+		return (distance <= radius * radius);
+	}
 }

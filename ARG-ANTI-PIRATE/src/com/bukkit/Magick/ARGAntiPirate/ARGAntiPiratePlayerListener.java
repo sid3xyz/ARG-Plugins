@@ -72,12 +72,9 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
-
 		if (event.isCancelled()) {
 			return;
 		}
-		// if the event is caused by a player
-
 		Player player = event.getPlayer();
 		Block myBlock = event.getClickedBlock();
 		if (myBlock.getTypeId() == 54 && plugin.chestMachine.openChest(player, myBlock) == true) {
@@ -115,6 +112,5 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 				}
 			}
 		}
-
 	}
 }

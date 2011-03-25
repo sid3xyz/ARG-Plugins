@@ -64,7 +64,7 @@ public class ARGEcon extends JavaPlugin {
 		}
 		deathevents.put("player", getConfiguration().getStringList("player", null));
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.ENTITY_DAMAGED, deathListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, deathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, this.playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, this.deathListener, Priority.Normal, this);
 

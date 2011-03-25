@@ -3,7 +3,7 @@ package com.bukkit.Magick.ARGAntiPirate;
 import org.bukkit.entity.Creeper;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
-import org.bukkit.event.entity.ExplosionPrimedEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 
 public class NoExplodeListener extends EntityListener {
 	public static ARGAntiPirate	plugin;
@@ -45,7 +45,7 @@ public class NoExplodeListener extends EntityListener {
 	}
 
 	@Override
-	public void onExplosionPrimed(ExplosionPrimedEvent event) {
+	public void onExplosionPrime(ExplosionPrimeEvent event) {
 		if (event.isCancelled()) {
 			return;
 		}

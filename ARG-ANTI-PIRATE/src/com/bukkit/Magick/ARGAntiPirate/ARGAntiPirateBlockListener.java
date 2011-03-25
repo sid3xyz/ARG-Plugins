@@ -2,19 +2,14 @@ package com.bukkit.Magick.ARGAntiPirate;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Type;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockInteractEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.BlockRightClickEvent;
 
 public class ARGAntiPirateBlockListener extends BlockListener {
 	private final ARGAntiPirate	plugin;
@@ -118,56 +113,6 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 				 * 
 				 * event.setCancelled(true); return; }
 				 */
-	}
-
-	@Override
-	public void onBlockRightClick(BlockRightClickEvent event) {
-
-		if ((event.getBlock().getType() != Material.CHEST && event.getBlock().getType() != Material.WORKBENCH && event.getBlock().getType() != Material.FURNACE && event.getBlock().getType() != Material.DISPENSER && event.getBlock().getType() != Material.STONE_BUTTON && event.getBlock().getType() != Material.LEVER && event.getBlock().getType() != Material.WOODEN_DOOR && event.getBlock().getType() != Material.IRON_DOOR_BLOCK && event.getBlock().getType() != Material.FIRE && event.getBlock().getType() != Material.CAKE_BLOCK)) {
-			if (event.getItemInHand().getType() == Material.FENCE) {
-				Block b = event.getBlock().getFace(event.getDirection(), 1);
-				if (b.getTypeId() == 0) {
-
-					BlockState oldState = b.getState();
-					b.setType(event.getItemInHand().getType());
-
-					BlockPlaceEvent placeEvent = new BlockPlaceEvent(Type.BLOCK_PLACED, b, oldState, event.getBlock(), event.getItemInHand(), event.getPlayer(), true);
-					plugin.getServer().getPluginManager().callEvent(placeEvent);
-
-					if (placeEvent.isCancelled() || !placeEvent.canBuild()) {
-						b.setType(oldState.getType());
-						b.setData(oldState.getData().getData());
-					} else {
-						int am = event.getItemInHand().getAmount();
-						if (am > 1)
-							event.getItemInHand().setAmount(am - 1);
-						else
-							event.getPlayer().getInventory().remove(event.getItemInHand());
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	public void onBlockInteract(BlockInteractEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		// if the event is caused by a player
-
-		if (event.isPlayer()) {
-			Player player = (Player) event.getEntity();
-
-			if (event.getBlock().getTypeId() == 54 && plugin.chestMachine.openChest(player, event.getBlock()) == true) {
-				player.sendMessage(ChatColor.GREEN + "Access Granted");
-				return;
-			} else if (event.getBlock().getTypeId() == 54) {
-				player.sendMessage(ChatColor.RED + "You do not have permission to access this chest");
-				event.setCancelled(true);
-				return;
-			}
-		}
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class DeathListener extends EntityListener {
 						}
 							ItemStack myItem = player.getItemInHand();
 							if(myItem.getTypeId() == 0){
-								player.sendMessage("BONUS "+LoadSettings.multi +"X for kill with 'BEAR' HANDS");
+								player.sendMessage("BONUS "+LoadSettings.multi +"X for kill with 'BEAR' HANDS!!!");
 								mobValue =  mobValue * LoadSettings.multi;
 							}
 							int newbalance = Accounting.getBalance(player, ARGEcon.Accounts)+ mobValue;

@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGEconomy;
+package com.Magick.argerk.Economy;
 
 import java.io.File;
 import java.io.FileInputStream;

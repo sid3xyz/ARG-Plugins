@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGUtilities;
+package com.Magick.argerk.Utilities;
 
 
 import java.util.List;
@@ -12,11 +12,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * ARGEcon for Bukkit
- * 
- * @author Magick
- */
 public class ARGUtilities extends JavaPlugin {
 	private final Utilities					myUtilities	= new Utilities(this);
 	private final LeafDecay					leafDecay	= new LeafDecay(this);
@@ -36,7 +31,6 @@ public class ARGUtilities extends JavaPlugin {
 		for (Plugin plugin : pluginList) {
 			System.out.println("Detected Plugin:");
 			System.out.println(plugin.getDescription().getName());
-			
 		}
 		//pm.registerEvent(Event.Type.CREATURE_SPAWN, this.spawnManager, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.LEAVES_DECAY, this.leafDecay, Event.Priority.Highest, this);

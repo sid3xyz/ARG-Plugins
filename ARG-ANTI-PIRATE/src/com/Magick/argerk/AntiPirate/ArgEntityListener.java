@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGAntiPirate;
+package com.Magick.argerk.AntiPirate;
 
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;

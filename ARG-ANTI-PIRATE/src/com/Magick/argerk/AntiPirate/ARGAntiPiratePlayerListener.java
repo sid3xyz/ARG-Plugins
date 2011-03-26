@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGAntiPirate;
+package com.Magick.argerk.AntiPirate;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

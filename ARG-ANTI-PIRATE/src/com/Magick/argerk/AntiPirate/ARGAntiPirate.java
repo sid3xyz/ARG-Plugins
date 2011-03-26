@@ -1,5 +1,5 @@
 // giant monsters
-package com.bukkit.Magick.ARGAntiPirate;
+package com.Magick.argerk.AntiPirate;
 
 import java.io.File;
 import java.util.Properties;

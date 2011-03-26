@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGUtilities;
+package com.Magick.argerk.Utilities;
 import java.util.Random;
 
 import org.bukkit.Material;

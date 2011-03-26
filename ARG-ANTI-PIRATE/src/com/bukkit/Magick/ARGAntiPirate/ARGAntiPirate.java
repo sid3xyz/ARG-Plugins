@@ -20,6 +20,8 @@ public class ARGAntiPirate extends JavaPlugin {
 	private final ARGAntiPiratePlayerListener	playerListener	= new ARGAntiPiratePlayerListener(this);
 	private final ARGAntiPirateBlockListener	blockListener	= new ARGAntiPirateBlockListener(this);
 	private final NoExplodeListener				explodeListener	= new NoExplodeListener(this);
+	// private final ArgEntityListener entityListener = new
+	// ArgEntityListener(this);
 	public static final String					maindirectory	= "ARGPlugins/";
 	public static final File					ChestData		= new File(maindirectory + "Chest.dat");
 	public static final File					playerRanksFile	= new File(maindirectory + "playerranks.data");
@@ -121,17 +123,16 @@ public class ARGAntiPirate extends JavaPlugin {
 		 */
 
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Highest, this);
-		// pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKE, this.blockListener,
+		// pm.registerEvent(Event.Type.CREATURE_SPAWN, this.entityListener,
 		// Event.Priority.Highest, this);
-
+		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_IGNITE, this.blockListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.EXPLOSION_PRIME, explodeListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, blockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
 		PluginDescriptionFile pdfFile = this.getDescription();

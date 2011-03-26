@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class ARGUtilities extends JavaPlugin {
 	private final Utilities					myUtilities	= new Utilities(this);
+	private final LeafDecay					leafDecay	= new LeafDecay(this);
 	private AutoSaveThread					saveThread	= null;
 	
 	
@@ -38,6 +39,7 @@ public class ARGUtilities extends JavaPlugin {
 			
 		}
 		//pm.registerEvent(Event.Type.CREATURE_SPAWN, this.spawnManager, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.LEAVES_DECAY, this.leafDecay, Event.Priority.Highest, this);
 		
 		System.out.println("ARG! Utilities is enabled!");
 	}

@@ -1,14 +1,9 @@
-package com.bukkit.Magick.ARGEconomy;
+package com.argerk.Magick.ARGEconomy;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
-/**
- * Handle events for all Player related events
- * 
- * @author Magick
- */
 public class ARGEconPlayerListener extends PlayerListener {
 //	private final ARGEcon	plugin;
 
@@ -17,9 +12,7 @@ public class ARGEconPlayerListener extends PlayerListener {
 	}
 
 	public void onPlayerLogin(PlayerLoginEvent event) {
-
-		Player player = event.getPlayer();
-		
+		Player player = event.getPlayer();		
 		// On Login, check to see if player has an account
 		int startingvalue = LoadSettings.startingbalance;
 		boolean hasaccount = Accounting.containskey(player, ARGEcon.Accounts);
@@ -28,5 +21,4 @@ public class ARGEconPlayerListener extends PlayerListener {
 			Accounting.write(player, startingvalue, ARGEcon.Accounts);
 		}
 	}
-
 }

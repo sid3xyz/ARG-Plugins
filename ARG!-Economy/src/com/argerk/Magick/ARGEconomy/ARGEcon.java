@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGEconomy;
+package com.argerk.Magick.ARGEconomy;
 
 //import java.io.*;
 
@@ -38,13 +38,8 @@ public class ARGEcon extends JavaPlugin {
 	FileInputStream								rankInput		= null;
 	Properties									PlayerRanks		= new Properties();
 
-	// public Properties LockedChests = new Properties();
-	// private final Properties PlayerRanks = new Properties();
-
 	public void onEnable() {
 
-	
-		
 		if (!ItemStore.exists()) {
 			try {
 				new File(maindirectory).mkdir();
@@ -104,7 +99,5 @@ public class ARGEcon extends JavaPlugin {
 			// return -1 if something goes wrong
 			return -1;
 		}
-
 	}
-
 }

@@ -1,5 +1,5 @@
 name: ARGAntiPirate
-main: com.bukkit.Magick.ARGAntiPirate.ARGAntiPirate
+main: biz.argirc.Magick.ARGAntiPirate.ARGAntiPirate
 version: 1.0.1
 author: Magick
 description: >

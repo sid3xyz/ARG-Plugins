@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGAntiPirate;
+package biz.argirc.Magick.ARGAntiPirate;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;

@@ -1,5 +1,5 @@
 // giant monsters
-package com.bukkit.Magick.ARGAntiPirate;
+package biz.argirc.Magick.ARGAntiPirate;
 
 import java.io.File;
 import java.util.Properties;
@@ -131,7 +131,7 @@ public class ARGAntiPirate extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, blockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
 		PluginDescriptionFile pdfFile = this.getDescription();

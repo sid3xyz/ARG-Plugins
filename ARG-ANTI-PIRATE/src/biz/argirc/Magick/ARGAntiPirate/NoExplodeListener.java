@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGAntiPirate;
+package biz.argirc.Magick.ARGAntiPirate;
 
 import org.bukkit.entity.Creeper;
 import org.bukkit.event.entity.EntityExplodeEvent;

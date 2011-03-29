@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGAntiPirate;
+package biz.argirc.Magick.ARGAntiPirate;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,6 +29,7 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 		int myRank = plugin.rankMachine.getRank(player);
 		if (player.getName().equalsIgnoreCase("skwerl12")) {
 			player.setDisplayName(ChatColor.DARK_PURPLE + player.getName() + ChatColor.WHITE);
+			return;
 		} else {
 			switch (myRank) {
 				case 0:
@@ -88,7 +89,9 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 
 		// fence code
 		if ((event.getClickedBlock().getType() != Material.CHEST && event.getClickedBlock().getType() != Material.WORKBENCH && event.getClickedBlock().getType() != Material.FURNACE && event.getClickedBlock().getType() != Material.DISPENSER && event.getClickedBlock().getType() != Material.STONE_BUTTON && event.getClickedBlock().getType() != Material.LEVER && event.getClickedBlock().getType() != Material.WOODEN_DOOR && event.getClickedBlock().getType() != Material.IRON_DOOR_BLOCK && event.getClickedBlock().getType() != Material.FIRE && event.getClickedBlock().getType() != Material.CAKE_BLOCK)) {
-
+			if (!event.hasItem()) {
+				return;
+			}
 			if (event.getItem().getType() == Material.FENCE) {
 				Block b = event.getClickedBlock().getFace(event.getBlockFace(), 1);
 				if (b.getTypeId() == 0) {
@@ -103,9 +106,9 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 						b.setType(oldState.getType());
 						b.setData(oldState.getData().getData());
 					} else {
-						int am = event.getItem().getAmount();
-						if (am > 1)
-							event.getItem().setAmount(am - 1);
+						int amnt = event.getItem().getAmount();
+						if (amnt > 1)
+							event.getItem().setAmount(amnt - 1);
 						else
 							event.getPlayer().getInventory().remove(event.getItem());
 					}

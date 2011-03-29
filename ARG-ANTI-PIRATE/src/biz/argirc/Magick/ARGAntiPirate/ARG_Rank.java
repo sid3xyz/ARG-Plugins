@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGAntiPirate;
+package biz.argirc.Magick.ARGAntiPirate;
 
 import java.io.File;
 import java.io.FileInputStream;

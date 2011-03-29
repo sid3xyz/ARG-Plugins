@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGUtilities;
+package biz.argirc.Magick.ARGUtilities;
 
 import java.util.ArrayList;
 import java.util.Iterator;

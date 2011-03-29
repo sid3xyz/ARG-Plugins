@@ -1,5 +1,5 @@
 name: ARGUtilities
-main: com.bukkit.Magick.ARGUtilities.ARGUtilities
+main: biz.argirc.Magick.ARGUtilities.ARGUtilities
 version: 1.0.0
 author: Magick
 description: >

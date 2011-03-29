@@ -1,4 +1,4 @@
-package com.bukkit.Magick.ARGUtilities;
+package biz.argirc.Magick.ARGUtilities;
 
 import java.util.Date;
 import java.util.logging.Logger;

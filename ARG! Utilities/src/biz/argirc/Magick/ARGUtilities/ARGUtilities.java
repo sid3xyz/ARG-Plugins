@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ARGUtilities extends JavaPlugin {
 	private final Utilities					myUtilities	= new Utilities(this);
-	private final MinecartMachine minecartMachine = new MinecartMachine(this);
+	private final MinecartMachine minecartMachine = new MinecartMachine();
 	private AutoSaveThread					saveThread	= null;
 	
 public void onEnable() {

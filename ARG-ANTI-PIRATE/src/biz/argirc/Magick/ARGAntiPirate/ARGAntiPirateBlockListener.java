@@ -1,6 +1,9 @@
 package biz.argirc.Magick.ARGAntiPirate;
 
+import java.util.Random;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -9,12 +12,24 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class ARGAntiPirateBlockListener extends BlockListener {
 	private final ARGAntiPirate	plugin;
 
 	public ARGAntiPirateBlockListener(final ARGAntiPirate plugin) {
 		this.plugin = plugin;
+	}
+
+	@Override
+	public void onLeavesDecay(LeavesDecayEvent event) {
+		Random rand = new Random();
+		ItemStack apple = new ItemStack(Material.APPLE);
+		if (rand.nextInt(100) >= 2) {
+			event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), apple);
+		}
+
 	}
 
 	@Override

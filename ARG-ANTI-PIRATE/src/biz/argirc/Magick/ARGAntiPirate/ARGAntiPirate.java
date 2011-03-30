@@ -124,6 +124,7 @@ public class ARGAntiPirate extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Highest, this);
 		// pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKE, this.blockListener,
 		// Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.LEAVES_DECAY, this.blockListener, Event.Priority.Highest, this);
 
 		pm.registerEvent(Event.Type.BLOCK_IGNITE, this.blockListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.EXPLOSION_PRIME, explodeListener, Event.Priority.Highest, this);

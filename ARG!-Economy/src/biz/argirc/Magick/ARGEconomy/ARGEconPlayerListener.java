@@ -1,4 +1,4 @@
-package com.argerk.Magick.ARGEconomy;
+package biz.argirc.Magick.ARGEconomy;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;

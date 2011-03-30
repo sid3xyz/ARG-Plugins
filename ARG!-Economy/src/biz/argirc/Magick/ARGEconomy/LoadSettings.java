@@ -1,4 +1,4 @@
-package com.argerk.Magick.ARGEconomy;
+package biz.argirc.Magick.ARGEconomy;
 
 // this file loads plugin settings
 public class LoadSettings {

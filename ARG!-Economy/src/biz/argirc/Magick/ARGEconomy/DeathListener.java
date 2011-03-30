@@ -1,4 +1,4 @@
-package com.argerk.Magick.ARGEconomy;
+package biz.argirc.Magick.ARGEconomy;
 
 import java.util.ArrayList;
 

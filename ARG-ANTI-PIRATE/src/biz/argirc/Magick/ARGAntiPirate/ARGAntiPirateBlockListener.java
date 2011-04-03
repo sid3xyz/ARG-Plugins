@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -24,10 +25,14 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 
 	@Override
 	public void onLeavesDecay(LeavesDecayEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
 		Random rand = new Random();
-		ItemStack apple = new ItemStack(Material.APPLE);
-		if (rand.nextInt(100) >= 2) {
+		ItemStack apple = new ItemStack(Material.APPLE, 1);
+		if (rand.nextInt(100) <= 2) {
 			event.getBlock().getLocation().getWorld().dropItemNaturally(event.getBlock().getLocation(), apple);
+			return;
 		}
 
 	}
@@ -93,19 +98,26 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 		if (event.isCancelled()) {
 			return;
 		}
-		event.setCancelled(true);
-		return;/*
-				 * // If this block is a leaf block, cancel the ignite, no
-				 * matter what - // this will stop forest fires and people using
-				 * fire // to clear trees if (plugin.isWorldProtected()) {
-				 * event.setCancelled(true); return; } /* IgniteCause cause =
-				 * event.getCause(); if (cause == IgniteCause.SPREAD) {
-				 * 
-				 * event.setCancelled(true); return; } if (cause !=
-				 * IgniteCause.FLINT_AND_STEEL) {
-				 * 
-				 * event.setCancelled(true); return; }
-				 */
+		// event.setCancelled(true);
+		// return;
+
+		if (plugin.isWorldProtected()) {
+			event.setCancelled(true);
+			return;
+		}
+		IgniteCause cause = event.getCause();
+		if (cause == IgniteCause.SPREAD) {
+
+			event.setCancelled(true);
+			return;
+		}
+
+		if (cause != IgniteCause.FLINT_AND_STEEL) {
+
+			event.setCancelled(true);
+			return;
+		}
+
 	}
 
 	@Override

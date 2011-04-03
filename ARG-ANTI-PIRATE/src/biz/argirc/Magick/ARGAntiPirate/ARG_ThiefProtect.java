@@ -13,9 +13,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class ARG_ThiefProtect {
-	private ARGAntiPirate	plugin;
+	private final ARGAntiPirate	plugin;
 
-	private Properties		ChestDatabase	= null;
+	private Properties			ChestDatabase	= null;
 
 	public ARG_ThiefProtect(final ARGAntiPirate plugin, Properties ChestDatabase) {
 		this.plugin = plugin;
@@ -44,7 +44,6 @@ public class ARG_ThiefProtect {
 
 	public boolean lockIt(Player p, Block placedBlock) {
 		try {
-
 			BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
 			for (BlockFace blockFace : faces) {
 				Block face = placedBlock.getFace(blockFace);
@@ -57,7 +56,6 @@ public class ARG_ThiefProtect {
 						return true;
 					} else if (!myOwner.equalsIgnoreCase(p.getName())) {
 						p.sendMessage(ChatColor.RED + "You do not have permission to place a chest here");
-
 						return false;
 					}
 				}
@@ -73,7 +71,6 @@ public class ARG_ThiefProtect {
 	}
 
 	public boolean openChest(Player player, Block targetChest) {
-
 		String myOwner = getOwner(targetChest.getLocation());
 		player.sendMessage("Owner: " + myOwner);
 		if (myOwner.equals(player.getName()) || plugin.rankMachine.getRank(player) > 4) {
@@ -100,18 +97,14 @@ public class ARG_ThiefProtect {
 			p.sendMessage(ChatColor.RED + "Something went wrong");
 			return false;
 		}
-
 	}
 
 	public boolean unlockIt(Player p) {
-
 		Block chestToLock = p.getTargetBlock(null, 5);
 		if (chestToLock.getTypeId() == 54) {
 			String myOwner = getOwner(chestToLock.getLocation());
 			if (myOwner.equalsIgnoreCase(p.getName())) {
-
 				try {
-
 					BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
 					for (BlockFace blockFace : faces) {
 						Block face = chestToLock.getFace(blockFace);

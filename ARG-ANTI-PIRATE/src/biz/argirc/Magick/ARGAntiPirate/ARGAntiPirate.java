@@ -1,4 +1,3 @@
-// giant monsters
 package biz.argirc.Magick.ARGAntiPirate;
 
 import java.io.File;
@@ -15,23 +14,24 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.avaje.ebean.EbeanServer;
+
 public class ARGAntiPirate extends JavaPlugin {
 
-	private final ARGAntiPiratePlayerListener	playerListener	= new ARGAntiPiratePlayerListener(this);
-	private final ARGAntiPirateBlockListener	blockListener	= new ARGAntiPirateBlockListener(this);
-	private final NoExplodeListener				explodeListener	= new NoExplodeListener(this);
-	public static final String					maindirectory	= "ARGPlugins/";
-	public static final File					ChestData		= new File(maindirectory + "Chest.dat");
-	public static final File					playerRanksFile	= new File(maindirectory + "playerranks.data");
-	// static final File ChestLogger = new File(maindirectory + "Chest.log");
-	// public static Logger suspiciousLog;
-	public Properties							PlayerRanks		= new Properties();
-	public Properties							ChestDatabase	= new Properties();
-	public final ARG_Rank						rankMachine		= new ARG_Rank(this, PlayerRanks);
-	public final ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect(this, ChestDatabase);
-	public boolean								globalProtect	= false;
+	private final ARGAntiPiratePlayerListener	playerListener		= new ARGAntiPiratePlayerListener(this);
+	private final ARGAntiPirateBlockListener	blockListener		= new ARGAntiPirateBlockListener(this);
+	private final NoExplodeListener				explodeListener		= new NoExplodeListener(this);
+	public static final String					maindirectory		= "ARGPlugins/";
+	public static final File					ChestData			= new File(maindirectory + "Chest.dat");
+	public static final File					playerRanksFile		= new File(maindirectory + "playerranks.data");
+	public Properties							PlayerRanks			= new Properties();
+	public Properties							ChestDatabase		= new Properties();
+	public final ARG_Rank						rankMachine			= new ARG_Rank(this, PlayerRanks);
+	public final ARG_ThiefProtect				chestMachine		= new ARG_ThiefProtect(this, ChestDatabase);
+	public boolean								globalProtect		= false;
 	public ARGAntiPirate						plugin;
-	public Location								Spawn			= null;
+	public Location								Spawn				= null;
+	public EbeanServer							rankDatabase_NEW	= null;
 
 	public boolean isWorldProtected() {
 		return globalProtect;
@@ -106,26 +106,10 @@ public class ARGAntiPirate extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		Spawn = this.getServer().getWorld("world").getSpawnLocation();
-		/*
-		 * try { boolean append = true; FileHandler fh = new
-		 * FileHandler(maindirectory + "suspicious.Log", append);
-		 * fh.setFormatter(new Formatter() { public String format(LogRecord rec)
-		 * { StringBuffer buf = new StringBuffer(1000); buf.append(new
-		 * java.util.Date()); buf.append(' '); buf.append(rec.getLevel());
-		 * buf.append(' '); buf.append(formatMessage(rec)); buf.append('\n');
-		 * return buf.toString(); } }); //suspiciousLog =
-		 * Logger.getLogger("suspiciousLogger"); //suspiciousLog.addHandler(fh);
-		 * //suspiciousLog.info("Logging Started...");
-		 * 
-		 * } catch (IOException e) { e.printStackTrace(); }
-		 */
 
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.BLOCK_BURN, this.blockListener, Event.Priority.Highest, this);
-		// pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKE, this.blockListener,
-		// Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.LEAVES_DECAY, this.blockListener, Event.Priority.Highest, this);
-
 		pm.registerEvent(Event.Type.BLOCK_IGNITE, this.blockListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.EXPLOSION_PRIME, explodeListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener, Event.Priority.Highest, this);
@@ -137,7 +121,7 @@ public class ARGAntiPirate extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-
+		rankDatabase_NEW = getDatabase();
 	}
 
 	public void setWorldProtect(boolean state) {

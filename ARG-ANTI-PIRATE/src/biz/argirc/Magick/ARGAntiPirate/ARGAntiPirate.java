@@ -1,7 +1,11 @@
 package biz.argirc.Magick.ARGAntiPirate;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import javax.persistence.PersistenceException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,24 +18,23 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.avaje.ebean.EbeanServer;
-
 public class ARGAntiPirate extends JavaPlugin {
 
-	private final ARGAntiPiratePlayerListener	playerListener		= new ARGAntiPiratePlayerListener(this);
-	private final ARGAntiPirateBlockListener	blockListener		= new ARGAntiPirateBlockListener(this);
-	private final NoExplodeListener				explodeListener		= new NoExplodeListener(this);
-	public static final String					maindirectory		= "ARGPlugins/";
-	public static final File					ChestData			= new File(maindirectory + "Chest.dat");
-	public static final File					playerRanksFile		= new File(maindirectory + "playerranks.data");
-	public Properties							PlayerRanks			= new Properties();
-	public Properties							ChestDatabase		= new Properties();
-	public final ARG_Rank						rankMachine			= new ARG_Rank(this, PlayerRanks);
-	public final ARG_ThiefProtect				chestMachine		= new ARG_ThiefProtect(this, ChestDatabase);
-	public boolean								globalProtect		= false;
+	private final ARGAntiPiratePlayerListener	playerListener	= new ARGAntiPiratePlayerListener(this);
+	private final ARGAntiPirateBlockListener	blockListener	= new ARGAntiPirateBlockListener(this);
+	private final NoExplodeListener				explodeListener	= new NoExplodeListener(this);
+	public static final String					maindirectory	= "ARGPlugins/";
+	public static final File					ChestData		= new File(maindirectory + "Chest.dat");
+	public static final File					playerRanksFile	= new File(maindirectory + "playerranks.data");
+	public Properties							PlayerRanks		= new Properties();
+	public Properties							ChestDatabase	= new Properties();
+	public final ARG_Rank						rankMachine		= new ARG_Rank(this, PlayerRanks);
+	public final ARG_ThiefProtect				chestMachine	= new ARG_ThiefProtect(this, ChestDatabase);
+	public boolean								globalProtect	= false;
 	public ARGAntiPirate						plugin;
-	public Location								Spawn				= null;
-	public EbeanServer							rankDatabase_NEW	= null;
+	public Location								Spawn			= null;
+
+	// public EbeanServer rankDatabase_NEW = null;
 
 	public boolean isWorldProtected() {
 		return globalProtect;
@@ -121,7 +124,19 @@ public class ARGAntiPirate extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-		rankDatabase_NEW = getDatabase();
+		try {
+			getDatabase().find(RankData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			System.out.println("Installing database for " + getDescription().getName() + " due to first time usage");
+			installDDL();
+		}
+	}
+
+	@Override
+	public List<Class<?>> getDatabaseClasses() {
+		List<Class<?>> list = new ArrayList<Class<?>>();
+		list.add(RankData.class);
+		return list;
 	}
 
 	public void setWorldProtect(boolean state) {

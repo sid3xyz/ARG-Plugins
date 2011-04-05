@@ -68,7 +68,6 @@ public class NoExplodeListener extends EntityListener {
 				creeper.setHealth(0);
 				event.setCancelled(true);
 			}
-			creeper.shootArrow();
 			return;
 		}
 		/*

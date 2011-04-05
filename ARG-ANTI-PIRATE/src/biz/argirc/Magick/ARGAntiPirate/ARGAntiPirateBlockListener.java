@@ -80,12 +80,16 @@ public class ARGAntiPirateBlockListener extends BlockListener {
 		if (event.isCancelled()) {
 			return;
 		}
-		event.setCancelled(true);
-		return;/*
-				 * if (plugin.isWorldProtected()) { event.setCancelled(true);
-				 * return; } if(event.getBlock().getTypeId() == 18){
-				 * event.setCancelled(true); return; }
-				 */
+
+		if (plugin.isWorldProtected()) {
+			event.setCancelled(true);
+			return;
+		}
+		if (event.getBlock().getTypeId() == 18) {
+			event.setCancelled(true);
+			return;
+		}
+
 	}
 
 	@Override

@@ -27,6 +27,10 @@ public void onEnable() {
 			System.out.println(plugin.getDescription().getName());
 		}
 		pm.registerEvent(Event.Type.VEHICLE_MOVE, this.minecartMachine, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, this.minecartMachine, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, this.minecartMachine, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_EXIT, this.minecartMachine, Event.Priority.Highest, this);
+		
 		System.out.println("ARG! Utilities is enabled!");
 	}
 

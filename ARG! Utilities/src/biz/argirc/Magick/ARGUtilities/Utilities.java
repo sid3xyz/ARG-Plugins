@@ -23,10 +23,10 @@ import org.bukkit.entity.Player;
 public class Utilities {
 	private final ARGUtilities			plugin;
 	private static ArrayList<Material>	notFloorBlocks	= new ArrayList<Material>();
-	public World myWorld = null;
+	//public World myWorld = null;
 	public Utilities(ARGUtilities argUtilities) {
 		plugin = argUtilities;
-		myWorld = plugin.getServer().getWorld("world");
+		//myWorld = plugin.getServer().getWorld("world");
 		notFloorBlocks.add(Material.LAVA);
 		notFloorBlocks.add(Material.AIR);
 		notFloorBlocks.add(Material.FIRE);
@@ -78,7 +78,9 @@ public class Utilities {
 				if (args.length == 2) {
 					creatureCount = Integer.valueOf(args[1]);
 				}
+			World myWorld = plugin.getServer().getWorld("world");
 				for (int i = 0; i < creatureCount; i++) {
+					
 					myWorld.spawnCreature(loc, CreatureType.valueOf(creatureString));
 				}
 			}

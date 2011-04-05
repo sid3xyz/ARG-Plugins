@@ -54,35 +54,24 @@ public class MinecartMachine extends VehicleListener {
 	public double getMotionZ(Minecart minecart) {
 		return minecart.getVelocity().getZ();
 	}
-	
+
 	public void onVehicleBlockCollision(VehicleBlockCollisionEvent event) {
-		Vehicle myV = event.getVehicle();
-		if (myV instanceof Minecart) {
-			Minecart minecart = (Minecart) event.getVehicle();
-			Block hitBlock = event.getBlock();
-			if(hitBlock.getType().equals(Material.CHEST)){
-				if(!minecart.isEmpty()){
-					minecart.eject();
-				}
-				minecart.remove();
-				ItemStack cart = new ItemStack(Material.MINECART, 1);
-				minecart.getWorld().dropItemNaturally(minecart.getLocation(),cart );
-				
-			}
-		}
-	
+
 	}
-	
+
 	public void onVehicleEntityCollision(VehicleEntityCollisionEvent event) {
-		event.setCollisionCancelled(true);
+
 	}
 
 	public void onVehicleExit(VehicleExitEvent event) {
 		Vehicle myV = event.getVehicle();
 		if (myV instanceof Minecart) {
-			Minecart minecart = (Minecart) event.getVehicle();
+			Minecart minecart = (Minecart) myV;
 			setMotion(0D, 0D, 0D, minecart);
-			return;
+			minecart.remove();
+			ItemStack cart = new ItemStack(Material.MINECART, 1);
+
+			minecart.getWorld().dropItemNaturally(minecart.getLocation(), cart);
 
 		}
 	}
@@ -95,31 +84,34 @@ public class MinecartMachine extends VehicleListener {
 
 				Entity myPassenger = minecart.getPassenger();
 				if (myPassenger instanceof Player) {
-
 					Location myLoc = minecart.getLocation();
 					myLoc.setY(myLoc.getY() - 1);
-					if (myLoc.getBlock().getTypeId() != 45) {
+					int blockID = myLoc.getBlock().getTypeId();
 
-						double xvol = minecart.getVelocity().getX();
-						double yvol = minecart.getVelocity().getY();
-						double zvol = minecart.getVelocity().getZ();
-						int multiplier = 2;
-						if (MAXIMUM_MOMENTUM / multiplier > Math.abs(xvol)) {
-							setMotionX(xvol * multiplier, minecart);
-						}
-						if (MAXIMUM_MOMENTUM / multiplier > Math.abs(yvol)) {
-							setMotionY(yvol * multiplier, minecart);
-						}
-						if (MAXIMUM_MOMENTUM / multiplier > Math.abs(zvol)) {
-							setMotionZ(zvol * multiplier, minecart);
-						}
-					} else if (myLoc.getBlock().getTypeId() == 45) {
+					switch (blockID) {
 
-						setMotion(0D, 0D, 0D, minecart);
+						case 45:
+							setMotion(0D, 0D, 0D, minecart);
+							return;
+
+						default:
+
+							double xvol = minecart.getVelocity().getX();
+							double yvol = minecart.getVelocity().getY();
+							double zvol = minecart.getVelocity().getZ();
+							int multiplier = 2;
+							if (MAXIMUM_MOMENTUM / multiplier > Math.abs(xvol)) {
+								setMotionX(xvol * multiplier, minecart);
+							}
+							if (MAXIMUM_MOMENTUM / multiplier > Math.abs(yvol)) {
+								setMotionY(yvol * multiplier, minecart);
+							}
+							if (MAXIMUM_MOMENTUM / multiplier > Math.abs(zvol)) {
+								setMotionZ(zvol * multiplier, minecart);
+							}
 					}
 				}
 			}
-
 		}
 	}
 }

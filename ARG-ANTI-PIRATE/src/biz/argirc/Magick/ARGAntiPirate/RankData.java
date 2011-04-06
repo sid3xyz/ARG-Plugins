@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import com.avaje.ebean.validation.Length;
+import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
 @Entity()
@@ -14,6 +19,10 @@ public class RankData {
 
 	@NotNull
 	private String	playerName;
+
+	@Length(max = 30)
+	@NotEmpty
+	private String	name;
 
 	@NotNull
 	private int		rank;
@@ -42,4 +51,19 @@ public class RankData {
 		return rank;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Player getPlayer() {
+		return Bukkit.getServer().getPlayer(playerName);
+	}
+
+	public void setPlayer(Player player) {
+		this.playerName = player.getName();
+	}
 }

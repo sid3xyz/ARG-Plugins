@@ -57,8 +57,19 @@ public class ARGAntiPiratePlayerListener extends PlayerListener {
 
 	@Override
 	public void onPlayerLogin(PlayerLoginEvent event) {
-
 		Player player = event.getPlayer();
+		String name = player.getName();
+		RankData playerRank = plugin.getDatabase().find(RankData.class).where().ieq("name", name).ieq("playerName", player.getName()).findUnique();
+
+		if (playerRank == null) {
+			playerRank = new RankData();
+			playerRank.setPlayer(player);
+			playerRank.setName(name);
+			playerRank.setRank(0);
+
+		}
+		plugin.getDatabase().save(playerRank);
+
 		int myRank = plugin.rankMachine.getRank(player);
 		if (myRank == -1) {
 			String[] args = new String[2];

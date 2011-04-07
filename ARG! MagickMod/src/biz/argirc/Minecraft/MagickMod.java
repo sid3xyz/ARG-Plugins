@@ -11,6 +11,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import biz.argirc.Minecraft.commands.ChestHelpCommand;
 import biz.argirc.Minecraft.commands.GetChestCountCommand;
 import biz.argirc.Minecraft.commands.UnlockChestCommand;
 import biz.argirc.Minecraft.database.ChestData;
@@ -62,8 +63,10 @@ public class MagickMod extends JavaPlugin {
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		// Block events
-		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_CANBUILD, worldProtectListener, Priority.Highest, this);
+
+		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Normal, this);
 		// Player Events
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, onJoinListener, Priority.Normal, this);

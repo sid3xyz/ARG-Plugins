@@ -12,6 +12,14 @@ public class RankFunctions {
 		this.plugin = plugin;
 	}
 
+	public boolean canBuild(Player player) {
+		if (plugin.rankFunctions.getRank(player) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public int getRank(Player player) {
 		RankData myRank = plugin.getDatabase().find(RankData.class).where().ieq("name", player.getName()).findUnique();
 		if (myRank == null) {

@@ -1,4 +1,4 @@
-package biz.argirc.Minecraft;
+package biz.argirc.Minecraft.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

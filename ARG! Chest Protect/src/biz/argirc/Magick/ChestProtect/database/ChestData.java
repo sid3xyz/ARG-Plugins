@@ -1,4 +1,4 @@
-package biz.argirc.Magick.ChestProtect;
+package biz.argirc.Magick.ChestProtect.database;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -25,6 +25,9 @@ public class ChestData {
 	@Length(max = 30)
 	@NotEmpty
 	private String	name;
+
+	@NotNull
+	private String	location;
 
 	@NotNull
 	private double	x;
@@ -131,10 +134,13 @@ public class ChestData {
 		this.z = location.getZ();
 		this.pitch = location.getPitch();
 		this.yaw = location.getYaw();
+		this.location = location.toString();
+		// new Location(world, x, y, z, yaw, pitch);
 	}
 
 	public Location getLocation() {
 		World world = Bukkit.getServer().getWorld(worldName);
 		return new Location(world, x, y, z, yaw, pitch);
+
 	}
 }

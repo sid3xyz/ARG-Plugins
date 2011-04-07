@@ -8,6 +8,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import biz.argirc.Magick.ChestProtect.database.ChestData;
+
 public class ChestListener extends BlockListener {
 
 	private final ChestProtect	plugin;
@@ -20,7 +22,6 @@ public class ChestListener extends BlockListener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block damagedBlock = event.getBlock();
 		if (damagedBlock.getTypeId() == 54) {
-
 		}
 	}
 
@@ -31,21 +32,38 @@ public class ChestListener extends BlockListener {
 		if (placedBlock.getTypeId() == 54) {
 			Player player = event.getPlayer();
 			String myOwner = player.getName();
+			boolean allclear = false;
 			BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
+			String thatOwner = "";
 			for (BlockFace blockFace : faces) {
 				Block face = placedBlock.getFace(blockFace);
 				if (face.getTypeId() == 54) {
-
+					thatOwner = plugin.getOwner(face.getLocation());
+					if (!thatOwner.equalsIgnoreCase(player.getName())) {
+						myOwner = thatOwner;
+						allclear = false;
+						event.setCancelled(true);
+						return;
+					}
+					if (thatOwner.equalsIgnoreCase("public")) {
+						myOwner = "public";
+						allclear = true;
+					}
 				}
-			}
-			ChestData chest = new ChestData();
-			chest.setName(myOwner);
-			chest.setPlayerName(myOwner);
-			chest.setLocation(placedBlock.getLocation());
-			plugin.getDatabase().save(chest);
-
-			if (!myOwner.equals("public")) {
-				player.sendMessage(ChatColor.GOLD + "You are now the owner of this chest");
+				if (allclear) {
+					ChestData chest = new ChestData();
+					chest.setName(myOwner);
+					chest.setPlayerName(player.getName());
+					chest.setLocation(placedBlock.getLocation());
+					plugin.getDatabase().save(chest);
+					if (!myOwner.equals("public")) {
+						player.sendMessage(ChatColor.GOLD + "You are now the owner of this chest");
+					} else {
+						player.sendMessage("You have expanded a public chest");
+					}
+				} else {
+					player.sendMessage("Unable to place chest here");
+				}
 			}
 		}
 	}

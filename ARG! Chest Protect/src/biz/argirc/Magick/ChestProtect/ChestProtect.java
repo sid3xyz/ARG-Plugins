@@ -1,10 +1,12 @@
 package biz.argirc.Magick.ChestProtect;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -12,8 +14,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import biz.argirc.Magick.ChestProtect.commands.GetChestCountCommand;
-import biz.argirc.Magick.ChestProtect.commands.LockChestCommand;
 import biz.argirc.Magick.ChestProtect.commands.UnlockChestCommand;
+import biz.argirc.Magick.ChestProtect.database.ChestData;
 
 public class ChestProtect extends JavaPlugin {
 
@@ -28,20 +30,8 @@ public class ChestProtect extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.BLOCK_BURN, blockListener, Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.LEAVES_DECAY, blockListener, Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_IGNITE, blockListener, Event.Priority.Highest, this);
-		// pm.registerEvent(Event.Type.EXPLOSION_PRIME, explodeListener,
-		// Event.Priority.Highest, this);
-		// pm.registerEvent(Event.Type.ENTITY_EXPLODE, explodeListener,
-		// Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
+
+		registerEvents();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 		// set up our database
@@ -49,7 +39,6 @@ public class ChestProtect extends JavaPlugin {
 
 		// get our commands
 		getCommand("chestcount").setExecutor(new GetChestCountCommand(this));
-		getCommand("lock").setExecutor(new LockChestCommand(this));
 		getCommand("unlock").setExecutor(new UnlockChestCommand(this));
 	}
 
@@ -69,4 +58,52 @@ public class ChestProtect extends JavaPlugin {
 		return list;
 	}
 
+	public boolean doesUserOwnChest(String userstring, Location chestLocation) {
+
+		ChestData myChest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", userstring).findUnique();
+		if (myChest == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isPublicChest(Location chestLocation) {
+		ChestData chest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "public").findUnique();
+		if (chest == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public ChestData getChest(Location chestLocation) {
+		ChestData chest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
+		if (chest == null) {
+			return null;
+		}
+		return chest;
+	}
+
+	public String getOwner(Location chestLocation) {
+		ChestData chest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
+		if (chest == null) {
+			return "null";
+		}
+		return chest.getName();
+	}
+
+	public void registerEvents() {
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
+
+	}
+
+	public boolean convertDB() {
+		String maindirectory = "ARGPlugins/";
+		File oldData = new File(maindirectory + "Chest.dat");
+
+		return false;
+	}
 }

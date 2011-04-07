@@ -1,0 +1,23 @@
+name: ARG MagickMod
+main: biz.argirc.Minecraft.MagickMod
+version: 1.6
+author: Magick
+database: true
+description: >
+            ARG! MagickMod - Custom plugin for ARG-IRC minecraft server
+commands:
+  unlock:
+    description: Unlock the chest you are targeting
+    usage: |
+           /<command> 
+           Example: /<command>
+  chestcount:
+    description: Shows number of chests owned by specified user
+    usage: |
+           /<command>
+           Example: /<command> user11 - shows number of chests user owns
+  chesthelp:
+    description: Shows help
+    usage: |
+           /<command>
+           Example: /<command>

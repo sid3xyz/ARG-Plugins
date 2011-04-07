@@ -17,9 +17,8 @@ public class OnJoinListener extends PlayerListener {
 	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-
 		if (!isNewPlayer(player)) {
-			player.sendMessage("Welcome back" + player.getName());
+			player.sendMessage("Welcome back!");
 		}
 	}
 
@@ -42,6 +41,5 @@ public class OnJoinListener extends PlayerListener {
 			return true;
 		}
 		return false;
-
 	}
 }

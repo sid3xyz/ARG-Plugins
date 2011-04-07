@@ -1,16 +1,16 @@
-package biz.argirc.ChestProtect.listeners;
+package biz.argirc.Minecraft.listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
-import biz.argirc.ChestProtect.ChestProtect;
+import biz.argirc.Minecraft.MagickMod;
 
-public class AccessListener extends PlayerListener {
-	private final ChestProtect	plugin;
+public class ChestInteractListener extends PlayerListener {
+	private final MagickMod	plugin;
 
-	public AccessListener(ChestProtect plugin) {
+	public ChestInteractListener(MagickMod plugin) {
 		this.plugin = plugin;
 	}
 

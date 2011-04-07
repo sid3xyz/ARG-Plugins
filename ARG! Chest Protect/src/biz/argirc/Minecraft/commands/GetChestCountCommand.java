@@ -1,4 +1,4 @@
-package biz.argirc.ChestProtect.commands;
+package biz.argirc.Minecraft.commands;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.ChestProtect.ChestProtect;
-import biz.argirc.ChestProtect.database.ChestData;
+import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.database.ChestData;
 
 public class GetChestCountCommand implements CommandExecutor {
-	private final ChestProtect	plugin;
+	private final MagickMod	plugin;
 
-	public GetChestCountCommand(ChestProtect plugin) {
+	public GetChestCountCommand(MagickMod plugin) {
 		this.plugin = plugin;
 	}
 

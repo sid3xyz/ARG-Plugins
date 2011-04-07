@@ -1,4 +1,4 @@
-package biz.argirc.ChestProtect;
+package biz.argirc.Minecraft;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +11,16 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import biz.argirc.ChestProtect.commands.GetChestCountCommand;
-import biz.argirc.ChestProtect.commands.UnlockChestCommand;
-import biz.argirc.ChestProtect.database.ChestData;
-import biz.argirc.ChestProtect.listeners.AccessListener;
-import biz.argirc.ChestProtect.listeners.ChestListener;
+import biz.argirc.Minecraft.commands.GetChestCountCommand;
+import biz.argirc.Minecraft.commands.UnlockChestCommand;
+import biz.argirc.Minecraft.database.ChestData;
+import biz.argirc.Minecraft.listeners.ChestInteractListener;
+import biz.argirc.Minecraft.listeners.ChestBlockListener;
 
-public class ChestProtect extends JavaPlugin {
+public class MagickMod extends JavaPlugin {
 	public final ChestFunctions		chestFunctions	= new ChestFunctions(this);
-	private final AccessListener	accessListener	= new AccessListener(this);
-	private final ChestListener		blockListener	= new ChestListener(this);
+	private final ChestInteractListener	chestInteractListener	= new ChestInteractListener(this);
+	private final ChestBlockListener		blockListener	= new ChestBlockListener(this);
 
 	@Override
 	public void onDisable() {
@@ -53,7 +53,7 @@ public class ChestProtect extends JavaPlugin {
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, accessListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Highest, this);
 	}
 

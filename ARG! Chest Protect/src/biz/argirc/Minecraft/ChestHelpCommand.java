@@ -1,4 +1,4 @@
-package biz.argirc.ChestProtect;
+package biz.argirc.Minecraft;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

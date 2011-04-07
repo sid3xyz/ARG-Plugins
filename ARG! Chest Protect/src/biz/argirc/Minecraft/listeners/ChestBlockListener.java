@@ -1,4 +1,4 @@
-package biz.argirc.ChestProtect.listeners;
+package biz.argirc.Minecraft.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -8,14 +8,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import biz.argirc.ChestProtect.ChestProtect;
-import biz.argirc.ChestProtect.database.ChestData;
+import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.database.ChestData;
 
-public class ChestListener extends BlockListener {
+public class ChestBlockListener extends BlockListener {
 
-	private final ChestProtect	plugin;
+	private final MagickMod	plugin;
 
-	public ChestListener(ChestProtect plugin) {
+	public ChestBlockListener(MagickMod plugin) {
 		this.plugin = plugin;
 	}
 
@@ -28,6 +28,9 @@ public class ChestListener extends BlockListener {
 					event.setCancelled(true);
 					event.getPlayer().sendMessage("You do not own this chest");
 					return;
+				} else {
+
+					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
 				}
 			default:
 				return;
@@ -41,7 +44,7 @@ public class ChestListener extends BlockListener {
 			case CHEST:
 				Player player = event.getPlayer();
 				String myOwner = player.getName();
-				boolean allclear = false;
+				boolean allclear = true;
 				BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
 				String thatOwner = "";
 				for (BlockFace blockFace : faces) {

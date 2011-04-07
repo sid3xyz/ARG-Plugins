@@ -1,4 +1,4 @@
-package biz.argirc.ChestProtect;
+package biz.argirc.Minecraft;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -10,12 +10,12 @@ import java.io.InputStreamReader;
 
 import org.bukkit.Location;
 
-import biz.argirc.ChestProtect.database.ChestData;
+import biz.argirc.Minecraft.database.ChestData;
 
 public class ChestFunctions {
-	private final ChestProtect	plugin;
+	private final MagickMod	plugin;
 
-	public ChestFunctions(ChestProtect plugin) {
+	public ChestFunctions(MagickMod plugin) {
 		this.plugin = plugin;
 	}
 

@@ -1,5 +1,5 @@
-name: ARG Chest Protection
-main: biz.argirc.ChestProtect.ChestProtect
+name: ARG MagickMod
+main: biz.argirc.Minecraft.MagickMod
 version: 1.5.5
 author: Magick
 database: true

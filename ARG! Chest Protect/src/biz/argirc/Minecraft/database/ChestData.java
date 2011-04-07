@@ -1,4 +1,4 @@
-package biz.argirc.ChestProtect.database;
+package biz.argirc.Minecraft.database;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

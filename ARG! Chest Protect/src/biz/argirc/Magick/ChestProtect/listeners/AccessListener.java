@@ -1,9 +1,11 @@
-package biz.argirc.Magick.ChestProtect;
+package biz.argirc.Magick.ChestProtect.listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
+
+import biz.argirc.Magick.ChestProtect.ChestProtect;
 
 public class AccessListener extends PlayerListener {
 	private final ChestProtect	plugin;

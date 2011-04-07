@@ -1,6 +1,12 @@
 package biz.argirc.Magick.ChestProtect;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +22,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import biz.argirc.Magick.ChestProtect.commands.GetChestCountCommand;
 import biz.argirc.Magick.ChestProtect.commands.UnlockChestCommand;
 import biz.argirc.Magick.ChestProtect.database.ChestData;
+import biz.argirc.Magick.ChestProtect.listeners.AccessListener;
+import biz.argirc.Magick.ChestProtect.listeners.ChestListener;
 
 public class ChestProtect extends JavaPlugin {
 
@@ -36,10 +44,11 @@ public class ChestProtect extends JavaPlugin {
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 		// set up our database
 		setupDatabase();
-
+		// convertDB();
 		// get our commands
 		getCommand("chestcount").setExecutor(new GetChestCountCommand(this));
 		getCommand("unlock").setExecutor(new UnlockChestCommand(this));
+
 	}
 
 	private void setupDatabase() {
@@ -100,10 +109,58 @@ public class ChestProtect extends JavaPlugin {
 
 	}
 
-	public boolean convertDB() {
-		String maindirectory = "ARGPlugins/";
-		File oldData = new File(maindirectory + "Chest.dat");
+	public void convertDB() {
 
-		return false;
+		String maindirectory = "ARGPlugins/";
+		File file = new File(maindirectory + "Chest.dat");
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		// DataInputStream dis = null;
+
+		try {
+			fis = new FileInputStream(file);
+
+			// Here BufferedInputStream is added for fast reading.
+			bis = new BufferedInputStream(fis);
+			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+
+			String dataLine;
+			String username;
+			String location;
+			int nameStart;
+			ChestData chest;
+			// dis.available() returns 0 if the file does not have more lines.
+			System.out.println("Starting Convert!!!");
+			while (dis.ready()) {
+
+				dataLine = dis.readLine();
+				// System.out.println(dataLine);
+
+				nameStart = dataLine.lastIndexOf('=');
+				username = dataLine.substring(nameStart + 1);
+				location = dataLine.substring(0, nameStart);
+				System.out.println(username);
+				System.out.println(location);
+				chest = new ChestData();
+				chest.setName(username);
+				chest.setPlayerName(username);
+				chest.setLocation(location);
+				getDatabase().save(chest);
+
+			}
+
+			// dispose all the resources after using them.
+			fis.close();
+			bis.close();
+			dis.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
+
 	}
 }

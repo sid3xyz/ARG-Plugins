@@ -1,6 +1,6 @@
-name: ARGAntiPirate
+name: ARG Chest Protection
 main: biz.argirc.Magick.ChestProtect.ChestProtect
-version: 1.0.1
+version: 1.5.1
 author: Magick
 database: true
 description: >

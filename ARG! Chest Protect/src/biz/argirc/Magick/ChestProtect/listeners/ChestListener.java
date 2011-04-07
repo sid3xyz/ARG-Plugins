@@ -1,4 +1,4 @@
-package biz.argirc.Magick.ChestProtect;
+package biz.argirc.Magick.ChestProtect.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import biz.argirc.Magick.ChestProtect.ChestProtect;
 import biz.argirc.Magick.ChestProtect.database.ChestData;
 
 public class ChestListener extends BlockListener {
@@ -54,7 +55,7 @@ public class ChestListener extends BlockListener {
 					ChestData chest = new ChestData();
 					chest.setName(myOwner);
 					chest.setPlayerName(player.getName());
-					chest.setLocation(placedBlock.getLocation());
+					chest.setLocation(placedBlock.getLocation().toString());
 					plugin.getDatabase().save(chest);
 					if (!myOwner.equals("public")) {
 						player.sendMessage(ChatColor.GOLD + "You are now the owner of this chest");

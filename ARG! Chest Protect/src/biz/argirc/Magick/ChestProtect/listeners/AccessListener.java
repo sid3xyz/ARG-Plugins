@@ -5,30 +5,33 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
-import biz.argirc.Magick.ChestProtect.ChestProtect;
+import biz.argirc.Magick.ChestProtect.ChestFunctions;
 
 public class AccessListener extends PlayerListener {
-	private final ChestProtect	plugin;
+	private final ChestFunctions	chestFunctions;
 
-	public AccessListener(ChestProtect plugin) {
-		this.plugin = plugin;
+	public AccessListener(ChestFunctions chestFunctions) {
+		this.chestFunctions = chestFunctions;
 	}
 
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
-
-		Block myBlock = event.getClickedBlock();
-
-		if (myBlock.getTypeId() == 54) {
-			Player player = event.getPlayer();
-			if (plugin.doesUserOwnChest(player.getName(), event.getClickedBlock().getLocation())) {
-				player.sendMessage("-Access Granted-");
+		switch (event.getAction()) {
+			case RIGHT_CLICK_BLOCK:
+				Block myBlock = event.getClickedBlock();
+				if (myBlock.getTypeId() == 54) {
+					Player player = event.getPlayer();
+					if (chestFunctions.doesUserOwnChest(player.getName(), event.getClickedBlock().getLocation())) {
+						player.sendMessage("-Access Granted-");
+						return;
+					} else {
+						player.sendMessage("-Access Denied-");
+						event.setCancelled(true);
+						return;
+					}
+				}
+			default:
 				return;
-			} else {
-				player.sendMessage("-Access Denied-");
-				event.setCancelled(true);
-				return;
-			}
 		}
 	}
 

@@ -22,9 +22,9 @@ public class UnlockChestCommand implements CommandExecutor {
 		Block chestToLock = player.getTargetBlock(null, 5);
 
 		if (chestToLock.getTypeId() == 54) {
-			String owner = plugin.getOwner(chestToLock.getLocation());
+			String owner = plugin.chestFunctions.getOwner(chestToLock.getLocation());
 			if (owner.equalsIgnoreCase(player.getName())) {
-				ChestData myChest = plugin.getChest(chestToLock.getLocation());
+				ChestData myChest = plugin.chestFunctions.getChest(chestToLock.getLocation());
 				myChest.setName("public");
 				plugin.getDatabase().save(myChest);
 			}

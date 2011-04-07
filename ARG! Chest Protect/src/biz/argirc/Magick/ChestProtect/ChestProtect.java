@@ -11,6 +11,10 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import biz.argirc.Magick.ChestProtect.commands.GetChestCountCommand;
+import biz.argirc.Magick.ChestProtect.commands.LockChestCommand;
+import biz.argirc.Magick.ChestProtect.commands.UnlockChestCommand;
+
 public class ChestProtect extends JavaPlugin {
 
 	private final AccessListener	playerListener	= new AccessListener(this);

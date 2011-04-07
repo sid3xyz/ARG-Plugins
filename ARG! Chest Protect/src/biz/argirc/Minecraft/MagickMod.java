@@ -17,6 +17,7 @@ import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
 import biz.argirc.Minecraft.listeners.ChestBlockListener;
 import biz.argirc.Minecraft.listeners.ChestInteractListener;
+import biz.argirc.Minecraft.listeners.OnJoinListener;
 
 public class MagickMod extends JavaPlugin {
 	public final ChestFunctions			chestFunctions			= new ChestFunctions(this);
@@ -69,6 +70,7 @@ public class MagickMod extends JavaPlugin {
 	public List<Class<?>> getDatabaseClasses() {
 		List<Class<?>> list = new ArrayList<Class<?>>();
 		list.add(ChestData.class);
+		list.add(RankData.class);
 		return list;
 	}
 }

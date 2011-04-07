@@ -1,4 +1,4 @@
-package biz.argirc.Magick.ChestProtect.listeners;
+package biz.argirc.ChestProtect.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -8,15 +8,15 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import biz.argirc.Magick.ChestProtect.ChestFunctions;
-import biz.argirc.Magick.ChestProtect.database.ChestData;
+import biz.argirc.ChestProtect.ChestProtect;
+import biz.argirc.ChestProtect.database.ChestData;
 
 public class ChestListener extends BlockListener {
 
-	private final ChestFunctions	chestFunctions;
+	private final ChestProtect	plugin;
 
-	public ChestListener(ChestFunctions chestFunctions) {
-		this.chestFunctions = chestFunctions;
+	public ChestListener(ChestProtect plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class ChestListener extends BlockListener {
 
 		switch (event.getBlock().getType()) {
 			case CHEST:
-				if (!chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
+				if (!plugin.chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
 					event.setCancelled(true);
 					event.getPlayer().sendMessage("You do not own this chest");
 					return;
@@ -47,7 +47,7 @@ public class ChestListener extends BlockListener {
 				for (BlockFace blockFace : faces) {
 					Block face = placedBlock.getFace(blockFace);
 					if (face.getTypeId() == 54) {
-						thatOwner = chestFunctions.getOwner(face.getLocation());
+						thatOwner = plugin.chestFunctions.getOwner(face.getLocation());
 						if (!thatOwner.equalsIgnoreCase(player.getName())) {
 							myOwner = thatOwner;
 							allclear = false;
@@ -65,7 +65,7 @@ public class ChestListener extends BlockListener {
 					chest.setName(myOwner);
 					chest.setPlayerName(player.getName());
 					chest.setLocation(placedBlock.getLocation().toString());
-					chestFunctions.saveData(chest);
+					plugin.chestFunctions.saveData(chest);
 					if (!myOwner.equals("public")) {
 						player.sendMessage(ChatColor.GOLD + "You are now the owner of this chest");
 						return;

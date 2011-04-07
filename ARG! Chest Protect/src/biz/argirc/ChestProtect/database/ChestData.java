@@ -1,4 +1,4 @@
-package biz.argirc.Magick.ChestProtect.database;
+package biz.argirc.ChestProtect.database;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

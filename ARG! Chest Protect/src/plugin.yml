@@ -1,23 +1,23 @@
 name: ARG Chest Protection
-main: biz.argirc.Magick.ChestProtect.ChestProtect
-version: 1.5.1
+main: biz.argirc.ChestProtect.ChestProtect
+version: 1.5.5
 author: Magick
 database: true
 description: >
-            ARG! Anti Chest Pirate and general guest protection
+            ARG! Anti Chest Pirate and chest
 commands:
   unlock:
     description: Unlock the chest you are targeting
     usage: |
            /<command> 
            Example: /<command>
-  lock:
-    description: Lock the chest you are targeting
-    usage: |
-           /<command>
-           Example: /<command>
   chestcount:
-    description: Show number of chests owned by specified user
+    description: Shows number of chests owned by specified user
     usage: |
            /<command>
            Example: /<command> user11 - shows number of chests user owns
+  chesthelp:
+    description: Shows help
+    usage: |
+           /<command>
+           Example: /<command>

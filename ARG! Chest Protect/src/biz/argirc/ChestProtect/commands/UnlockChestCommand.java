@@ -1,4 +1,4 @@
-package biz.argirc.Magick.ChestProtect.commands;
+package biz.argirc.ChestProtect.commands;
 
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Magick.ChestProtect.ChestProtect;
-import biz.argirc.Magick.ChestProtect.database.ChestData;
+import biz.argirc.ChestProtect.ChestProtect;
+import biz.argirc.ChestProtect.database.ChestData;
 
 public class UnlockChestCommand implements CommandExecutor {
 	private final ChestProtect	plugin;

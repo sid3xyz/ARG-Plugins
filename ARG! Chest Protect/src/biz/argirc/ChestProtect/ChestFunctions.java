@@ -1,4 +1,4 @@
-package biz.argirc.Magick.ChestProtect;
+package biz.argirc.ChestProtect;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -8,34 +8,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.persistence.PersistenceException;
-
 import org.bukkit.Location;
 
-import biz.argirc.Magick.ChestProtect.database.ChestData;
+import biz.argirc.ChestProtect.database.ChestData;
 
-public class ChestFunctions extends ChestProtect {
+public class ChestFunctions {
+	private final ChestProtect	plugin;
 
-	public ChestFunctions() {
-
+	public ChestFunctions(ChestProtect plugin) {
+		this.plugin = plugin;
 	}
 
 	public void saveData(ChestData chest) {
-		getDatabase().save(chest);
-
-	}
-
-	public void setupDatabase() {
-		try {
-			getDatabase().find(ChestData.class).findRowCount();
-		} catch (PersistenceException ex) {
-			System.out.println("Installing database for " + getDescription().getName() + " due to first time usage");
-			installDDL();
-		}
+		plugin.getDatabase().save(chest);
 	}
 
 	public String getOwner(Location chestLocation) {
-		ChestData chest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
+		ChestData chest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
 		if (chest == null) {
 			return "null";
 		}
@@ -43,7 +32,7 @@ public class ChestFunctions extends ChestProtect {
 	}
 
 	public boolean doesUserOwnChest(String userstring, Location chestLocation) {
-		ChestData myChest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", userstring).findUnique();
+		ChestData myChest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", userstring).findUnique();
 		if (myChest == null) {
 			return false;
 		}
@@ -51,7 +40,7 @@ public class ChestFunctions extends ChestProtect {
 	}
 
 	public boolean isPublicChest(Location chestLocation) {
-		ChestData chest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "public").findUnique();
+		ChestData chest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "public").findUnique();
 		if (chest == null) {
 			return false;
 		}
@@ -59,7 +48,7 @@ public class ChestFunctions extends ChestProtect {
 	}
 
 	public ChestData getChest(Location chestLocation) {
-		ChestData chest = getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
+		ChestData chest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
 		if (chest == null) {
 			return null;
 		}
@@ -102,7 +91,7 @@ public class ChestFunctions extends ChestProtect {
 				chest.setName(username);
 				chest.setPlayerName(username);
 				chest.setLocation(location);
-				getDatabase().save(chest);
+				plugin.getDatabase().save(chest);
 
 			}
 

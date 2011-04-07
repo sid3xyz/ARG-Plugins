@@ -1,17 +1,17 @@
-package biz.argirc.Magick.ChestProtect.listeners;
+package biz.argirc.ChestProtect.listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
-import biz.argirc.Magick.ChestProtect.ChestFunctions;
+import biz.argirc.ChestProtect.ChestProtect;
 
 public class AccessListener extends PlayerListener {
-	private final ChestFunctions	chestFunctions;
+	private final ChestProtect	plugin;
 
-	public AccessListener(ChestFunctions chestFunctions) {
-		this.chestFunctions = chestFunctions;
+	public AccessListener(ChestProtect plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class AccessListener extends PlayerListener {
 				Block myBlock = event.getClickedBlock();
 				if (myBlock.getTypeId() == 54) {
 					Player player = event.getPlayer();
-					if (chestFunctions.doesUserOwnChest(player.getName(), event.getClickedBlock().getLocation())) {
+					if (plugin.chestFunctions.doesUserOwnChest(player.getName(), event.getClickedBlock().getLocation())) {
 						player.sendMessage("-Access Granted-");
 						return;
 					} else {

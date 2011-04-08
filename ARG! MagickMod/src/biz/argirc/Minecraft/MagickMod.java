@@ -16,13 +16,13 @@ import biz.argirc.Minecraft.commands.ChestHelpCommand;
 import biz.argirc.Minecraft.commands.GetChestCountCommand;
 import biz.argirc.Minecraft.commands.KillFarmAnimalsCommand;
 import biz.argirc.Minecraft.commands.KillHostileMobsCommand;
-import biz.argirc.Minecraft.commands.ListCommand;
 import biz.argirc.Minecraft.commands.SetCompassCommand;
 import biz.argirc.Minecraft.commands.SetRankCommand;
 import biz.argirc.Minecraft.commands.SetSpawnLocationCommand;
 import biz.argirc.Minecraft.commands.SpawnMobCommand;
 import biz.argirc.Minecraft.commands.TeleportCommand;
 import biz.argirc.Minecraft.commands.UnlockChestCommand;
+import biz.argirc.Minecraft.commands.WhoCommand;
 import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
 import biz.argirc.Minecraft.listeners.ChestBlockListener;
@@ -46,26 +46,22 @@ public class MagickMod extends JavaPlugin {
 	public void onEnable() {
 
 		setupDatabase();
+		// chestFunctions.convertDB();
 		registerEvents();
-		getCommands();
-		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-	}
-
-	public void getCommands() {
-
 		getCommand("setcompass").setExecutor(new SetCompassCommand());
 		getCommand("setserverspawn").setExecutor(new SetSpawnLocationCommand());
 		getCommand("killfriendly").setExecutor(new KillFarmAnimalsCommand());
 		getCommand("killhostile").setExecutor(new KillHostileMobsCommand());
 		getCommand("spawnmob").setExecutor(new SpawnMobCommand());
-		getCommand("list").setExecutor(new ListCommand(this.getServer()));
+		getCommand("who").setExecutor(new WhoCommand());
 		getCommand("teleport").setExecutor(new TeleportCommand());
 		getCommand("setrank").setExecutor(new SetRankCommand(rankFunctions));
 		getCommand("chesthelp").setExecutor(new ChestHelpCommand());
 		getCommand("chestcount").setExecutor(new GetChestCountCommand(chestFunctions));
 		getCommand("unlock").setExecutor(new UnlockChestCommand(chestFunctions));
 
+		PluginDescriptionFile pdfFile = this.getDescription();
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 	}
 
 	public void setupDatabase() {

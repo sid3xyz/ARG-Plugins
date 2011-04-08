@@ -4,18 +4,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.RankFunctions;
 
 public class SetRankCommand implements CommandExecutor {
-	private final MagickMod	plugin;
+	private final RankFunctions	rankFunctions;
 
-	public SetRankCommand(MagickMod plugin) {
-		this.plugin = plugin;
+	public SetRankCommand(RankFunctions rankFunctions) {
+		this.rankFunctions = rankFunctions;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		plugin.rankFunctions.setRank(args[0], Integer.parseInt(args[1]));
+		rankFunctions.setRank(args[0], Integer.parseInt(args[1]));
 		return true;
 	}
 

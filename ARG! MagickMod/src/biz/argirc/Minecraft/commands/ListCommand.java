@@ -1,18 +1,17 @@
 package biz.argirc.Minecraft.commands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.MagickMod;
-
 public class ListCommand implements CommandExecutor {
-	private final MagickMod	plugin;
+	private final Server	server;
 
-	public ListCommand(MagickMod plugin) {
-		this.plugin = plugin;
+	public ListCommand(Server server) {
+		this.server = server;
 	}
 
 	@Override
@@ -20,7 +19,7 @@ public class ListCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		String tempList = "";
 		int x = 0;
-		for (Player p : plugin.getServer().getOnlinePlayers()) {
+		for (Player p : server.getOnlinePlayers()) {
 			if (p != null && x + 1 == playerCount()) {
 				tempList += p.getName();
 				x++;
@@ -37,7 +36,7 @@ public class ListCommand implements CommandExecutor {
 	}
 
 	public int playerCount() {
-		Player players[] = plugin.getServer().getOnlinePlayers();
+		Player players[] = server.getOnlinePlayers();
 		int x = 0;
 		for (@SuppressWarnings("unused")
 		Player p : players) {

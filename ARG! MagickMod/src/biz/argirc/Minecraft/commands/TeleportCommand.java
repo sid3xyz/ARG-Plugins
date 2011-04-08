@@ -11,19 +11,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.MagickMod;
-
 public class TeleportCommand implements CommandExecutor {
 
-	private final MagickMod				plugin;
 	private static ArrayList<Material>	notFloorBlocks	= new ArrayList<Material>();
 
-	// public World myWorld = null;
+	public TeleportCommand() {
 
-	public TeleportCommand(MagickMod plugin) {
-		this.plugin = plugin;
-
-		// myWorld = plugin.getServer().getWorld("world");
 		notFloorBlocks.add(Material.LAVA);
 		notFloorBlocks.add(Material.AIR);
 		notFloorBlocks.add(Material.FIRE);
@@ -40,7 +33,7 @@ public class TeleportCommand implements CommandExecutor {
 		int x = targetBlock.getX();
 		int y = targetBlock.getY();
 		int z = targetBlock.getZ();
-		if (checkSafe(x, y, z)) {
+		if (checkSafe(x, y, z, sender.getServer().getWorld("world"))) {
 			Location loc = targetBlock.getLocation();
 			double yloc = loc.getY();
 			loc.setY(yloc + 1);
@@ -54,8 +47,8 @@ public class TeleportCommand implements CommandExecutor {
 
 	}
 
-	public boolean checkSafe(int x, int y, int z) {
-		World myWorld = this.plugin.getServer().getWorld("world");
+	public boolean checkSafe(int x, int y, int z, World myWorld) {
+		// World myWorld = this.plugin.getServer().getWorld("world");
 		Block targetBlock = myWorld.getBlockAt(x, y, z);
 		Block oneUp = myWorld.getBlockAt(x, y + 1, z);
 		Block twoUp = myWorld.getBlockAt(x, y + 2, z);

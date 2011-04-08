@@ -6,14 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.ChestFunctions;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class UnlockChestCommand implements CommandExecutor {
-	private final MagickMod	plugin;
+	private final ChestFunctions	chestFunctions;
 
-	public UnlockChestCommand(MagickMod plugin) {
-		this.plugin = plugin;
+	public UnlockChestCommand(ChestFunctions chestFunctions) {
+		this.chestFunctions = chestFunctions;
 	}
 
 	@Override
@@ -22,11 +22,11 @@ public class UnlockChestCommand implements CommandExecutor {
 		Block chestToLock = player.getTargetBlock(null, 5);
 
 		if (chestToLock.getTypeId() == 54) {
-			String owner = plugin.chestFunctions.getOwner(chestToLock.getLocation());
+			String owner = chestFunctions.getOwner(chestToLock.getLocation());
 			if (owner.equalsIgnoreCase(player.getName())) {
-				ChestData myChest = plugin.chestFunctions.getChest(chestToLock.getLocation());
+				ChestData myChest = chestFunctions.getChest(chestToLock.getLocation());
 				myChest.setName("public");
-				plugin.getDatabase().save(myChest);
+				chestFunctions.plugin.getDatabase().save(myChest);
 			}
 
 		}

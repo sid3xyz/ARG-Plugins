@@ -13,7 +13,7 @@ import org.bukkit.Location;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class ChestFunctions {
-	private final MagickMod	plugin;
+	public final MagickMod	plugin;
 
 	public ChestFunctions(MagickMod plugin) {
 		this.plugin = plugin;

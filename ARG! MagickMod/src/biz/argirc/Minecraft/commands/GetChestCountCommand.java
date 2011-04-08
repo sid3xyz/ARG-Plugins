@@ -7,14 +7,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.ChestFunctions;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class GetChestCountCommand implements CommandExecutor {
-	private final MagickMod	plugin;
+	private final ChestFunctions	chestFunctions;
 
-	public GetChestCountCommand(MagickMod plugin) {
-		this.plugin = plugin;
+	public GetChestCountCommand(ChestFunctions chestFunctions) {
+		this.chestFunctions = chestFunctions;
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class GetChestCountCommand implements CommandExecutor {
 	}
 
 	public void getUserChestCount(Player player, String userstring) {
-		List<ChestData> ChestList = plugin.getDatabase().find(ChestData.class).where().ieq("playerName", userstring).findList();
+		List<ChestData> ChestList = chestFunctions.plugin.getDatabase().find(ChestData.class).where().ieq("playerName", userstring).findList();
 		if (ChestList.isEmpty()) {
 			player.sendMessage("That player has no chests!");
 		} else {

@@ -21,7 +21,10 @@ public class ChestInteractListener extends PlayerListener {
 				Block myBlock = event.getClickedBlock();
 				if (myBlock.getTypeId() == 54) {
 					Player player = event.getPlayer();
-					if (plugin.chestFunctions.doesUserOwnChest(player.getName(), event.getClickedBlock().getLocation())) {
+					if (plugin.chestFunctions.isPublicChest(myBlock.getLocation())) {
+						player.sendMessage("-Public Chest-");
+						return;
+					} else if (plugin.chestFunctions.doesUserOwnChest(player.getName(), event.getClickedBlock().getLocation())) {
 						player.sendMessage("-Access Granted-");
 						return;
 					} else {

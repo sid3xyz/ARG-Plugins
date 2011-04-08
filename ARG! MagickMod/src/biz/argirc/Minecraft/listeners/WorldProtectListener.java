@@ -16,7 +16,7 @@ public class WorldProtectListener extends BlockListener {
 
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (!plugin.rankFunctions.canBuild(event.getPlayer())) {
+		if (!plugin.rankFunctions.canBuild(event.getPlayer().getName())) {
 			event.setCancelled(true);
 			return;
 		}
@@ -24,7 +24,7 @@ public class WorldProtectListener extends BlockListener {
 
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (!plugin.rankFunctions.canBuild(event.getPlayer())) {
+		if (!plugin.rankFunctions.canBuild(event.getPlayer().getName())) {
 			event.setCancelled(true);
 			return;
 		}

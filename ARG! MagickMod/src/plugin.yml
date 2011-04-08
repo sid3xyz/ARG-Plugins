@@ -21,3 +21,8 @@ commands:
     usage: |
            /<command>
            Example: /<command>
+  setrank:
+    description: Set a users rank
+    usage: |
+           /<command>
+           Example: /<command> UserGuyBob 1 - set userGuyBob to rank 1

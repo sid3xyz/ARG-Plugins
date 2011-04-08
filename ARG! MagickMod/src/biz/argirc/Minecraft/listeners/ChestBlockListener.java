@@ -39,6 +39,10 @@ public class ChestBlockListener extends BlockListener {
 
 	@Override
 	public void onBlockPlace(BlockPlaceEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
 		Block placedBlock = event.getBlockPlaced();
 		switch (placedBlock.getType()) {
 			case CHEST:

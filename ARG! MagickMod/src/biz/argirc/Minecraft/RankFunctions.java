@@ -1,7 +1,5 @@
 package biz.argirc.Minecraft;
 
-import org.bukkit.entity.Player;
-
 import biz.argirc.Minecraft.database.RankData;
 
 public class RankFunctions {
@@ -12,7 +10,7 @@ public class RankFunctions {
 		this.plugin = plugin;
 	}
 
-	public boolean canBuild(Player player) {
+	public boolean canBuild(String player) {
 		if (plugin.rankFunctions.getRank(player) > 0) {
 			return true;
 		} else {
@@ -20,8 +18,8 @@ public class RankFunctions {
 		}
 	}
 
-	public int getRank(Player player) {
-		RankData myRank = plugin.getDatabase().find(RankData.class).where().ieq("name", player.getName()).findUnique();
+	public int getRank(String player) {
+		RankData myRank = plugin.getDatabase().find(RankData.class).where().ieq("name", player).findUnique();
 		if (myRank == null) {
 			return 0;
 		} else {
@@ -29,21 +27,21 @@ public class RankFunctions {
 		}
 	}
 
-	public void setRank(Player player, int rank) {
-		String name = player.getName();
-		RankData playerRank = plugin.getDatabase().find(RankData.class).where().ieq("name", name).ieq("playerName", player.getName()).findUnique();
+	public void setRank(String name, int rank) {
+
+		RankData playerRank = plugin.getDatabase().find(RankData.class).where().ieq("name", name).ieq("playerName", name).findUnique();
 		if (playerRank == null) {
 			playerRank = new RankData();
-			playerRank.setPlayer(player);
+			playerRank.setPlayerName(name);
 			playerRank.setName(name);
 			playerRank.setRank(rank);
 			plugin.getDatabase().save(playerRank);
-			plugin.getServer().broadcastMessage("New player " + player.getName() + " has been given rank" + rank + "!");
+			plugin.getServer().broadcastMessage("New player " + name + " has been given rank" + rank + "!");
 
 		} else {
 			playerRank.setRank(rank);
 			plugin.getDatabase().save(playerRank);
-			plugin.getServer().broadcastMessage(player.getName() + " has been given rank" + rank + "!");
+			plugin.getServer().broadcastMessage(name + " has been given rank" + rank + "!");
 
 		}
 	}

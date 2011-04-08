@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import biz.argirc.Minecraft.commands.ChestHelpCommand;
 import biz.argirc.Minecraft.commands.GetChestCountCommand;
+import biz.argirc.Minecraft.commands.SetRankCommand;
 import biz.argirc.Minecraft.commands.UnlockChestCommand;
 import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
@@ -38,6 +40,7 @@ public class MagickMod extends JavaPlugin {
 	public void onEnable() {
 		setupDatabase();
 		registerEvents();
+		getCommand("setrank").setExecutor(new SetRankCommand(this));
 		getCommand("chesthelp").setExecutor(new ChestHelpCommand());
 		getCommand("chestcount").setExecutor(new GetChestCountCommand(this));
 		getCommand("unlock").setExecutor(new UnlockChestCommand(this));
@@ -63,10 +66,13 @@ public class MagickMod extends JavaPlugin {
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		// Block events
-		pm.registerEvent(Event.Type.BLOCK_CANBUILD, worldProtectListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_CANBUILD, worldProtectListener, Priority.Normal, this);
 
-		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACE, worldProtectListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, worldProtectListener, Priority.Lowest, this);
+
 		// Player Events
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, onJoinListener, Priority.Normal, this);
@@ -80,4 +86,14 @@ public class MagickMod extends JavaPlugin {
 		list.add(RankData.class);
 		return list;
 	}
+
+	public Player getPlayer(String player) {
+		List<Player> players = this.getServer().matchPlayer(player);
+		if (players.isEmpty()) {
+			return null;
+		} else {
+			return players.get(0);
+		}
+	}
+
 }

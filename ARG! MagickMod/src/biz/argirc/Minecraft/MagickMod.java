@@ -1,9 +1,11 @@
 package biz.argirc.Minecraft;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.persistence.PersistenceException;
 
@@ -40,10 +42,11 @@ public class MagickMod extends JavaPlugin {
 	private final ChestBlockListener	chestBlockListener		= new ChestBlockListener(this);
 	private final OnJoinListener		onJoinListener			= new OnJoinListener(this);
 	private final WorldProtectListener	worldProtectListener	= new WorldProtectListener(this);
-	public final MobDeathListener			mobDeathListener		= new MobDeathListener(this);
+	public final MobDeathListener		mobDeathListener		= new MobDeathListener(this);
 	public static String				maindirectory			= "";
-	public File							Accounts				= null;
-	public File							ItemStore				= null;
+	public File							AccountsFile			= null;
+	public File							ItemStoreFile			= null;
+	public Properties					MagickBank				= new Properties();
 
 	@Override
 	public void onDisable() {
@@ -51,7 +54,6 @@ public class MagickMod extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-
 		setupDatabase();
 		// chestFunctions.convertDB();
 		registerEvents();
@@ -70,32 +72,34 @@ public class MagickMod extends JavaPlugin {
 
 		PluginDescriptionFile pdfFile = this.getDescription();
 		maindirectory = pdfFile.getName() + "/";
-		setupEconFiles();
-
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-	}
-
-	private void setupEconFiles() {
-		Accounts = new File(maindirectory + "user.accounts");
-		ItemStore = new File(maindirectory + "store.properties");
-		if (!ItemStore.exists()) {
+		setupEconomy();
+		ItemStoreFile = new File(maindirectory + "Store.data");
+		if (!ItemStoreFile.exists()) {
 			try {
 				new File(maindirectory).mkdir();
-				ItemStore.createNewFile();
+				ItemStoreFile.createNewFile();
 				System.out.println("ItemStore file created");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		if (!Accounts.exists()) {
-			try {
-				new File(maindirectory).mkdir();
-				Accounts.createNewFile();
-				System.out.println("Accounting file created");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 
+		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+	}
+
+	private void setupEconomy() {
+		try {
+			AccountsFile = new File(maindirectory + "Accounting.data");
+			if (!AccountsFile.exists()) {
+				new File(maindirectory).mkdir();
+				AccountsFile.createNewFile();
+				System.out.println("Accounting file created");
+			}
+			FileInputStream in = new FileInputStream(getFile());
+			MagickBank.load(in);
+			System.out.println("Magick Bank data loaded!");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}

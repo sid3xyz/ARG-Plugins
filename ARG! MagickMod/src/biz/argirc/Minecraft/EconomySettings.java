@@ -1,7 +1,7 @@
 package biz.argirc.Minecraft;
 
 // this file loads plugin settings
-public class LoadSettings {
+public class EconomySettings {
 	public static int		startingbalance;
 	public static String	credit;
 	public static int		creeperValue;

@@ -17,9 +17,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
 
-import biz.argirc.Minecraft.LoadSettings;
+import biz.argirc.Minecraft.EconomySettings;
 import biz.argirc.Minecraft.MagickMod;
-import biz.argirc.Minecraft.database.Accounting;
 
 public class MobDeathListener extends EntityListener {
 	private final MagickMod	plugin;
@@ -53,29 +52,29 @@ public class MobDeathListener extends EntityListener {
 				Monster monster = (Monster) myEntity;
 				if (monster.getTarget() instanceof Player) {
 					Player player = (Player) monster.getTarget();
-					boolean hasaccount = Accounting.containskey(player, plugin.Accounts);
+					boolean hasaccount = plugin.MagickBank.containsKey(player.getName());
 					if (hasaccount == true) {
 						String myAttacker = lastDamageType.get(lastDamagePlayer.indexOf(monster.toString()));
 						if (myAttacker == player.getName()) {
-							LoadSettings.loadMobValues();
+							EconomySettings.loadMobValues();
 							int mobValue = 0;
 							if (monster instanceof Creeper) {
-								mobValue = LoadSettings.creeperValue;
+								mobValue = EconomySettings.creeperValue;
 							} else if (monster instanceof Zombie) {
-								mobValue = LoadSettings.zombieValue;
+								mobValue = EconomySettings.zombieValue;
 							} else if (monster instanceof Spider) {
-								mobValue = LoadSettings.spiderValue;
+								mobValue = EconomySettings.spiderValue;
 							} else if (monster instanceof Skeleton) {
-								mobValue = LoadSettings.skelValue;
+								mobValue = EconomySettings.skelValue;
 							}
 							ItemStack myItem = player.getItemInHand();
 							if (myItem.getTypeId() == 0) {
-								player.sendMessage("BONUS " + LoadSettings.multi + "X for kill with 'BEAR' HANDS");
-								mobValue = mobValue * LoadSettings.multi;
+								player.sendMessage("BONUS " + EconomySettings.multi + "X for kill with 'BEAR' HANDS");
+								mobValue = mobValue * EconomySettings.multi;
 							}
-							int newbalance = Accounting.getBalance(player, plugin.Accounts) + mobValue;
-							Accounting.write(player, newbalance, plugin.Accounts);
-							player.sendMessage("Total " + ChatColor.GOLD + mobValue + ChatColor.WHITE + "  " + LoadSettings.credit + " for Kill");
+							int newbalance = Integer.parseInt(plugin.MagickBank.getProperty(player.getName())) + mobValue;
+							plugin.MagickBank.setProperty(player.getName(), Integer.toString(newbalance));
+							player.sendMessage("Total " + ChatColor.GOLD + mobValue + ChatColor.WHITE + "  " + EconomySettings.credit + " for Kill");
 							player.sendMessage("Total: " + newbalance);
 						}
 					}

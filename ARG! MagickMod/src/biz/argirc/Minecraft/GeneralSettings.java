@@ -1,7 +1,7 @@
 package biz.argirc.Minecraft;
 
-// this file loads plugin settings
-public class EconomySettings {
+
+public class GeneralSettings {
 	public static int		startingbalance;
 	public static String	credit;
 	public static int		creeperValue;
@@ -12,7 +12,7 @@ public class EconomySettings {
 	public static int		deathpenalty;
 
 	public static void loadStore() {
-		String propertiesFile = MagickMod.maindirectory + "mainConfig.properties";
+		String propertiesFile = MagickMod.maindirectory + "MagickMod.conf";
 
 		PluginProperties properties = new PluginProperties(propertiesFile);
 		properties.load();

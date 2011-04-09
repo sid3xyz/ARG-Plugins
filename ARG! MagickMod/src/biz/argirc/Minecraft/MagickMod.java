@@ -1,11 +1,7 @@
 package biz.argirc.Minecraft;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.persistence.PersistenceException;
 
@@ -16,6 +12,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import biz.argirc.Minecraft.commands.BankCommand;
 import biz.argirc.Minecraft.commands.ChestHelpCommand;
 import biz.argirc.Minecraft.commands.GetChestCountCommand;
 import biz.argirc.Minecraft.commands.KillFarmAnimalsCommand;
@@ -27,6 +24,7 @@ import biz.argirc.Minecraft.commands.SpawnMobCommand;
 import biz.argirc.Minecraft.commands.TeleportCommand;
 import biz.argirc.Minecraft.commands.UnlockChestCommand;
 import biz.argirc.Minecraft.commands.WhoCommand;
+import biz.argirc.Minecraft.database.BankData;
 import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
 import biz.argirc.Minecraft.listeners.ChestBlockListener;
@@ -44,9 +42,8 @@ public class MagickMod extends JavaPlugin {
 	private final WorldProtectListener	worldProtectListener	= new WorldProtectListener(this);
 	public final MobDeathListener		mobDeathListener		= new MobDeathListener(this);
 	public static String				maindirectory			= "";
-	public File							AccountsFile			= null;
-	public File							ItemStoreFile			= null;
-	public Properties					MagickBank				= new Properties();
+
+	public BankFunctions				bankFunctions			= new BankFunctions(getDatabase());
 
 	@Override
 	public void onDisable() {
@@ -57,7 +54,7 @@ public class MagickMod extends JavaPlugin {
 		setupDatabase();
 		// chestFunctions.convertDB();
 		registerEvents();
-
+		getCommand("bank").setExecutor(new BankCommand());
 		getCommand("setcompass").setExecutor(new SetCompassCommand());
 		getCommand("setserverspawn").setExecutor(new SetSpawnLocationCommand());
 		getCommand("killfriendly").setExecutor(new KillFarmAnimalsCommand());
@@ -72,36 +69,8 @@ public class MagickMod extends JavaPlugin {
 
 		PluginDescriptionFile pdfFile = this.getDescription();
 		maindirectory = pdfFile.getName() + "/";
-		setupEconomy();
-		ItemStoreFile = new File(maindirectory + "Store.data");
-		if (!ItemStoreFile.exists()) {
-			try {
-				new File(maindirectory).mkdir();
-				ItemStoreFile.createNewFile();
-				System.out.println("ItemStore file created");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-	}
-
-	private void setupEconomy() {
-		try {
-			AccountsFile = new File(maindirectory + "Accounting.data");
-			if (!AccountsFile.exists()) {
-				new File(maindirectory).mkdir();
-				AccountsFile.createNewFile();
-				System.out.println("Accounting file created");
-			}
-			FileInputStream in = new FileInputStream(getFile());
-			MagickBank.load(in);
-			System.out.println("Magick Bank data loaded!");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private void setupDatabase() {
@@ -116,6 +85,12 @@ public class MagickMod extends JavaPlugin {
 			getDatabase().find(RankData.class).findRowCount();
 		} catch (PersistenceException ex) {
 			System.out.println("Initializing database for " + getDescription().getName() + " rank system");
+			installDDL();
+		}
+		try {
+			getDatabase().find(BankData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			System.out.println("Initializing database for " + getDescription().getName() + "Banking system");
 			installDDL();
 		}
 	}

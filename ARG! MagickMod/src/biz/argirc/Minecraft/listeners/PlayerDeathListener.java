@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
-import biz.argirc.Minecraft.EconomySettings;
+import biz.argirc.Minecraft.GeneralSettings;
 import biz.argirc.Minecraft.MagickMod;
 
 public class PlayerDeathListener extends EntityListener {
@@ -27,16 +27,16 @@ public class PlayerDeathListener extends EntityListener {
 	}
 
 	public void doPlayerDeath(Player player) {
-		boolean hasaccount = plugin.MagickBank.containsKey(player.getName());
-		if (hasaccount == true) {
-			int newbalance = Integer.parseInt(plugin.MagickBank.getProperty(player.getName())) - 75;
+		if (plugin.bankFunctions.hasAccount(player.getName()) == true) {
+			int newbalance = plugin.bankFunctions.getBalance(player.getName()) - 75;
 			if (newbalance < 0) {
 				newbalance = 0;
 			}
-			EconomySettings.getDeathPenalty();
-			plugin.MagickBank.setProperty(player.getName(), Integer.toString(newbalance));
-			player.sendMessage("You Died " + EconomySettings.deathpenalty + " " + EconomySettings.credit);
-			player.sendMessage("Total: " + newbalance + " " + EconomySettings.credit);
+			GeneralSettings.getDeathPenalty();
+			plugin.bankFunctions.setBalance(player.getName(), newbalance);
+
+			player.sendMessage("You Died " + GeneralSettings.deathpenalty + " " + GeneralSettings.credit);
+			player.sendMessage("Total: " + newbalance + " " + GeneralSettings.credit);
 		}
 		Block signBlock = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
 		if (signBlock.getType() == Material.RAILS || signBlock.getType() == Material.STEP) {

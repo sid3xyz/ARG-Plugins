@@ -1,5 +1,7 @@
 package biz.argirc.Minecraft;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
 import biz.argirc.Minecraft.listeners.ChestBlockListener;
 import biz.argirc.Minecraft.listeners.ChestInteractListener;
+import biz.argirc.Minecraft.listeners.MobDeathListener;
 import biz.argirc.Minecraft.listeners.OnJoinListener;
 import biz.argirc.Minecraft.listeners.WorldProtectListener;
 
@@ -37,6 +40,10 @@ public class MagickMod extends JavaPlugin {
 	private final ChestBlockListener	chestBlockListener		= new ChestBlockListener(this);
 	private final OnJoinListener		onJoinListener			= new OnJoinListener(this);
 	private final WorldProtectListener	worldProtectListener	= new WorldProtectListener(this);
+	public final MobDeathListener			mobDeathListener		= new MobDeathListener(this);
+	public static String				maindirectory			= "";
+	public File							Accounts				= null;
+	public File							ItemStore				= null;
 
 	@Override
 	public void onDisable() {
@@ -48,6 +55,7 @@ public class MagickMod extends JavaPlugin {
 		setupDatabase();
 		// chestFunctions.convertDB();
 		registerEvents();
+
 		getCommand("setcompass").setExecutor(new SetCompassCommand());
 		getCommand("setserverspawn").setExecutor(new SetSpawnLocationCommand());
 		getCommand("killfriendly").setExecutor(new KillFarmAnimalsCommand());
@@ -61,10 +69,39 @@ public class MagickMod extends JavaPlugin {
 		getCommand("unlock").setExecutor(new UnlockChestCommand(chestFunctions));
 
 		PluginDescriptionFile pdfFile = this.getDescription();
+		maindirectory = pdfFile.getName() + "/";
+		setupEconFiles();
+
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 	}
 
-	public void setupDatabase() {
+	private void setupEconFiles() {
+		Accounts = new File(maindirectory + "user.accounts");
+		ItemStore = new File(maindirectory + "store.properties");
+		if (!ItemStore.exists()) {
+			try {
+				new File(maindirectory).mkdir();
+				ItemStore.createNewFile();
+				System.out.println("ItemStore file created");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (!Accounts.exists()) {
+			try {
+				new File(maindirectory).mkdir();
+				Accounts.createNewFile();
+				System.out.println("Accounting file created");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	private void setupDatabase() {
+
 		try {
 			getDatabase().find(ChestData.class).findRowCount();
 		} catch (PersistenceException ex) {

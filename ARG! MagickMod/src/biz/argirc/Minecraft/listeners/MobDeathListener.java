@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.ItemStack;
 
-import biz.argirc.Minecraft.GeneralSettings;
 import biz.argirc.Minecraft.MagickMod;
 
 public class MobDeathListener extends EntityListener {
@@ -56,25 +55,25 @@ public class MobDeathListener extends EntityListener {
 					if (plugin.bankFunctions.hasAccount(player.getName()) == true) {
 						String myAttacker = lastDamageType.get(lastDamagePlayer.indexOf(monster.toString()));
 						if (myAttacker == player.getName()) {
-							GeneralSettings.loadMobValues();
+							// plugin.pluginSettings.loadMobValues();
 							int mobValue = 0;
 							if (monster instanceof Creeper) {
-								mobValue = GeneralSettings.creeperValue;
+								mobValue = plugin.pluginSettings.creeperValue;
 							} else if (monster instanceof Zombie) {
-								mobValue = GeneralSettings.zombieValue;
+								mobValue = plugin.pluginSettings.zombieValue;
 							} else if (monster instanceof Spider) {
-								mobValue = GeneralSettings.spiderValue;
+								mobValue = plugin.pluginSettings.spiderValue;
 							} else if (monster instanceof Skeleton) {
-								mobValue = GeneralSettings.skelValue;
+								mobValue = plugin.pluginSettings.skelValue;
 							}
 							ItemStack myItem = player.getItemInHand();
 							if (myItem.getTypeId() == 0) {
-								player.sendMessage("BONUS " + GeneralSettings.multi + "X for kill with 'BEAR' HANDS");
-								mobValue = mobValue * GeneralSettings.multi;
+								player.sendMessage("BONUS " + plugin.pluginSettings.multi + "X for kill with 'BEAR' HANDS");
+								mobValue = mobValue * plugin.pluginSettings.multi;
 							}
 							int newbalance = plugin.bankFunctions.getBalance(player.getName()) + mobValue;
 							plugin.bankFunctions.setBalance(player.getName(), newbalance);
-							player.sendMessage("Total " + ChatColor.GOLD + mobValue + ChatColor.WHITE + "  " + GeneralSettings.credit + " for Kill");
+							player.sendMessage("Total " + ChatColor.GOLD + mobValue + ChatColor.WHITE + "  " + plugin.pluginSettings.credit + " for Kill");
 							player.sendMessage("Total: " + newbalance);
 						}
 					}

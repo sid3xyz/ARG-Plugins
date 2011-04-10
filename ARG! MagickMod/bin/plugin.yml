@@ -58,3 +58,7 @@ commands:
     description: Kill all friendly mobs on map. (except wolves?) (ops only)
     usage: |
            /<command> - Kills all animals on map.
+  challenge:
+    description: Challenge player(s) to an Arena battle
+    usage: |
+           /<command> - CHALLENGE!

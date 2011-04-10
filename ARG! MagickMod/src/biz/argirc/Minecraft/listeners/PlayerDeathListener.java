@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 
-import biz.argirc.Minecraft.GeneralSettings;
 import biz.argirc.Minecraft.MagickMod;
 
 public class PlayerDeathListener extends EntityListener {
@@ -20,34 +19,31 @@ public class PlayerDeathListener extends EntityListener {
 
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
-		if (event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
-			doPlayerDeath(player);
-		}
-	}
-
-	public void doPlayerDeath(Player player) {
-		if (plugin.bankFunctions.hasAccount(player.getName()) == true) {
-			int newbalance = plugin.bankFunctions.getBalance(player.getName()) - 75;
-			if (newbalance < 0) {
-				newbalance = 0;
-			}
-			GeneralSettings.getDeathPenalty();
-			plugin.bankFunctions.setBalance(player.getName(), newbalance);
-
-			player.sendMessage("You Died " + GeneralSettings.deathpenalty + " " + GeneralSettings.credit);
-			player.sendMessage("Total: " + newbalance + " " + GeneralSettings.credit);
-		}
-		Block signBlock = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
-		if (signBlock.getType() == Material.RAILS || signBlock.getType() == Material.STEP) {
+		if (!(event.getEntity() instanceof Player)) {
 			return;
-		}
-		signBlock.setType(Material.SIGN_POST);
-		BlockState state = signBlock.getState();
-		if (state instanceof Sign) {
-			Sign sign = (Sign) state;
-			sign.setLine(0, "[RIP]");
-			sign.setLine(1, player.getName());
+		} else {
+			Player player = (Player) event.getEntity();
+			if (plugin.bankFunctions.hasAccount(player.getName()) == true) {
+				int newbalance = plugin.bankFunctions.getBalance(player.getName()) - 75;
+				if (newbalance < 0) {
+					newbalance = 0;
+				}
+
+				plugin.bankFunctions.setBalance(player.getName(), newbalance);
+				player.sendMessage("You Died " + plugin.pluginSettings.deathpenalty + " " + plugin.pluginSettings.credit);
+				player.sendMessage("Total: " + newbalance + " " + plugin.pluginSettings.credit);
+			}
+			Block signBlock = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
+			if (signBlock.getType() == Material.RAILS || signBlock.getType() == Material.STEP) {
+				return;
+			}
+			signBlock.setType(Material.SIGN_POST);
+			BlockState state = signBlock.getState();
+			if (state instanceof Sign) {
+				Sign sign = (Sign) state;
+				sign.setLine(0, "[RIP]");
+				sign.setLine(1, player.getName());
+			}
 		}
 	}
 }

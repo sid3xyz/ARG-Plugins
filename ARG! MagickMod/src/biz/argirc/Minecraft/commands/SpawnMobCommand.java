@@ -12,23 +12,24 @@ public class SpawnMobCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.isOp()) {
+			return false;
+		}
 		Player player = (Player) sender;
-		if (player.isOp()) {
-			if (args.length > 0) {
-				int creatureCount = 1;
-				Location loc = player.getTargetBlock(null, 50).getLocation();
-				loc.setY(loc.getY() + 1);
-				String creatureString = args[0].toUpperCase();
-				if (creatureString.equals("PIGZOMBIE")) {
-					creatureString = "PIG_ZOMBIE";
-				}
-				if (args.length == 2) {
-					creatureCount = Integer.valueOf(args[1]);
-				}
-				World myWorld = sender.getServer().getWorld("world");
-				for (int i = 0; i < creatureCount; i++) {
-					myWorld.spawnCreature(loc, CreatureType.valueOf(creatureString));
-				}
+		if (args.length > 0) {
+			int creatureCount = 1;
+			Location loc = player.getTargetBlock(null, 50).getLocation();
+			loc.setY(loc.getY() + 1);
+			String creatureString = args[0].toUpperCase();
+			if (creatureString.equals("PIGZOMBIE")) {
+				creatureString = "PIG_ZOMBIE";
+			}
+			if (args.length == 2) {
+				creatureCount = Integer.valueOf(args[1]);
+			}
+			World myWorld = sender.getServer().getWorld("world");
+			for (int i = 0; i < creatureCount; i++) {
+				myWorld.spawnCreature(loc, CreatureType.valueOf(creatureString));
 			}
 		}
 		return true;

@@ -19,6 +19,9 @@ public class GetChestCountCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.isOp()) {
+			return false;
+		}
 		Player player = (Player) sender;
 		getUserChestCount(player, args[0]);
 		return true;

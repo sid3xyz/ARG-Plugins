@@ -20,6 +20,9 @@ public class ChallangeCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.isOp()) {
+			return false;
+		}
 		Player player = (Player) sender;
 		List<Player> players = new ArrayList<Player>();
 		players.add(player);
@@ -29,6 +32,7 @@ public class ChallangeCommand implements CommandExecutor {
 			players.add(targetPlayer);
 			targetPlayer.sendMessage("You have been challenged to an Arena battle by " + player.getName() + "!");
 			targetPlayer.sendMessage("Arena battle system almost complete!");
+
 		}
 
 		return true;

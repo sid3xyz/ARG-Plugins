@@ -14,14 +14,15 @@ public class KillFarmAnimalsCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.isOp()) {
+			return false;
+		}
 		World world = sender.getServer().getWorld("world");
-		if (sender.isOp()) {
-			List<LivingEntity> mobs = world.getLivingEntities();
-			for (Iterator<LivingEntity> iterator = mobs.iterator(); iterator.hasNext();) {
-				LivingEntity m = iterator.next();
-				if (isAnimal(m)) {
-					m.setHealth(0);
-				}
+		List<LivingEntity> mobs = world.getLivingEntities();
+		for (Iterator<LivingEntity> iterator = mobs.iterator(); iterator.hasNext();) {
+			LivingEntity m = iterator.next();
+			if (isAnimal(m)) {
+				m.setHealth(0);
 			}
 		}
 		return true;

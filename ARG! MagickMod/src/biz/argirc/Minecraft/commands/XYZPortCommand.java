@@ -29,8 +29,7 @@ public class XYZPortCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		if (sender.isOp() == false) {
-			sender.sendMessage("You must be an Op to do this...");
+		if (!sender.isOp()) {
 			return false;
 		}
 		if (args.length == 3) {

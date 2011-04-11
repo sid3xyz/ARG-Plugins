@@ -5,6 +5,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 
 import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.database.BankData;
 import biz.argirc.Minecraft.database.RankData;
 
 public class OnJoinListener extends PlayerListener {
@@ -30,7 +31,12 @@ public class OnJoinListener extends PlayerListener {
 			playerRank.setPlayer(player);
 			playerRank.setName(name);
 			playerRank.setRank(0);
+			BankData newAccount = new BankData();
+			newAccount.setPlayer(player);
+			newAccount.setPlayerName(name);
+			newAccount.setBalance(500);
 			plugin.getDatabase().save(playerRank);
+			plugin.getDatabase().save(newAccount);
 			plugin.getServer().broadcastMessage("A new player named " + player.getName() + " has arrived!");
 			player.sendMessage("Welcome " + player.getName());
 			player.sendMessage("This is your first time here!");

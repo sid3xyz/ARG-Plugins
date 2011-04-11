@@ -62,3 +62,23 @@ commands:
     description: Challenge player(s) to an Arena battle
     usage: |
            /<command> - CHALLENGE!
+  wallchunk:
+    description: Create a wall around the current chunk
+    usage: |
+           /<command> - wall the current chunk
+  store:
+    description: List items for sale at Item Shop
+    usage: |
+           /<command> - List items and their cost
+  buy:
+    description: Buy an item from the store
+    usage: |
+           /<command> - Buy item
+  die:
+    description: Random death!
+    usage: |
+           /<command> - DIE!!!
+  bank:
+    description: Get your account balance
+    usage: |
+           /<command> - show balance

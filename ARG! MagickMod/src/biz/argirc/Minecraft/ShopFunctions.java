@@ -2,6 +2,7 @@ package biz.argirc.Minecraft;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Enumeration;
 
 // This file contains code for Item Store Read/write
 
@@ -14,6 +15,8 @@ public class ShopFunctions {
 		PluginProperties ItemShopData = new PluginProperties(propertiesFile);
 		ItemShopData.load();
 		this.currancyName = ItemShopData.getString("Currancy", "Tacos");
+		System.out.println("Shop data Loaded - Currancy: " + this.currancyName);
+
 	}
 
 	public boolean containsItem(String i) {
@@ -74,6 +77,14 @@ public class ShopFunctions {
 
 		}
 		return 0;
+	}
+
+	public Enumeration<?> ListShopItems() {
+
+		PluginProperties ItemShopData = new PluginProperties(propertiesFile);
+		ItemShopData.load();
+		java.util.Enumeration<?> e = ItemShopData.propertyNames();
+		return e;
 	}
 
 	public String getCurrancyName() {

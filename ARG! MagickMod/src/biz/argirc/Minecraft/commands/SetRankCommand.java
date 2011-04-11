@@ -15,8 +15,10 @@ public class SetRankCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.isOp()) {
+			return false;
+		}
 		rankFunctions.setRank(args[0], Integer.parseInt(args[1]));
 		return true;
 	}
-
 }

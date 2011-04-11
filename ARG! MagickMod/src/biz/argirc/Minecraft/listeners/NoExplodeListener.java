@@ -6,11 +6,13 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
-public class NoExplodeListener extends EntityListener {
-	public final Location	Spawn;
+import biz.argirc.Minecraft.MagickMod;
 
-	public NoExplodeListener(Location Spawn) {
-		this.Spawn = Spawn;
+public class NoExplodeListener extends EntityListener {
+	public final MagickMod	plugin;
+
+	public NoExplodeListener(MagickMod plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class NoExplodeListener extends EntityListener {
 			event.setCancelled(true);
 		} else if (event.getEntity().getClass().getName().contains("CraftCreeper")) {
 			Creeper creeper = (Creeper) event.getEntity();
-
+			Location Spawn = plugin.getServer().getWorld("world").getSpawnLocation();
 			double x = Spawn.getX() - creeper.getLocation().getX();
 			double y = Spawn.getY() - creeper.getLocation().getY();
 			double z = Spawn.getZ() - creeper.getLocation().getZ();
@@ -55,7 +57,7 @@ public class NoExplodeListener extends EntityListener {
 			event.setCancelled(true);
 		} else if (event.getEntity().getClass().getName().contains("CraftCreeper")) {
 			Creeper creeper = (Creeper) event.getEntity();
-
+			Location Spawn = plugin.getServer().getWorld("world").getSpawnLocation();
 			double x = Spawn.getX() - creeper.getLocation().getX();
 			double y = Spawn.getY() - creeper.getLocation().getY();
 			double z = Spawn.getZ() - creeper.getLocation().getZ();

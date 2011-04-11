@@ -51,7 +51,7 @@ public class MagickMod extends JavaPlugin {
 	public final ChestFunctions					chestFunctions			= new ChestFunctions(this);
 	public final RankFunctions					rankFunctions			= new RankFunctions(this);
 	public final BankFunctions					bankFunctions			= new BankFunctions(this);
-	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener(this.getServer().getWorld("world").getSpawnLocation());
+	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener(this);
 	private final ChestInteractListener			chestInteractListener	= new ChestInteractListener(this);
 	private final ChestBlockListener			chestBlockListener		= new ChestBlockListener(this);
 	private final OnJoinListener				onJoinListener			= new OnJoinListener(this);
@@ -59,7 +59,7 @@ public class MagickMod extends JavaPlugin {
 	public final MobDeathListener				mobDeathListener		= new MobDeathListener(this);
 	public final PlayerDeathListener			playerDeathListener		= new PlayerDeathListener(this);
 	public final LeavesListener					leavesListener			= new LeavesListener();
-	private final MinecartListener				minecartListener			= new MinecartListener();
+	private final MinecartListener				minecartListener		= new MinecartListener();
 	public static String						maindirectory			= "plugins/ARG MagickMod/";
 	public final PluginSettings					pluginSettings			= new PluginSettings(maindirectory + "MagickMod.conf");
 	public final ShopFunctions					shopFunctions			= new ShopFunctions(maindirectory + "ItemShop.conf");

@@ -41,7 +41,7 @@ public class RankFunctions {
 		} else {
 			playerRank.setRank(rank);
 			plugin.getDatabase().save(playerRank);
-			plugin.getServer().broadcastMessage(name + " has been given rank" + rank + "!");
+			plugin.getServer().broadcastMessage(name + " has been given rank " + rank + "!");
 
 		}
 	}

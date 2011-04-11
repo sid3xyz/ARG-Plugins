@@ -1,7 +1,10 @@
 package biz.argirc.Minecraft.listeners;
 
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
+import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -34,4 +37,41 @@ public class WorldProtectListener extends BlockListener {
 	public void onBlockCanBuild(BlockCanBuildEvent event) {
 		// no player object passed here, but i wonder what i could do here
 	}
+
+	@Override
+	public void onBlockBurn(BlockBurnEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+
+		if (event.getBlock().getTypeId() == 18) {
+			event.setCancelled(true);
+			return;
+		}
+
+	}
+
+	@Override
+	public void onBlockIgnite(BlockIgniteEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		// event.setCancelled(true);
+		// return;
+
+		IgniteCause cause = event.getCause();
+		if (cause == IgniteCause.SPREAD) {
+
+			event.setCancelled(true);
+			return;
+		}
+
+		if (cause != IgniteCause.FLINT_AND_STEEL) {
+
+			event.setCancelled(true);
+			return;
+		}
+
+	}
+
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
@@ -37,7 +38,10 @@ import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
 import biz.argirc.Minecraft.listeners.ChestBlockListener;
 import biz.argirc.Minecraft.listeners.ChestInteractListener;
+import biz.argirc.Minecraft.listeners.LeavesListener;
+import biz.argirc.Minecraft.listeners.MinecartListener;
 import biz.argirc.Minecraft.listeners.MobDeathListener;
+import biz.argirc.Minecraft.listeners.NoExplodeListener;
 import biz.argirc.Minecraft.listeners.OnJoinListener;
 import biz.argirc.Minecraft.listeners.PlayerDeathListener;
 import biz.argirc.Minecraft.listeners.WorldProtectListener;
@@ -47,17 +51,21 @@ public class MagickMod extends JavaPlugin {
 	public final ChestFunctions					chestFunctions			= new ChestFunctions(this);
 	public final RankFunctions					rankFunctions			= new RankFunctions(this);
 	public final BankFunctions					bankFunctions			= new BankFunctions(this);
+	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener(this.getServer().getWorld("world").getSpawnLocation());
 	private final ChestInteractListener			chestInteractListener	= new ChestInteractListener(this);
 	private final ChestBlockListener			chestBlockListener		= new ChestBlockListener(this);
 	private final OnJoinListener				onJoinListener			= new OnJoinListener(this);
 	private final WorldProtectListener			worldProtectListener	= new WorldProtectListener(this);
 	public final MobDeathListener				mobDeathListener		= new MobDeathListener(this);
 	public final PlayerDeathListener			playerDeathListener		= new PlayerDeathListener(this);
+	public final LeavesListener					leavesListener			= new LeavesListener();
+	private final MinecartListener				minecartListener			= new MinecartListener();
 	public static String						maindirectory			= "plugins/ARG MagickMod/";
 	public final PluginSettings					pluginSettings			= new PluginSettings(maindirectory + "MagickMod.conf");
 	public final ShopFunctions					shopFunctions			= new ShopFunctions(maindirectory + "ItemShop.conf");
 	public File									shopFile				= new File(maindirectory + "ItemShop.conf");
 	public File									PluginFile				= new File(maindirectory + "MagickMod.conf");
+	private AutoSaveThread						saveThread				= null;
 
 	@Override
 	public void onDisable() {
@@ -65,7 +73,9 @@ public class MagickMod extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-
+		System.out.println("Auto Save Thread Starting...");
+		startSaveThread();
+		System.out.println("ARG! Utilities is enabled!");
 		setupDatabase();
 
 		// chestFunctions.convertDB();
@@ -114,32 +124,45 @@ public class MagickMod extends JavaPlugin {
 		List<Class<?>> dbList = getDatabaseClasses();
 
 		for (Class<?> dbclass : dbList) {
-			System.out.println("found database " + dbclass.getName());
-		}
-		try {
-			getDatabase().find(ChestData.class).findRowCount();
-		} catch (PersistenceException ex) {
-			System.out.println("Initializing database for " + getDescription().getName() + " chest protection");
-			installDDL();
-		}
-		try {
-			getDatabase().find(RankData.class).findRowCount();
-		} catch (PersistenceException ex) {
-			System.out.println("Initializing database for " + getDescription().getName() + " rank system");
-			installDDL();
-		}
-		try {
-			getDatabase().find(BankData.class).findRowCount();
-		} catch (PersistenceException ex) {
-			System.out.println("Initializing database for " + getDescription().getName() + "Banking system");
-			installDDL();
-		}
+			String name = dbclass.getName();
+			System.out.println("found database " + name);
+			int last = name.lastIndexOf(".");
+			String mydbClass = name.substring(last + 1) + ".class";
+			System.out.println("class name: " + mydbClass);
 
+			try {
+				getDatabase().find(Class.forName(name)).findRowCount();
+				System.out.println(Class.forName(name).getName() + " Loaded");
+			} catch (PersistenceException ex) {
+				System.out.println("Initializing database for " + getDescription().getName() + " chest protection");
+				// installDDL();
+			} catch (ClassNotFoundException e) {
+
+				e.printStackTrace();
+			}
+
+		}/*
+		 * try { getDatabase().find(ChestData.class).findRowCount(); } catch
+		 * (PersistenceException ex) {
+		 * System.out.println("Initializing database for " +
+		 * getDescription().getName() + " chest protection"); installDDL(); }
+		 * try { getDatabase().find(RankData.class).findRowCount(); } catch
+		 * (PersistenceException ex) {
+		 * System.out.println("Initializing database for " +
+		 * getDescription().getName() + " rank system"); installDDL(); } try {
+		 * getDatabase().find(BankData.class).findRowCount(); } catch
+		 * (PersistenceException ex) {
+		 * System.out.println("Initializing database for " +
+		 * getDescription().getName() + "Banking system"); installDDL(); }
+		 */
 	}
 
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
 		// Block events
+		pm.registerEvent(Event.Type.ENTITY_EXPLODE, noExplodeListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.EXPLOSION_PRIME, noExplodeListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.LEAVES_DECAY, leavesListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, playerDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, mobDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_CANBUILD, worldProtectListener, Priority.Normal, this);
@@ -147,11 +170,17 @@ public class MagickMod extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, worldProtectListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, worldProtectListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.BLOCK_IGNITE, worldProtectListener, Priority.Lowest, this);
+		pm.registerEvent(Event.Type.BLOCK_BURN, worldProtectListener, Priority.Lowest, this);
 		// Player Events
 		pm.registerEvent(Event.Type.ENTITY_DEATH, playerDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, mobDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, onJoinListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_MOVE, this.minecartListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, this.minecartListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, this.minecartListener, Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.VEHICLE_EXIT, this.minecartListener, Event.Priority.Highest, this);
 
 	}
 
@@ -173,4 +202,34 @@ public class MagickMod extends JavaPlugin {
 		}
 	}
 
+	public boolean startSaveThread() {
+		saveThread = new AutoSaveThread(this);
+		saveThread.start();
+		return true;
+	}
+
+	public boolean stopSaveThread() {
+		saveThread.setRun(false);
+		try {
+			saveThread.join(5000);
+			saveThread = null;
+			return true;
+		} catch (InterruptedException e) {
+			// log.info("Could not stop AutoSaveThread");
+			return false;
+		}
+	}
+
+	public int saveWorlds() {
+		// Save our worlds
+		int i = 0;
+		List<World> worlds = this.getServer().getWorlds();
+		for (World world : worlds) {
+			this.getServer().broadcastMessage("Saving World and Player Data...");
+			this.getServer().savePlayers();
+			world.save();
+			i++;
+		}
+		return i;
+	}
 }

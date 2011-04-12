@@ -8,14 +8,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.ArenaFunctions;
 
 public class ChallangeCommand implements CommandExecutor {
 
-	public final MagickMod	plugin;
+	public final ArenaFunctions	arenaFunctions;
 
-	public ChallangeCommand(MagickMod plugin) {
-		this.plugin = plugin;
+	public ChallangeCommand(ArenaFunctions arenaFunctions) {
+		this.arenaFunctions = arenaFunctions;
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class ChallangeCommand implements CommandExecutor {
 			players.add(targetPlayer);
 			targetPlayer.sendMessage("You have been challenged to an Arena battle by " + player.getName() + "!");
 			targetPlayer.sendMessage("Arena battle system almost complete!");
-
 		}
-
+		arenaFunctions.storeInventories(players);
+		arenaFunctions.StartBattle(players);
 		return true;
 	}
 
@@ -46,4 +46,5 @@ public class ChallangeCommand implements CommandExecutor {
 			return players.get(0);
 		}
 	}
+
 }

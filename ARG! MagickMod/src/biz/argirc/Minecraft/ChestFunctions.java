@@ -84,7 +84,7 @@ public class ChestFunctions {
 
 				nameStart = dataLine.lastIndexOf('=');
 				username = dataLine.substring(nameStart + 1);
-				location = dataLine.substring(0, nameStart);
+				location = removeChar(dataLine.substring(0, nameStart), '\\').trim();
 				System.out.println(username);
 				System.out.println(location);
 				chest = new ChestData();
@@ -108,5 +108,16 @@ public class ChestFunctions {
 
 		}
 
+	}
+
+	public static String removeChar(String s, char c) {
+		StringBuffer r = new StringBuffer(s.length());
+		r.setLength(s.length());
+		int current = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char cur = s.charAt(i);
+			if (cur != c) r.setCharAt(current++, cur);
+		}
+		return r.toString();
 	}
 }

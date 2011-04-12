@@ -51,6 +51,7 @@ public class MagickMod extends JavaPlugin {
 	public final ChestFunctions					chestFunctions			= new ChestFunctions(this);
 	public final RankFunctions					rankFunctions			= new RankFunctions(this);
 	public final BankFunctions					bankFunctions			= new BankFunctions(this);
+	public final ArenaFunctions					arenaFunctions			= new ArenaFunctions(this);
 	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener(this);
 	private final ChestInteractListener			chestInteractListener	= new ChestInteractListener(this);
 	private final ChestBlockListener			chestBlockListener		= new ChestBlockListener(this);
@@ -75,15 +76,16 @@ public class MagickMod extends JavaPlugin {
 	public void onEnable() {
 		System.out.println("Auto Save Thread Starting...");
 		startSaveThread();
-		System.out.println("ARG! Utilities is enabled!");
 		setupDatabase();
-
+		// rankFunctions.convertDB();
+		// chestFunctions.convertDB();
 		// chestFunctions.convertDB();
 		registerEvents();
+
 		getCommand("wallchunk").setExecutor(new WallChunkCommand());
 		getCommand("store").setExecutor(new StoreCommand(shopFunctions));
 		getCommand("buy").setExecutor(new BuyCommand(bankFunctions, shopFunctions));
-		getCommand("challenge").setExecutor(new ChallangeCommand(this));
+		getCommand("challenge").setExecutor(new ChallangeCommand(arenaFunctions));
 		getCommand("die").setExecutor(new DieCommand(this));
 		getCommand("bank").setExecutor(new BankCommand(this));
 		getCommand("setcompass").setExecutor(new SetCompassCommand());
@@ -123,38 +125,42 @@ public class MagickMod extends JavaPlugin {
 	private void setupDatabase() {
 		List<Class<?>> dbList = getDatabaseClasses();
 
-		for (Class<?> dbclass : dbList) {
-			String name = dbclass.getName();
-			System.out.println("found database " + name);
-			int last = name.lastIndexOf(".");
-			String mydbClass = name.substring(last + 1) + ".class";
-			System.out.println("class name: " + mydbClass);
-
-			try {
-				getDatabase().find(Class.forName(name)).findRowCount();
-				System.out.println(Class.forName(name).getName() + " Loaded");
-			} catch (PersistenceException ex) {
-				System.out.println("Initializing database for " + getDescription().getName() + " chest protection");
-				// installDDL();
-			} catch (ClassNotFoundException e) {
-
-				e.printStackTrace();
-			}
-
-		}/*
-		 * try { getDatabase().find(ChestData.class).findRowCount(); } catch
-		 * (PersistenceException ex) {
-		 * System.out.println("Initializing database for " +
-		 * getDescription().getName() + " chest protection"); installDDL(); }
-		 * try { getDatabase().find(RankData.class).findRowCount(); } catch
-		 * (PersistenceException ex) {
-		 * System.out.println("Initializing database for " +
-		 * getDescription().getName() + " rank system"); installDDL(); } try {
-		 * getDatabase().find(BankData.class).findRowCount(); } catch
-		 * (PersistenceException ex) {
-		 * System.out.println("Initializing database for " +
-		 * getDescription().getName() + "Banking system"); installDDL(); }
+		/*
+		 * for (Class<?> dbclass : dbList) { String name = dbclass.getName(); //
+		 * System.out.println("found database " + name); // int last =
+		 * name.lastIndexOf("."); // String mydbClass = name.substring(last + 1)
+		 * + ".class"; // System.out.println("class name: " + mydbClass);
+		 * 
+		 * try { getDatabase().find(Class.forName(name)).findRowCount();
+		 * System.out.println(Class.forName(name).getName() + " Loaded"); }
+		 * catch (PersistenceException ex) {
+		 * System.out.println("Initializing database for " + name); //
+		 * installDDL(); } catch (ClassNotFoundException e) {
+		 * 
+		 * e.printStackTrace(); }
+		 * 
+		 * }
 		 */
+
+		try {
+			getDatabase().find(ChestData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			System.out.println("Initializing database for " + getDescription().getName() + " chest protection");
+			installDDL();
+		}
+		try {
+			getDatabase().find(RankData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			System.out.println("Initializing database for " + getDescription().getName() + " rank system");
+			installDDL();
+		}
+		try {
+			getDatabase().find(BankData.class).findRowCount();
+		} catch (PersistenceException ex) {
+			System.out.println("Initializing database for " + getDescription().getName() + "Banking system");
+			installDDL();
+		}
+
 	}
 
 	public void registerEvents() {
@@ -190,6 +196,7 @@ public class MagickMod extends JavaPlugin {
 		list.add(ChestData.class);
 		list.add(RankData.class);
 		list.add(BankData.class);
+		// list.add(InventoryData.class);
 		return list;
 	}
 

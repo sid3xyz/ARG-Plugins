@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import biz.argirc.Minecraft.ChestFunctions;
+import biz.argirc.Minecraft.HelperFunctions;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class GetChestCountCommand implements CommandExecutor {
@@ -19,10 +20,12 @@ public class GetChestCountCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!sender.isOp()) {
-			return false;
-		}
 		Player player = (Player) sender;
+		if (!HelperFunctions.isAdmin(player)) {
+			player.sendMessage("You are not an admin.");
+			return true;
+		}
+
 		getUserChestCount(player, args[0]);
 		return true;
 	}

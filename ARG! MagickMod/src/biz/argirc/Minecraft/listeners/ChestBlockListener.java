@@ -24,13 +24,16 @@ public class ChestBlockListener extends BlockListener {
 
 		switch (event.getBlock().getType()) {
 			case CHEST:
-				if (!plugin.chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
+				if (plugin.chestFunctions.doesUserOwnChest("public", event.getBlock().getLocation())) {
+					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					return;
+				} else if (plugin.chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
+					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					return;
+				} else {
 					event.setCancelled(true);
 					event.getPlayer().sendMessage("You do not own this chest");
 					return;
-				} else {
-
-					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
 				}
 			default:
 				return;
@@ -56,15 +59,18 @@ public class ChestBlockListener extends BlockListener {
 					if (face.getTypeId() == 54) {
 						thatOwner = plugin.chestFunctions.getOwner(face.getLocation());
 						if (!thatOwner.equalsIgnoreCase(player.getName())) {
-							myOwner = thatOwner;
-							allclear = false;
-							event.setCancelled(true);
-							return;
+							if (thatOwner.equalsIgnoreCase("public")) {
+								myOwner = "public";
+								allclear = true;
+							} else {
+								myOwner = thatOwner;
+								player.sendMessage("You can not expand this chest");
+								allclear = false;
+								event.setCancelled(true);
+								return;
+							}
 						}
-						if (thatOwner.equalsIgnoreCase("public")) {
-							myOwner = "public";
-							allclear = true;
-						}
+
 					}
 				}
 				if (allclear) {

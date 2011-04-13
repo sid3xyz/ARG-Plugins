@@ -82,3 +82,7 @@ commands:
     description: Get your account balance
     usage: |
            /<command> - show balance
+  regenchunk:
+    description: Regenerate the chunk you are in
+    usage: |
+           /<command> - Regenerate the chunk you are in

@@ -7,14 +7,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import biz.argirc.Minecraft.HelperFunctions;
+
 public class WallChunkCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!sender.isOp()) {
-			return false;
-		}
 		Player player = (Player) sender;
+		if (!HelperFunctions.isAdmin(player)) {
+			player.sendMessage("You are not an admin.");
+			return true;
+		}
+
 		Chunk myChunk = sender.getServer().getWorld("world").getChunkAt(player.getLocation());
 		int y = player.getLocation().getBlockY();
 		int zconst = 0;

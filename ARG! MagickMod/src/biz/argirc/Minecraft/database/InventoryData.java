@@ -1,8 +1,9 @@
 package biz.argirc.Minecraft.database;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.bukkit.Bukkit;
@@ -13,16 +14,17 @@ import com.avaje.ebean.validation.NotNull;
 
 @Entity()
 @Table(name = "InventoryData")
-public class InventoryData {
-	@Column(unique = true)
-	@Id
-	private int		id;
+public class InventoryData implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -817543455386064492L;
 
 	@NotNull
-	private String	playerName;
+	private String				playerName;
 
-	// @Lob
-	// private Inventory inventory;
+	@Lob
+	private Inventory			inventory;
 
 	public InventoryData() {
 
@@ -33,14 +35,6 @@ public class InventoryData {
 	public InventoryData(Inventory inventory, String playerName) {
 		// this.inventory = inventory;
 		this.playerName = playerName;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public String getPlayerName() {
@@ -57,6 +51,14 @@ public class InventoryData {
 
 	public void setPlayer(Player player) {
 		this.playerName = player.getName();
+	}
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+
+	public Inventory getInventory() {
+		return inventory;
 	}
 
 	// public void setInventory(Inventory inventory) {

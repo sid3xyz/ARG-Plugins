@@ -16,11 +16,16 @@ public class ChestInteractListener extends PlayerListener {
 
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
+
 		switch (event.getAction()) {
 			case RIGHT_CLICK_BLOCK:
 				Block myBlock = event.getClickedBlock();
 				if (myBlock.getTypeId() == 54) {
 					Player player = event.getPlayer();
+					if (plugin.rankFunctions.getRank(player.getName()) >= 5) {
+						player.sendMessage("This is " + plugin.chestFunctions.getOwner(myBlock.getLocation()) + " Chest");
+						return;
+					}
 					if (plugin.chestFunctions.isPublicChest(myBlock.getLocation())) {
 						player.sendMessage("-Public Chest-");
 						return;
@@ -28,6 +33,7 @@ public class ChestInteractListener extends PlayerListener {
 						player.sendMessage("-Access Granted-");
 						return;
 					} else {
+						player.sendMessage("This chest belongs to " + plugin.chestFunctions.getOwner(myBlock.getLocation()));
 						player.sendMessage("-Access Denied-");
 						event.setCancelled(true);
 						return;
@@ -37,5 +43,4 @@ public class ChestInteractListener extends PlayerListener {
 				return;
 		}
 	}
-
 }

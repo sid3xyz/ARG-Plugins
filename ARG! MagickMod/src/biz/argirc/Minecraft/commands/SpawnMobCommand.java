@@ -8,14 +8,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
+import biz.argirc.Minecraft.HelperFunctions;
+
 public class SpawnMobCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!sender.isOp()) {
-			return false;
-		}
 		Player player = (Player) sender;
+		if (!HelperFunctions.isAdmin(player)) {
+			player.sendMessage("You are not an admin.");
+			return true;
+		}
+
 		if (args.length > 0) {
 			int creatureCount = 1;
 			Location loc = player.getTargetBlock(null, 50).getLocation();

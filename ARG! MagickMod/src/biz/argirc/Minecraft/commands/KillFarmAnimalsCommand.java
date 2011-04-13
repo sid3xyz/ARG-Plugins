@@ -9,13 +9,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+
+import biz.argirc.Minecraft.HelperFunctions;
 
 public class KillFarmAnimalsCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!sender.isOp()) {
-			return false;
+		Player player = (Player) sender;
+		if (!HelperFunctions.isAdmin(player)) {
+			player.sendMessage("You are not an admin.");
+			return true;
 		}
 		World world = sender.getServer().getWorld("world");
 		List<LivingEntity> mobs = world.getLivingEntities();

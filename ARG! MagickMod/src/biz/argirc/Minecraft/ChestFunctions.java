@@ -41,8 +41,12 @@ public class ChestFunctions {
 
 	public boolean isPublicChest(Location chestLocation) {
 		ChestData chest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "public").findUnique();
+		ChestData chest2 = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "null").findUnique();
+
 		if (chest == null) {
-			return false;
+			if (chest2 == null) {
+				return false;
+			}
 		}
 		return true;
 	}

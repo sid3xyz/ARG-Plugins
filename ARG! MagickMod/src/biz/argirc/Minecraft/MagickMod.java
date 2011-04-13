@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -66,26 +64,29 @@ public class MagickMod extends JavaPlugin {
 	public final ShopFunctions					shopFunctions			= new ShopFunctions(maindirectory + "ItemShop.conf");
 	public File									shopFile				= new File(maindirectory + "ItemShop.conf");
 	public File									PluginFile				= new File(maindirectory + "MagickMod.conf");
-	private AutoSaveThread						saveThread				= null;
 
 	@Override
 	public void onDisable() {
+
 	}
 
 	@Override
 	public void onEnable() {
+
+		@SuppressWarnings("unused")
+		int saveTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 900 * 21L);
 		System.out.println("Auto Save Thread Starting...");
-		startSaveThread();
+
 		setupDatabase();
 		// rankFunctions.convertDB();
 		// chestFunctions.convertDB();
 		// chestFunctions.convertDB();
 		registerEvents();
-
+		getCommand("regenChunk").setExecutor(new RegenChunkCommand(this));
 		getCommand("wallchunk").setExecutor(new WallChunkCommand());
 		getCommand("store").setExecutor(new StoreCommand(shopFunctions));
 		getCommand("buy").setExecutor(new BuyCommand(bankFunctions, shopFunctions));
-		getCommand("challenge").setExecutor(new ChallangeCommand(arenaFunctions));
+		getCommand("challenge").setExecutor(new ChallangeCommand());
 		getCommand("die").setExecutor(new DieCommand(this));
 		getCommand("bank").setExecutor(new BankCommand(this));
 		getCommand("setcompass").setExecutor(new SetCompassCommand());
@@ -123,7 +124,7 @@ public class MagickMod extends JavaPlugin {
 	}
 
 	private void setupDatabase() {
-		List<Class<?>> dbList = getDatabaseClasses();
+		// List<Class<?>> dbList = getDatabaseClasses();
 
 		/*
 		 * for (Class<?> dbclass : dbList) { String name = dbclass.getName(); //
@@ -160,7 +161,12 @@ public class MagickMod extends JavaPlugin {
 			System.out.println("Initializing database for " + getDescription().getName() + "Banking system");
 			installDDL();
 		}
-
+		/*
+		 * try { getDatabase().find(InventoryData.class).findRowCount(); } catch
+		 * (PersistenceException ex) {
+		 * System.out.println("Initializing database for " +
+		 * getDescription().getName() + "Arena"); installDDL(); }
+		 */
 	}
 
 	public void registerEvents() {
@@ -200,43 +206,4 @@ public class MagickMod extends JavaPlugin {
 		return list;
 	}
 
-	public Player getPlayer(String player) {
-		List<Player> players = this.getServer().matchPlayer(player);
-		if (players.isEmpty()) {
-			return null;
-		} else {
-			return players.get(0);
-		}
-	}
-
-	public boolean startSaveThread() {
-		saveThread = new AutoSaveThread(this);
-		saveThread.start();
-		return true;
-	}
-
-	public boolean stopSaveThread() {
-		saveThread.setRun(false);
-		try {
-			saveThread.join(5000);
-			saveThread = null;
-			return true;
-		} catch (InterruptedException e) {
-			// log.info("Could not stop AutoSaveThread");
-			return false;
-		}
-	}
-
-	public int saveWorlds() {
-		// Save our worlds
-		int i = 0;
-		List<World> worlds = this.getServer().getWorlds();
-		for (World world : worlds) {
-			this.getServer().broadcastMessage("Saving World and Player Data...");
-			this.getServer().savePlayers();
-			world.save();
-			i++;
-		}
-		return i;
-	}
 }

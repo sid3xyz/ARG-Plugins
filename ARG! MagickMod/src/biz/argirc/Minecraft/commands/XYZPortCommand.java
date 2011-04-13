@@ -11,9 +11,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import biz.argirc.Minecraft.HelperFunctions;
 import biz.argirc.Minecraft.MagickMod;
 
 public class XYZPortCommand implements CommandExecutor {
+
 	private static ArrayList<Material>	notFloorBlocks	= new ArrayList<Material>();
 
 	public XYZPortCommand(MagickMod plugin) {
@@ -28,9 +30,10 @@ public class XYZPortCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-		if (!sender.isOp()) {
-			return false;
+		Player player = (Player) sender;
+		if (!HelperFunctions.isAdmin(player)) {
+			player.sendMessage("You are not an admin.");
+			return true;
 		}
 		if (args.length == 3) {
 			int x = Integer.valueOf(args[0]);

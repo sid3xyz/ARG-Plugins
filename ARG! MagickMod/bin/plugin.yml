@@ -86,3 +86,11 @@ commands:
     description: Regenerate the chunk you are in
     usage: |
            /<command> - Regenerate the chunk you are in
+  givetrack:
+    description: Give player X stacks of track
+    usage: |
+           /<command> magicksid 5 - give magicksid 5 stacks of track
+  makecarttunnel:
+    description: Create a minecart tunnel
+    usage: |
+           /<command> 

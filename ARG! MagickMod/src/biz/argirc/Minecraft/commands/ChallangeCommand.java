@@ -3,6 +3,7 @@ package biz.argirc.Minecraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class ChallangeCommand implements CommandExecutor {
 		players.add(player);
 
 		for (String target : args) {
-			Player targetPlayer = HelperFunctions.getPlayer(target);
+			Player targetPlayer = Bukkit.getServer().getPlayer(target);
 			players.add(targetPlayer);
 			targetPlayer.sendMessage("You have been challenged to an Arena battle by " + player.getName() + "!");
 			targetPlayer.sendMessage("Arena battle system almost complete!");

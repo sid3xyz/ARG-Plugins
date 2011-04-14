@@ -1,9 +1,11 @@
-package biz.argirc.Minecraft;
+package biz.argirc.Minecraft.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import biz.argirc.Minecraft.MagickMod;
 
 public class RegenChunkCommand implements CommandExecutor {
 	public final MagickMod	plugin;

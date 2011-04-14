@@ -18,7 +18,6 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 
 		Block target = p.getTargetBlock(null, 5);
 		int x = (int) p.getLocation().getPitch();
-
 		Location bl = target.getLocation();
 
 		if (x >= 35) {

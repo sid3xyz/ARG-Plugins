@@ -47,7 +47,7 @@ public class OnJoinListener extends PlayerListener {
 			player.sendMessage("Have fun!");
 			return true;
 		}
-		BankData bankAccount = plugin.getDatabase().find(BankData.class).where().ieq("name", name).ieq("playerName", player.getName()).findUnique();
+		BankData bankAccount = plugin.getDatabase().find(BankData.class).where().ieq("playerName", player.getName()).findUnique();
 		if (bankAccount == null) {
 			BankData newAccount = new BankData();
 			newAccount.setPlayer(player);

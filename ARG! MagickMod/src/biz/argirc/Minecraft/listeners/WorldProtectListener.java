@@ -1,5 +1,6 @@
 package biz.argirc.Minecraft.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
@@ -44,8 +45,9 @@ public class WorldProtectListener extends BlockListener {
 			return;
 		}
 
-		if (event.getBlock().getTypeId() == 18) {
+		if (event.getBlock().getType() == Material.LEAVES) {
 			event.setCancelled(true);
+
 			return;
 		}
 

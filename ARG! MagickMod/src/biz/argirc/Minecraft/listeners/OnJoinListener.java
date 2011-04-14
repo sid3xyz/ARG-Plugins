@@ -26,6 +26,7 @@ public class OnJoinListener extends PlayerListener {
 	public boolean isNewPlayer(Player player) {
 		String name = player.getName();
 		RankData playerRank = plugin.getDatabase().find(RankData.class).where().ieq("name", name).ieq("playerName", player.getName()).findUnique();
+
 		if (playerRank == null) {
 			playerRank = new RankData();
 			playerRank.setPlayer(player);
@@ -41,10 +42,19 @@ public class OnJoinListener extends PlayerListener {
 			player.sendMessage("Welcome " + player.getName());
 			player.sendMessage("This is your first time here!");
 			player.sendMessage("This Server is using ARG! MagickMod v2.0");
-			player.sendMessage("You are currently Rank 0. Please contact an admin");
-			player.sendMessage("and ask for Rank 1 in order to build/destroy");
+			player.sendMessage("Please contact an admin in order to build/destroy");
+			player.sendMessage("Suggestions/Bugs go to http://arg-irc.biz/bugzilla");
 			player.sendMessage("Have fun!");
 			return true;
+		}
+		BankData bankAccount = plugin.getDatabase().find(BankData.class).where().ieq("name", name).ieq("playerName", player.getName()).findUnique();
+		if (bankAccount == null) {
+			BankData newAccount = new BankData();
+			newAccount.setPlayer(player);
+			newAccount.setPlayerName(name);
+			newAccount.setBalance(500);
+			plugin.getDatabase().save(newAccount);
+			player.sendMessage("New Bank Account Created");
 		}
 		return false;
 	}

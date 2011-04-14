@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 
 import biz.argirc.Minecraft.HelperFunctions;
 
@@ -27,6 +28,9 @@ public class KillFarmAnimalsCommand implements CommandExecutor {
 		for (Iterator<LivingEntity> iterator = mobs.iterator(); iterator.hasNext();) {
 			LivingEntity m = iterator.next();
 			if (isAnimal(m)) {
+				if (m instanceof Wolf) {
+					m.setHealth(100);
+				}
 				m.setHealth(0);
 			}
 		}

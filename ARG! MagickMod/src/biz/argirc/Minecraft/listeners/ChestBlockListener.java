@@ -8,6 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import biz.argirc.Minecraft.HelperFunctions;
 import biz.argirc.Minecraft.MagickMod;
 import biz.argirc.Minecraft.database.ChestData;
 
@@ -21,20 +22,31 @@ public class ChestBlockListener extends BlockListener {
 
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
-
+		if (event.isCancelled()) {
+			return;
+		}
 		switch (event.getBlock().getType()) {
 			case CHEST:
-				if (plugin.chestFunctions.doesUserOwnChest("public", event.getBlock().getLocation())) {
-					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
-					return;
-				} else if (plugin.chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
-					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
-					return;
-				} else {
-					event.setCancelled(true);
-					event.getPlayer().sendMessage("You do not own this chest");
+				Player player = event.getPlayer();
+				if (HelperFunctions.isAdmin(player)) {
+					player.sendMessage("You have destroid " + plugin.chestFunctions.getOwner(event.getBlock().getLocation()) + "chest");
 					return;
 				}
+
+				if (plugin.chestFunctions.isPublicChest(event.getBlock().getLocation())) {
+					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					return;
+				}
+
+				if (plugin.chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
+					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					return;
+				}
+
+				event.setCancelled(true);
+				event.getPlayer().sendMessage("You may not remove this chest");
+				return;
+
 			default:
 				return;
 		}

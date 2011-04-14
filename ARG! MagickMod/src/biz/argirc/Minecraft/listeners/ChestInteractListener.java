@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
+import biz.argirc.Minecraft.HelperFunctions;
 import biz.argirc.Minecraft.MagickMod;
 
 public class ChestInteractListener extends PlayerListener {
@@ -22,8 +23,8 @@ public class ChestInteractListener extends PlayerListener {
 				Block myBlock = event.getClickedBlock();
 				if (myBlock.getTypeId() == 54) {
 					Player player = event.getPlayer();
-					if (plugin.rankFunctions.getRank(player.getName()) >= 5) {
-						player.sendMessage("This is " + plugin.chestFunctions.getOwner(myBlock.getLocation()) + " Chest");
+					if (HelperFunctions.isAdmin(player)) {
+						player.sendMessage("This is " + plugin.chestFunctions.getOwner(myBlock.getLocation()) + "s Chest");
 						return;
 					}
 					if (plugin.chestFunctions.isPublicChest(myBlock.getLocation())) {

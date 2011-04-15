@@ -177,6 +177,7 @@ public class MagickMod extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BURN, worldProtectListener, Priority.Lowest, this);
 		// Player Events
 		pm.registerEvent(Event.Type.PLAYER_JOIN, onJoinListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_RESPAWN, onJoinListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, fenceListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.VEHICLE_MOVE, this.minecartListener, Event.Priority.Highest, this);

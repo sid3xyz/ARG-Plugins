@@ -1,9 +1,83 @@
-ARG! Minecraft Plugins
+ARG! MagickMod version 2.0
 
-Includes:
-	-ARG! Economy
-	-ARG! Anti-Theft and world protection
-	-ARG! Utilities
+ARG! MagickMod was created to enhance Minecraft SMP 
 
+Features include:
+    -Automatic chest locking
+    -Public Chests
+    -Areana Battle! (in progress)
+    -Automatic Minecarts (until 1.5)
+    -Basic economy
+        -Item Store
+        -Gain money for killing mobs
+    -Basic user rank system with simple protect from unknown users
+    -Automatic forced save
+    -Various utility commands and functionality
 
-more details soon
+Commands:
+
+  unlock:
+    Unlock the chest you are targeting
+
+  chestcount:
+    Shows number of chests owned by specified user
+
+  chesthelp:
+    Shows help
+
+  setrank:
+    Set a users rank
+
+  setcompass:
+    Set your compass to your current location
+ 
+  who:
+    Display players online
+
+  spawnmob:
+    Spawn a mob (ops only)
+
+  setserverspawn:
+    Set spawn point (ops only)
+
+  teleport:
+    Teleport to location you are pointing at
+
+  xyzport:
+    Teleport to location x y z (ops only)
+
+  killhostile:
+    Kill all hostile mobs on map. (ops only)
+
+  killfriendly:
+    Kill all friendly mobs on map. (except wolves?) (ops only)
+
+  challenge:
+    Challenge player(s) to an Arena battle (not complete)
+
+  wallchunk:
+    Create a wall around the current chunk
+
+  store:
+    List items for sale at Item Shop
+
+  buy:
+    Buy an item from the store
+
+  die:
+    Random death!
+
+  bank:
+    Get your account balance
+
+  regenchunk:
+    Regenerate the chunk you are in
+
+  givetrack:
+    Give player X stacks of track
+
+  makecarttunnel:
+    Create a minecart tunnel
+
+  direction:
+    Get the direction you are facing

@@ -93,4 +93,8 @@ commands:
   makecarttunnel:
     description: Create a minecart tunnel
     usage: |
+           /<command>
+  direction:
+    description: Get the direction you are facing
+    usage: |
            /<command> 

@@ -27,6 +27,7 @@ public class ChestInteractListener extends PlayerListener {
 						player.sendMessage("This is " + plugin.chestFunctions.getOwner(myBlock.getLocation()) + "s Chest");
 						return;
 					}
+
 					if (plugin.chestFunctions.isPublicChest(myBlock.getLocation())) {
 						player.sendMessage("-Public Chest-");
 						return;

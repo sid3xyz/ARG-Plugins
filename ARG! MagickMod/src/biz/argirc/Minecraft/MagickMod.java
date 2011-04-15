@@ -39,6 +39,7 @@ import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
 import biz.argirc.Minecraft.listeners.ChestBlockListener;
 import biz.argirc.Minecraft.listeners.ChestInteractListener;
+import biz.argirc.Minecraft.listeners.FenceListener;
 import biz.argirc.Minecraft.listeners.LeavesListener;
 import biz.argirc.Minecraft.listeners.MinecartListener;
 import biz.argirc.Minecraft.listeners.MobDeathListener;
@@ -55,6 +56,7 @@ public class MagickMod extends JavaPlugin {
 	public final ArenaFunctions					arenaFunctions			= new ArenaFunctions(this);
 	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener(this);
 	private final ChestInteractListener			chestInteractListener	= new ChestInteractListener(this);
+	private final FenceListener					fenceListener			= new FenceListener(this);
 	private final ChestBlockListener			chestBlockListener		= new ChestBlockListener(this);
 	private final OnJoinListener				onJoinListener			= new OnJoinListener(this);
 	private final WorldProtectListener			worldProtectListener	= new WorldProtectListener(this);
@@ -85,6 +87,7 @@ public class MagickMod extends JavaPlugin {
 		// chestFunctions.convertDB();
 		// chestFunctions.convertDB();
 		registerEvents();
+		getCommand("direction").setExecutor(new GetDirection());
 		getCommand("makecarttunnel").setExecutor(new MakeCartTunnelCommand());
 		getCommand("givetrack").setExecutor(new GiveTrackCommand());
 		getCommand("regenChunk").setExecutor(new RegenChunkCommand(this));
@@ -129,24 +132,6 @@ public class MagickMod extends JavaPlugin {
 	}
 
 	private void setupDatabase() {
-		// List<Class<?>> dbList = getDatabaseClasses();
-
-		/*
-		 * for (Class<?> dbclass : dbList) { String name = dbclass.getName(); //
-		 * System.out.println("found database " + name); // int last =
-		 * name.lastIndexOf("."); // String mydbClass = name.substring(last + 1)
-		 * + ".class"; // System.out.println("class name: " + mydbClass);
-		 * 
-		 * try { getDatabase().find(Class.forName(name)).findRowCount();
-		 * System.out.println(Class.forName(name).getName() + " Loaded"); }
-		 * catch (PersistenceException ex) {
-		 * System.out.println("Initializing database for " + name); //
-		 * installDDL(); } catch (ClassNotFoundException e) {
-		 * 
-		 * e.printStackTrace(); }
-		 * 
-		 * }
-		 */
 
 		try {
 			getDatabase().find(ChestData.class).findRowCount();
@@ -182,6 +167,7 @@ public class MagickMod extends JavaPlugin {
 		pm.registerEvent(Event.Type.LEAVES_DECAY, leavesListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, playerDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, mobDeathListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.ENTITY_DAMAGE, mobDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_CANBUILD, worldProtectListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Highest, this);
@@ -190,10 +176,9 @@ public class MagickMod extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_IGNITE, worldProtectListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.BLOCK_BURN, worldProtectListener, Priority.Lowest, this);
 		// Player Events
-		pm.registerEvent(Event.Type.ENTITY_DEATH, playerDeathListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, mobDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_JOIN, onJoinListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, fenceListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.VEHICLE_MOVE, this.minecartListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, this.minecartListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, this.minecartListener, Event.Priority.Highest, this);

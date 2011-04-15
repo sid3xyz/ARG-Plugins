@@ -16,7 +16,11 @@ public class GiveTrackCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
+		Player player = (Player) sender;
+		if (!HelperFunctions.isAdmin(player)) {
+			player.sendMessage("You are not an admin.");
+			return true;
+		}
 		if (Array.getLength(args) == 0) {
 			Player p = (Player) sender;
 			ItemStack rails = new ItemStack(Material.RAILS, 64);

@@ -1,6 +1,6 @@
 package biz.argirc.Minecraft.listeners;
 
-import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -27,19 +27,28 @@ public class ChestBlockListener extends BlockListener {
 		}
 		switch (event.getBlock().getType()) {
 			case CHEST:
+				System.out.println("Remove chest start");
 				Player player = event.getPlayer();
+				if (plugin.chestFunctions.getOwner(event.getBlock().getLocation()) == "null") {
+					System.out.println("Removed chest");
+					return;
+				}
+
 				if (HelperFunctions.isAdmin(player)) {
 					player.sendMessage("You have destroid " + plugin.chestFunctions.getOwner(event.getBlock().getLocation()) + "chest");
+					plugin.chestFunctions.deleteChest(event.getBlock().getLocation());
 					return;
 				}
 
 				if (plugin.chestFunctions.isPublicChest(event.getBlock().getLocation())) {
 					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					plugin.chestFunctions.deleteChest(event.getBlock().getLocation());
 					return;
 				}
 
 				if (plugin.chestFunctions.doesUserOwnChest(event.getPlayer().getName(), event.getBlock().getLocation())) {
 					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					plugin.chestFunctions.deleteChest(event.getBlock().getLocation());
 					return;
 				}
 
@@ -62,48 +71,39 @@ public class ChestBlockListener extends BlockListener {
 		switch (placedBlock.getType()) {
 			case CHEST:
 				Player player = event.getPlayer();
-				String myOwner = player.getName();
-				boolean allclear = true;
 				BlockFace[] faces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST };
 				String thatOwner = "";
 				for (BlockFace blockFace : faces) {
 					Block face = placedBlock.getFace(blockFace);
 					if (face.getTypeId() == 54) {
 						thatOwner = plugin.chestFunctions.getOwner(face.getLocation());
-						if (!thatOwner.equalsIgnoreCase(player.getName())) {
-							if (thatOwner.equalsIgnoreCase("public")) {
-								myOwner = "public";
-								allclear = true;
-							} else {
-								myOwner = thatOwner;
-								player.sendMessage("You can not expand this chest");
-								allclear = false;
-								event.setCancelled(true);
-								return;
-							}
+						String chestOwner = thatOwner;
+						if (chestOwner.equalsIgnoreCase(player.getName())) {
+							placeChest(chestOwner, placedBlock.getLocation());
+							return;
 						}
+						if (chestOwner.equalsIgnoreCase("public")) {
+							placeChest("public", placedBlock.getLocation());
+							player.sendMessage("You have expanded a public Chest");
+							return;
+						}
+						player.sendMessage("You can not place a chest here.");
+						event.setCancelled(true);
+					}
 
-					}
 				}
-				if (allclear) {
-					ChestData chest = new ChestData();
-					chest.setName(myOwner);
-					chest.setPlayerName(player.getName());
-					chest.setLocation(placedBlock.getLocation().toString());
-					plugin.chestFunctions.saveData(chest);
-					if (!myOwner.equals("public")) {
-						player.sendMessage(ChatColor.GOLD + "You are now the owner of this chest");
-						return;
-					} else {
-						player.sendMessage("You have expanded a public chest");
-						return;
-					}
-				} else {
-					player.sendMessage("Unable to place chest here");
-					return;
-				}
+				placeChest(player.getName(), placedBlock.getLocation());
 			default:
 				return;
 		}
+	}
+
+	public void placeChest(String owner, Location chestLocation) {
+		ChestData chest = new ChestData();
+		chest.setName(owner);
+		chest.setPlayerName(owner);
+		chest.setLocation(chestLocation.toString());
+		plugin.chestFunctions.saveData(chest);
+
 	}
 }

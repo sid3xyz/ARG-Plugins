@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.bukkit.Location;
 
@@ -31,6 +32,18 @@ public class ChestFunctions {
 		return chest.getName();
 	}
 
+	public void deleteChest(Location chestLocation) {
+		List<ChestData> chests = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findList();
+
+		if (chests.isEmpty()) {
+
+		}
+		for (ChestData chest : chests) {
+			plugin.getDatabase().delete(chest);
+		}
+
+	}
+
 	public boolean doesUserOwnChest(String userstring, Location chestLocation) {
 		ChestData myChest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", userstring).findUnique();
 		if (myChest == null) {
@@ -41,12 +54,12 @@ public class ChestFunctions {
 
 	public boolean isPublicChest(Location chestLocation) {
 		ChestData chest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "public").findUnique();
-		ChestData chest2 = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).ieq("name", "null").findUnique();
+		// ChestData chest2 =
+		// plugin.getDatabase().find(ChestData.class).where().ieq("location",
+		// chestLocation.toString()).ieq("name", "null").findUnique();
 
 		if (chest == null) {
-			if (chest2 == null) {
-				return false;
-			}
+			return false;
 		}
 		return true;
 	}

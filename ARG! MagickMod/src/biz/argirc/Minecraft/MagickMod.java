@@ -1,5 +1,7 @@
 package biz.argirc.Minecraft;
 
+import static biz.argirc.Minecraft.FileUtils.FILE_SEPARATOR;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,10 +79,18 @@ public class MagickMod extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		File backupDir = new File("plugins".concat(FILE_SEPARATOR).concat("Backup"));
+		if (!backupDir.exists()) backupDir.mkdirs();
+		backupDir = new File("backups");
+		if (!backupDir.exists()) backupDir.mkdirs();
+		backupDir = new File("backups".concat(FILE_SEPARATOR).concat("custom"));
+		if (!backupDir.exists()) backupDir.mkdirs();
 
 		@SuppressWarnings("unused")
-		int saveTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 900 * 21L);
-		System.out.println("Auto Save Thread Starting...");
+		int saveTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 1100 * 21L);
+		int backupTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BackupTask(this.getServer()), 1800 * 21L, 1800 * 21L);
+
+		System.out.println("Auto Save and backups Thread Starting...");
 
 		setupDatabase();
 		// rankFunctions.convertDB();

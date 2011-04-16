@@ -27,7 +27,7 @@ public class ChestFunctions {
 	public String getOwner(Location chestLocation) {
 		ChestData chest = plugin.getDatabase().find(ChestData.class).where().ieq("location", chestLocation.toString()).findUnique();
 		if (chest == null) {
-			return "null";
+			return "public";
 		}
 		return chest.getName();
 	}

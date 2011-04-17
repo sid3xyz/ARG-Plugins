@@ -396,6 +396,7 @@ public class FileUtils {
 	 * 
 	 * @since Commons IO 1.4
 	 */
+	@SuppressWarnings("unused")
 	private static boolean deleteQuietly(File file) {
 		if (file == null) return false;
 		try {

@@ -27,6 +27,7 @@ import biz.argirc.Minecraft.commands.KillFarmAnimalsCommand;
 import biz.argirc.Minecraft.commands.KillHostileMobsCommand;
 import biz.argirc.Minecraft.commands.MakeCartTunnelCommand;
 import biz.argirc.Minecraft.commands.RegenChunkCommand;
+import biz.argirc.Minecraft.commands.RestoreInventoryCommand;
 import biz.argirc.Minecraft.commands.SetCompassCommand;
 import biz.argirc.Minecraft.commands.SetRankCommand;
 import biz.argirc.Minecraft.commands.SetSpawnLocationCommand;
@@ -88,6 +89,7 @@ public class MagickMod extends JavaPlugin {
 
 		@SuppressWarnings("unused")
 		int saveTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 1100 * 21L);
+		@SuppressWarnings("unused")
 		int backupTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BackupTask(this.getServer()), 1800 * 21L, 1800 * 21L);
 
 		System.out.println("Auto Save and backups Thread Starting...");
@@ -97,6 +99,7 @@ public class MagickMod extends JavaPlugin {
 		// chestFunctions.convertDB();
 		// chestFunctions.convertDB();
 		registerEvents();
+		getCommand("restoreinventory").setExecutor(new RestoreInventoryCommand(this));
 		getCommand("direction").setExecutor(new GetDirection());
 		getCommand("makecarttunnel").setExecutor(new MakeCartTunnelCommand());
 		getCommand("givetrack").setExecutor(new GiveTrackCommand());

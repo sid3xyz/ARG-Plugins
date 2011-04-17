@@ -18,15 +18,10 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class BackupTask implements Runnable {
 
-	// The server where the Task is running
 	private Server		server	= null;
-
-	// How many Backups can exists at one time
 	private final int	MAX_BACKUPS;
 
 	private String		backupName;
-
-	private boolean		isManuelBackup;
 
 	public BackupTask(Server server) {
 		this.server = server;
@@ -34,9 +29,6 @@ public class BackupTask implements Runnable {
 		MAX_BACKUPS = 3;
 	}
 
-	/**
-	 * The implemented function. It starts the backup of the server
-	 */
 	@Override
 	public void run() {
 
@@ -44,13 +36,6 @@ public class BackupTask implements Runnable {
 
 	}
 
-	/**
-	 * Backups the complete server. At first messages were sent to the console
-	 * and to every player, so everyone know, a Backup is running. After this it
-	 * deactivates all world saves and then saves every player position. Is this
-	 * done, every world getting zipped and stored.
-	 * 
-	 */
 	protected void backup() {
 
 		// the messages
@@ -102,13 +87,9 @@ public class BackupTask implements Runnable {
 		// check whether there are old backups to delete
 		deleteOldBackups();
 		backupName = null;
-		isManuelBackup = false;
+
 	}
 
-	/**
-	 * @return String representing the current Date in the format <br>
-	 *         DAY MONTH YEAR-HOUR MINUTE SECOND
-	 */
 	private String getDate() {
 		StringBuilder sBuilder = new StringBuilder();
 		Calendar cal = Calendar.getInstance();
@@ -133,10 +114,6 @@ public class BackupTask implements Runnable {
 		return sBuilder.toString();
 	}
 
-	/**
-	 * Check whethere there are more backups as allowed to store. When this case
-	 * is true, it deletes oldest ones
-	 */
 	private void deleteOldBackups() {
 		try {
 			//
@@ -182,9 +159,5 @@ public class BackupTask implements Runnable {
 
 	public void setBackupName(String backupName) {
 		this.backupName = backupName;
-	}
-
-	public void setAsManuelBackup() {
-		this.isManuelBackup = true;
 	}
 }

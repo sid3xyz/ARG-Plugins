@@ -97,4 +97,8 @@ commands:
   direction:
     description: Get the direction you are facing
     usage: |
-           /<command> 
+           /<command>
+  restoreinventory:
+    description: restore player inventory
+    usage: |
+           /<command>

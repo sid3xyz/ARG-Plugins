@@ -66,7 +66,7 @@ public class BackupTask implements Runnable {
 		try {
 			// iterate through every world and zip every one
 			boolean hasToZIP = true;
-			if (hasToZIP) System.out.println("[BACKUP] Zipping backup is disabled!");
+
 			for (World world : server.getWorlds()) {
 
 				String backupDir = "backups".concat("\\").concat(world.getName());

@@ -1,11 +1,9 @@
 package biz.argirc.Minecraft.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 
 import biz.argirc.Minecraft.MagickMod;
 import biz.argirc.Minecraft.database.BankData;
@@ -20,8 +18,9 @@ public class OnJoinListener extends PlayerListener {
 
 	@Override
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		ItemStack item = new ItemStack(Material.GOLD_AXE, 1);
-		event.getPlayer().setItemInHand(item);
+		Player p = event.getPlayer();
+		p.sendMessage("Respawning...");
+
 	}
 
 	@Override

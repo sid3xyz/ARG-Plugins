@@ -90,7 +90,7 @@ public class MagickMod extends JavaPlugin {
 		@SuppressWarnings("unused")
 		int saveTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 1100 * 21L);
 		@SuppressWarnings("unused")
-		int backupTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BackupTask(this.getServer()), 1800 * 21L, 1800 * 21L);
+		int backupTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BackupTask(this.getServer()), 3800 * 21L, 3400 * 21L);
 
 		System.out.println("Auto Save and backups Thread Starting...");
 
@@ -99,7 +99,7 @@ public class MagickMod extends JavaPlugin {
 		// chestFunctions.convertDB();
 		// chestFunctions.convertDB();
 		registerEvents();
-		getCommand("restoreinventory").setExecutor(new RestoreInventoryCommand(this));
+		getCommand("restoreinventory").setExecutor(new RestoreInventoryCommand());
 		getCommand("direction").setExecutor(new GetDirection());
 		getCommand("makecarttunnel").setExecutor(new MakeCartTunnelCommand());
 		getCommand("givetrack").setExecutor(new GiveTrackCommand());

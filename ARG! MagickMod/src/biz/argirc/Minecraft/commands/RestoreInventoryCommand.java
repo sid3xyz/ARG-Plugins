@@ -8,14 +8,8 @@ import org.bukkit.entity.Player;
 
 import biz.argirc.Minecraft.ArenaFunctions;
 import biz.argirc.Minecraft.HelperFunctions;
-import biz.argirc.Minecraft.MagickMod;
 
 public class RestoreInventoryCommand implements CommandExecutor {
-	private final MagickMod	plugin;
-
-	public RestoreInventoryCommand(MagickMod plugin) {
-		this.plugin = plugin;
-	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -7,6 +7,8 @@
 
 package biz.argirc.Minecraft;
 
+import static biz.argirc.Minecraft.FileUtils.FILE_SEPARATOR;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +20,10 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class BackupTask implements Runnable {
 
-	private Server		server	= null;
+	private Server		server		= null;
 	private final int	MAX_BACKUPS;
 
-	private String		backupName;
+	private String		backupName	= "ARG-LandBackup";
 
 	public BackupTask(Server server) {
 		this.server = server;
@@ -49,32 +51,25 @@ public class BackupTask implements Runnable {
 		server.savePlayers();
 
 		try {
-			// iterate through every world and zip every one
-			boolean hasToZIP = true;
 
-			for (World world : server.getWorlds()) {
+			World world = server.getWorld("world");
+			String backupDir = "backups".concat(FILE_SEPARATOR).concat(world.getName());
+			// save every information from the RAM into the HDD
+			world.save();
+			// make a temporary dir of the world
+			FileUtils.copyDirectory(new File(world.getName()), new File(backupDir));
+			// zip the temporary dir
+			String targetName = world.getName();
+			String targetDir = "backups".concat(FILE_SEPARATOR);
 
-				String backupDir = "backups".concat("\\").concat(world.getName());
-				backupDir = backupDir.concat(this.getDate());
-
-				// save every information from the RAM into the HDD
-				world.save();
-				// make a temporary dir of the world
-				FileUtils.copyDirectory(new File(world.getName()), new File(backupDir));
-				// zip the temporary dir
-				String targetName = world.getName();
-				String targetDir = "backups".concat("//");
-
-				if (backupName != null) {
-					targetName = backupName;
-					targetDir = targetDir.concat("custom").concat("//");
-				}
-				if (hasToZIP) {
-					FileUtils.zipDirectory(backupDir, targetDir.concat(targetName).concat(getDate()));
-					// delete the temporary dir
-					FileUtils.deleteDirectory(new File(backupDir));
-				}
+			if (backupName != null) {
+				targetName = backupName;
+				targetDir = targetDir.concat(FILE_SEPARATOR);
 			}
+			FileUtils.zipDirectory(backupDir, targetDir.concat(targetName).concat(getDate()));
+			// delete the temporary dir
+			FileUtils.deleteDirectory(new File(backupDir));
+
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		}

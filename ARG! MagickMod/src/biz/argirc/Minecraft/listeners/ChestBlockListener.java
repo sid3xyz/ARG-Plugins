@@ -39,7 +39,11 @@ public class ChestBlockListener extends BlockListener {
 					plugin.chestFunctions.deleteChest(event.getBlock().getLocation());
 					return;
 				}
-
+				if (plugin.chestFunctions.getOwner(event.getBlock().getLocation()).equalsIgnoreCase("public")) {
+					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
+					plugin.chestFunctions.deleteChest(event.getBlock().getLocation());
+					return;
+				}
 				if (plugin.chestFunctions.isPublicChest(event.getBlock().getLocation())) {
 					System.out.println("Removed chest @" + event.getBlock().getLocation().toString());
 					plugin.chestFunctions.deleteChest(event.getBlock().getLocation());

@@ -68,7 +68,7 @@ public class BackupTask implements Runnable {
 			}
 			FileUtils.zipDirectory(backupDir, targetDir.concat(targetName).concat(getDate()));
 			// delete the temporary dir
-			FileUtils.deleteDirectory(new File(backupDir));
+			// FileUtils.deleteDirectory(new File(backupDir));
 
 		} catch (Exception e) {
 			e.printStackTrace(System.out);

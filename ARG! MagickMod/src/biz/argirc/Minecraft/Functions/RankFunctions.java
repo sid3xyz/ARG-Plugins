@@ -1,4 +1,4 @@
-package biz.argirc.Minecraft;
+package biz.argirc.Minecraft.Functions;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import biz.argirc.Minecraft.MagickMod;
 import biz.argirc.Minecraft.database.RankData;
 
 public class RankFunctions {

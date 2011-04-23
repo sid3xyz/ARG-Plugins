@@ -1,4 +1,4 @@
-package biz.argirc.Minecraft;
+package biz.argirc.Minecraft.Functions;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package biz.argirc.Minecraft;
+package biz.argirc.Minecraft.Functions;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.bukkit.Location;
 
+import biz.argirc.Minecraft.MagickMod;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class ChestFunctions {

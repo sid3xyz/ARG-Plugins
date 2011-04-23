@@ -1,8 +1,10 @@
-package biz.argirc.Minecraft;
+package biz.argirc.Minecraft.Functions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
+
+import biz.argirc.Minecraft.PluginProperties;
 
 // This file contains code for Item Store Read/write
 

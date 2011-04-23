@@ -7,8 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.ChestFunctions;
-import biz.argirc.Minecraft.HelperFunctions;
+import biz.argirc.Minecraft.Functions.ChestFunctions;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class GetChestCountCommand implements CommandExecutor {

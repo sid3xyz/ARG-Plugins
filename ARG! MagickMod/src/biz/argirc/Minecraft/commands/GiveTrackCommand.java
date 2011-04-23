@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import biz.argirc.Minecraft.HelperFunctions;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 
 public class GiveTrackCommand implements CommandExecutor {
 

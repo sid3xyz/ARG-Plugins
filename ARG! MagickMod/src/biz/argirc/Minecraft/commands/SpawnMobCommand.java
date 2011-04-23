@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.HelperFunctions;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 
 public class SpawnMobCommand implements CommandExecutor {
 

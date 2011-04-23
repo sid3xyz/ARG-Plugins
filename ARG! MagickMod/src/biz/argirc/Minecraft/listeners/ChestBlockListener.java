@@ -8,8 +8,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import biz.argirc.Minecraft.HelperFunctions;
 import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 import biz.argirc.Minecraft.database.ChestData;
 
 public class ChestBlockListener extends BlockListener {

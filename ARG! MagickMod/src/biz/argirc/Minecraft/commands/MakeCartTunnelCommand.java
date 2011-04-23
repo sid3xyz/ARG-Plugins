@@ -1,5 +1,6 @@
 package biz.argirc.Minecraft.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -8,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.HelperFunctions;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 
 public class MakeCartTunnelCommand implements CommandExecutor {
 
@@ -29,8 +30,13 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 			// DOWN
 			for (int pos = 0; pos < length; pos++) {
 				Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() - pos, bl.getBlockZ()));
-
-				replaceBlock(nb);
+				if (nb.getType() == Material.BEDROCK) {
+					return true;
+				} else if (pos % 3 == 0) {
+					nb.setType(Material.TNT);
+				} else {
+					replaceBlock(nb);
+				}
 			}
 		} else if (x > -55) {
 			// STRAIGHT
@@ -44,11 +50,11 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 				for (int pos = 0; pos <= length; pos++) {
 					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY(), bl.getBlockZ() + pos));
 					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() - 1, bl.getBlockZ() + pos));
-					Block nbbb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() + 1, bl.getBlockZ() + pos));
+					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() + 1, bl.getBlockZ() + pos));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(nbbb);
+					replaceBlock(torchSpot);
 				}
 			}
 			if (dir > 60 && dir <= 120) {
@@ -56,12 +62,12 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 				for (int pos = 0; pos <= length; pos++) {
 
 					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY(), bl.getBlockZ()));
-					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() + 1, bl.getBlockZ()));
-					Block nbbb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() + 2, bl.getBlockZ()));
+					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() - 1, bl.getBlockZ()));
+					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() + 1, bl.getBlockZ()));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(nbbb);
+					replaceBlock(torchSpot);
 				}
 			}
 			if (dir > 120 && dir <= 210) {
@@ -69,11 +75,11 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 				for (int pos = 0; pos <= length; pos++) {
 					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY(), bl.getBlockZ() - pos));
 					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() - 1, bl.getBlockZ() - pos));
-					Block nbbb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() + 1, bl.getBlockZ() - pos));
+					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() + 1, bl.getBlockZ() - pos));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(nbbb);
+					replaceBlock(torchSpot);
 				}
 			}
 			if (dir > 210 && dir <= 300) {
@@ -81,11 +87,11 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 				for (int pos = 0; pos <= length; pos++) {
 					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY(), bl.getBlockZ()));
 					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() - 1, bl.getBlockZ()));
-					Block nbbb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() + 1, bl.getBlockZ()));
+					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() + 1, bl.getBlockZ()));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(nbbb);
+					replaceBlock(torchSpot);
 				}
 			}
 		} else if (x <= -35) {
@@ -100,6 +106,8 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 	}
 
 	private void placeTrack(Block trackBlock) {
+		Block belowTrack = Bukkit.getServer().getWorld("world").getBlockAt(trackBlock.getX(), trackBlock.getY() - 1, trackBlock.getZ());
+		belowTrack.setType(Material.OBSIDIAN);
 		trackBlock.setType(Material.RAILS);
 
 	}
@@ -109,6 +117,7 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 			case CHEST:
 			case FURNACE:
 			case WORKBENCH:
+			case BEDROCK:
 				return;
 			default:
 				b.setType(Material.AIR);

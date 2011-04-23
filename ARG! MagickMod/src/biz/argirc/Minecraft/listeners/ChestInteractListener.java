@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
-import biz.argirc.Minecraft.HelperFunctions;
 import biz.argirc.Minecraft.MagickMod;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 
 public class ChestInteractListener extends PlayerListener {
 	private final MagickMod	plugin;

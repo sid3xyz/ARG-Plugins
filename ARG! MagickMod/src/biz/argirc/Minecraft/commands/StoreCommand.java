@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.ShopFunctions;
+import biz.argirc.Minecraft.Functions.ShopFunctions;
 
 public class StoreCommand implements CommandExecutor {
 	public final ShopFunctions	shopFunctions;

@@ -5,8 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import biz.argirc.Minecraft.HelperFunctions;
-import biz.argirc.Minecraft.RankFunctions;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
+import biz.argirc.Minecraft.Functions.RankFunctions;
 
 public class SetRankCommand implements CommandExecutor {
 	private final RankFunctions	rankFunctions;

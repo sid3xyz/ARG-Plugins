@@ -12,7 +12,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
-import biz.argirc.Minecraft.HelperFunctions;
+import biz.argirc.Minecraft.Functions.HelperFunctions;
 
 public class KillFarmAnimalsCommand implements CommandExecutor {
 

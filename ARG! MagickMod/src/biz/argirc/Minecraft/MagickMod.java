@@ -16,6 +16,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import biz.argirc.Minecraft.Functions.ArenaFunctions;
+import biz.argirc.Minecraft.Functions.BankFunctions;
+import biz.argirc.Minecraft.Functions.ChestFunctions;
+import biz.argirc.Minecraft.Functions.RankFunctions;
+import biz.argirc.Minecraft.Functions.ShopFunctions;
 import biz.argirc.Minecraft.commands.BankCommand;
 import biz.argirc.Minecraft.commands.BuyCommand;
 import biz.argirc.Minecraft.commands.ChallangeCommand;
@@ -37,6 +42,7 @@ import biz.argirc.Minecraft.commands.TeleportCommand;
 import biz.argirc.Minecraft.commands.UnlockChestCommand;
 import biz.argirc.Minecraft.commands.WallChunkCommand;
 import biz.argirc.Minecraft.commands.WhoCommand;
+import biz.argirc.Minecraft.commands.ZapCommand;
 import biz.argirc.Minecraft.database.BankData;
 import biz.argirc.Minecraft.database.ChestData;
 import biz.argirc.Minecraft.database.RankData;
@@ -80,6 +86,9 @@ public class MagickMod extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+
+		// TODO : Separate the backup preparation into its own function
+
 		File backupDir = new File("plugins".concat(FILE_SEPARATOR).concat("Backup"));
 		if (!backupDir.exists()) backupDir.mkdirs();
 		backupDir = new File("backups");
@@ -87,18 +96,17 @@ public class MagickMod extends JavaPlugin {
 		backupDir = new File("backups".concat(FILE_SEPARATOR).concat("custom"));
 		if (!backupDir.exists()) backupDir.mkdirs();
 
-		@SuppressWarnings("unused")
-		int saveTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 1100 * 21L);
-		@SuppressWarnings("unused")
-		int backupTaskID = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BackupTask(this.getServer()), 3800 * 21L, 3400 * 21L);
-
 		System.out.println("Auto Save and backups Thread Starting...");
 
+		@SuppressWarnings("unused")
+		int saveTaskID = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new AutoSaveThread(this), 120 * 21L, 1100 * 21L);
+		@SuppressWarnings("unused")
+		int backupTaskID = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BackupTask(this.getServer()), 3800 * 21L, 3400 * 21L);
+
 		setupDatabase();
-		// rankFunctions.convertDB();
-		// chestFunctions.convertDB();
-		// chestFunctions.convertDB();
 		registerEvents();
+		// Command Executors
+		getCommand("zap").setExecutor(new ZapCommand());
 		getCommand("restoreinventory").setExecutor(new RestoreInventoryCommand());
 		getCommand("direction").setExecutor(new GetDirection());
 		getCommand("makecarttunnel").setExecutor(new MakeCartTunnelCommand());
@@ -174,25 +182,30 @@ public class MagickMod extends JavaPlugin {
 
 	public void registerEvents() {
 		PluginManager pm = getServer().getPluginManager();
-		// Block events
-		pm.registerEvent(Event.Type.ENTITY_EXPLODE, noExplodeListener, Priority.Normal, this);
+
+		// misc events
 		pm.registerEvent(Event.Type.EXPLOSION_PRIME, noExplodeListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.LEAVES_DECAY, leavesListener, Priority.Normal, this);
+		// entity events
+		pm.registerEvent(Event.Type.ENTITY_EXPLODE, noExplodeListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, playerDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DEATH, mobDeathListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.ENTITY_DAMAGE, mobDeathListener, Priority.Normal, this);
+		// block events -- World Protect
 		pm.registerEvent(Event.Type.BLOCK_CANBUILD, worldProtectListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Highest, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.BLOCK_PLACE, worldProtectListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.BLOCK_BREAK, worldProtectListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.BLOCK_IGNITE, worldProtectListener, Priority.Lowest, this);
 		pm.registerEvent(Event.Type.BLOCK_BURN, worldProtectListener, Priority.Lowest, this);
+		// Block Events -- Chest Protection
+		pm.registerEvent(Event.Type.BLOCK_PLACE, chestBlockListener, Priority.Highest, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, chestBlockListener, Priority.Highest, this);
 		// Player Events
 		pm.registerEvent(Event.Type.PLAYER_JOIN, onJoinListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_RESPAWN, onJoinListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, chestInteractListener, Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, fenceListener, Priority.Normal, this);
+		// vehicle events
 		pm.registerEvent(Event.Type.VEHICLE_MOVE, this.minecartListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.VEHICLE_COLLISION_BLOCK, this.minecartListener, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.VEHICLE_COLLISION_ENTITY, this.minecartListener, Event.Priority.Highest, this);

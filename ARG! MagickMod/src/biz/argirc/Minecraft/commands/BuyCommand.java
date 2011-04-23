@@ -7,8 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import biz.argirc.Minecraft.BankFunctions;
-import biz.argirc.Minecraft.ShopFunctions;
+import biz.argirc.Minecraft.Functions.BankFunctions;
+import biz.argirc.Minecraft.Functions.ShopFunctions;
 
 public class BuyCommand implements CommandExecutor {
 	private final BankFunctions	bankFunctions;

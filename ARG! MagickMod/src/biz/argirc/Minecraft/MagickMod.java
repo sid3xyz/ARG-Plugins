@@ -27,6 +27,7 @@ import biz.argirc.Minecraft.commands.ChallangeCommand;
 import biz.argirc.Minecraft.commands.ChestHelpCommand;
 import biz.argirc.Minecraft.commands.DieCommand;
 import biz.argirc.Minecraft.commands.GetChestCountCommand;
+import biz.argirc.Minecraft.commands.GetDirectionCommand;
 import biz.argirc.Minecraft.commands.GiveTrackCommand;
 import biz.argirc.Minecraft.commands.KillFarmAnimalsCommand;
 import biz.argirc.Minecraft.commands.KillHostileMobsCommand;
@@ -108,7 +109,7 @@ public class MagickMod extends JavaPlugin {
 		// Command Executors
 		getCommand("zap").setExecutor(new ZapCommand());
 		getCommand("restoreinventory").setExecutor(new RestoreInventoryCommand());
-		getCommand("direction").setExecutor(new GetDirection());
+		getCommand("direction").setExecutor(new GetDirectionCommand());
 		getCommand("makecarttunnel").setExecutor(new MakeCartTunnelCommand());
 		getCommand("givetrack").setExecutor(new GiveTrackCommand());
 		getCommand("regenChunk").setExecutor(new RegenChunkCommand(this));

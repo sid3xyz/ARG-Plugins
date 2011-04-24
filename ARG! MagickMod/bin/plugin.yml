@@ -102,3 +102,7 @@ commands:
     description: restore player inventory
     usage: |
            /<command>
+  zap:
+    description: zap some players
+    usage: |
+           /<command> playername1 playername2 playername3

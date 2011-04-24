@@ -1,3 +1,33 @@
+/*
+ *MagickMod V 2.1 
+ * 	     Updated for Minecraft 1.5 w/ bukkit API
+ * 	     Written by MagickSid
+ *      For ARG-IRC minecraft server
+ *      
+ * 
+ *  LICENSE:  ARGERK LICENSE:
+ *  		Free to use, copy, and distribute, as long as you are a member of the ARG-IRC network
+ *  		Becoming a member is easy, just log on to IRC @ IRC.ARG-IRC.NET, make a channel, 
+ *  		and leave a message in #ARG-Staff or #minecraft.
+ *  		
+ *  		Some of the code contained within is based on other examples across the web.
+ *  		All credit to aforementioned code goes to the original authors. 
+ *  		If you feel I used your code wrongly, please contact me at:  
+ *  		
+ * 			MagickSoft@gmail.com
+ * 			
+ * 			and I  will amend the credits to include your name and contribution.
+ *  
+ * 	 Special thanks to:
+ * 					Notch/Mojang
+ * 					The Bukkit crew
+ * 					The members of the ARG-IRC Minecraft server
+ * 						-Skwerl
+ * 						-Enduser
+ * 						-Oracular
+ *  		
+ */
+
 package biz.argirc.Minecraft;
 
 import static biz.argirc.Minecraft.FileUtils.FILE_SEPARATOR;

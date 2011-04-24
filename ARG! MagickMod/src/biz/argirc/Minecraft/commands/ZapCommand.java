@@ -1,5 +1,7 @@
 package biz.argirc.Minecraft.commands;
 
+import java.lang.reflect.Array;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,14 +12,15 @@ public class ZapCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		String target = args[0];
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			if (p.getName().equalsIgnoreCase(target)) {
-				// zap this player
-			} else {
-				sender.sendMessage("Invalid Player Name");
+
+		if (Array.getLength(args) > 0) {
+			for (String player : args) {
+				Player p = Bukkit.getServer().getPlayer(player);
+				p.getWorld().strikeLightning(p.getLocation());
 			}
+
 		}
+
 		return true;
 	}
 }

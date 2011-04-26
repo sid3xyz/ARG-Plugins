@@ -47,27 +47,42 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 			dir %= 360;
 			if (dir >= 300 || (dir >= 0 && dir <= 60)) {
 				p.sendMessage("direction 1");
+				// this is +Z
+
 				for (int pos = 0; pos <= length; pos++) {
 					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY(), bl.getBlockZ() + pos));
+
 					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() - 1, bl.getBlockZ() + pos));
+
 					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX(), bl.getBlockY() + 1, bl.getBlockZ() + pos));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(torchSpot);
+					if (Math.abs(pos) % 8 == 0) {
+
+						placeTorchBlock(torchSpot);
+					} else {
+						replaceBlock(torchSpot);
+					}
 				}
 			}
 			if (dir > 60 && dir <= 120) {
+				// this is +X
 				p.sendMessage("direction 2");
 				for (int pos = 0; pos <= length; pos++) {
 
-					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY(), bl.getBlockZ()));
-					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() - 1, bl.getBlockZ()));
-					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() + 1, bl.getBlockZ()));
+					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY(), bl.getBlockZ()));
+					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() - 1, bl.getBlockZ()));
+					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() + 1, bl.getBlockZ()));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(torchSpot);
+					if (Math.abs(pos) % 8 == 0) {
+
+						placeTorchBlock(torchSpot);
+					} else {
+						replaceBlock(torchSpot);
+					}
 				}
 			}
 			if (dir > 120 && dir <= 210) {
@@ -79,19 +94,31 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(torchSpot);
+					if (Math.abs(pos) % 8 == 0) {
+
+						placeTorchBlock(torchSpot);
+					} else {
+						replaceBlock(torchSpot);
+					}
 				}
 			}
 			if (dir > 210 && dir <= 300) {
 				p.sendMessage("direction 4");
 				for (int pos = 0; pos <= length; pos++) {
-					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY(), bl.getBlockZ()));
-					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() - 1, bl.getBlockZ()));
-					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() + pos, bl.getBlockY() + 1, bl.getBlockZ()));
+					Block nb = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY(), bl.getBlockZ()));
+
+					Block trackBlock = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() - 1, bl.getBlockZ()));
+
+					Block torchSpot = p.getWorld().getBlockAt(new Location(p.getWorld(), bl.getBlockX() - pos, bl.getBlockY() + 1, bl.getBlockZ()));
 
 					replaceBlock(nb);
 					placeTrack(trackBlock);
-					replaceBlock(torchSpot);
+					if (Math.abs(pos) % 8 == 0) {
+
+						placeTorchBlock(torchSpot);
+					} else {
+						replaceBlock(torchSpot);
+					}
 				}
 			}
 		} else if (x <= -35) {
@@ -121,6 +148,18 @@ public class MakeCartTunnelCommand implements CommandExecutor {
 				return;
 			default:
 				b.setType(Material.AIR);
+		}
+	}
+
+	public void placeTorchBlock(Block b) {
+		switch (b.getType()) {
+			case CHEST:
+			case FURNACE:
+			case WORKBENCH:
+			case BEDROCK:
+				return;
+			default:
+				b.setType(Material.TORCH);
 		}
 	}
 }

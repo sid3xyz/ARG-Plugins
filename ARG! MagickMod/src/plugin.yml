@@ -106,3 +106,7 @@ commands:
     description: zap some players
     usage: |
            /<command> playername1 playername2 playername3
+  autocart:
+    description: turn off the autocarts
+    usage: |
+           /<command> on|off

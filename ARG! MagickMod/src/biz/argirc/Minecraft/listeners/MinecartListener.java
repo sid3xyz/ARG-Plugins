@@ -14,6 +14,8 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import biz.argirc.Minecraft.MagickMod;
+
 public class MinecartListener extends VehicleListener {
 
 	public static final double	MAXIMUM_MOMENTUM	= 1E150D;
@@ -80,38 +82,41 @@ public class MinecartListener extends VehicleListener {
 
 	@Override
 	public void onVehicleMove(VehicleMoveEvent event) {
-		Vehicle myV = event.getVehicle();
-		if (myV instanceof Minecart) {
-			Minecart minecart = (Minecart) event.getVehicle();
-			if (!minecart.isEmpty()) {
+		if (MagickMod.autocartStatus) {
 
-				Entity myPassenger = minecart.getPassenger();
-				if (myPassenger instanceof Player) {
-					Location myLoc = minecart.getLocation();
-					myLoc.setY(myLoc.getY() - 1);
-					int blockID = myLoc.getBlock().getTypeId();
+			Vehicle myV = event.getVehicle();
+			if (myV instanceof Minecart) {
+				Minecart minecart = (Minecart) event.getVehicle();
+				if (!minecart.isEmpty()) {
 
-					switch (blockID) {
+					Entity myPassenger = minecart.getPassenger();
+					if (myPassenger instanceof Player) {
+						Location myLoc = minecart.getLocation();
+						myLoc.setY(myLoc.getY() - 1);
+						int blockID = myLoc.getBlock().getTypeId();
 
-						case 45:
-							setMotion(0D, 0D, 0D, minecart);
-							return;
+						switch (blockID) {
 
-						default:
+							case 45:
+								setMotion(0D, 0D, 0D, minecart);
+								return;
 
-							double xvol = minecart.getVelocity().getX();
-							double yvol = minecart.getVelocity().getY();
-							double zvol = minecart.getVelocity().getZ();
-							int multiplier = 2;
-							if (MAXIMUM_MOMENTUM / multiplier > Math.abs(xvol)) {
-								setMotionX(xvol * multiplier, minecart);
-							}
-							if (MAXIMUM_MOMENTUM / multiplier > Math.abs(yvol)) {
-								setMotionY(yvol * multiplier, minecart);
-							}
-							if (MAXIMUM_MOMENTUM / multiplier > Math.abs(zvol)) {
-								setMotionZ(zvol * multiplier, minecart);
-							}
+							default:
+
+								double xvol = minecart.getVelocity().getX();
+								double yvol = minecart.getVelocity().getY();
+								double zvol = minecart.getVelocity().getZ();
+								int multiplier = 2;
+								if (MAXIMUM_MOMENTUM / multiplier > Math.abs(xvol)) {
+									setMotionX(xvol * multiplier, minecart);
+								}
+								if (MAXIMUM_MOMENTUM / multiplier > Math.abs(yvol)) {
+									setMotionY(yvol * multiplier, minecart);
+								}
+								if (MAXIMUM_MOMENTUM / multiplier > Math.abs(zvol)) {
+									setMotionZ(zvol * multiplier, minecart);
+								}
+						}
 					}
 				}
 			}

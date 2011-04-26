@@ -41,6 +41,11 @@ public class WorldProtectListener extends BlockListener {
 
 	@Override
 	public void onBlockBurn(BlockBurnEvent event) {
+		if (event.getBlock().getType() == Material.LEAVES) {
+			event.setCancelled(true);
+
+			return;
+		}
 		if (event.isCancelled()) {
 			return;
 		}
@@ -55,6 +60,16 @@ public class WorldProtectListener extends BlockListener {
 
 	@Override
 	public void onBlockIgnite(BlockIgniteEvent event) {
+		if (event.getBlock().getType() == Material.LEAVES) {
+			event.setCancelled(true);
+
+			return;
+		}
+
+		if (event.getCause() == IgniteCause.LIGHTNING) {
+			return;
+		}
+
 		if (event.isCancelled()) {
 			return;
 		}

@@ -1,16 +1,14 @@
 package biz.argirc.Minecraft.commands;
 
-import java.lang.reflect.Array;
-
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import biz.argirc.Minecraft.MagickMod;
 import biz.argirc.Minecraft.Functions.HelperFunctions;
 
-public class ZapCommand implements CommandExecutor {
+public class AutocartToggleCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -19,14 +17,18 @@ public class ZapCommand implements CommandExecutor {
 			player.sendMessage("You are not an admin.");
 			return true;
 		}
-		if (Array.getLength(args) > 0) {
-			for (String target : args) {
-				Player p = Bukkit.getServer().getPlayer(target);
-				p.getWorld().strikeLightning(p.getLocation());
-			}
+
+		if (args[0].equalsIgnoreCase("on")) {
+			MagickMod.setAutocartStatus(true);
 
 		}
+		if (args[0].equalsIgnoreCase("off")) {
+			MagickMod.setAutocartStatus(false);
+
+		}
+		sender.sendMessage("Autocarts are " + MagickMod.autocartStatus);
 
 		return true;
 	}
+
 }

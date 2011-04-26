@@ -51,6 +51,7 @@ import biz.argirc.Minecraft.Functions.BankFunctions;
 import biz.argirc.Minecraft.Functions.ChestFunctions;
 import biz.argirc.Minecraft.Functions.RankFunctions;
 import biz.argirc.Minecraft.Functions.ShopFunctions;
+import biz.argirc.Minecraft.commands.AutocartToggleCommand;
 import biz.argirc.Minecraft.commands.BankCommand;
 import biz.argirc.Minecraft.commands.BuyCommand;
 import biz.argirc.Minecraft.commands.ChallangeCommand;
@@ -94,7 +95,7 @@ public class MagickMod extends JavaPlugin {
 	public final RankFunctions					rankFunctions			= new RankFunctions(this);
 	public final BankFunctions					bankFunctions			= new BankFunctions(this);
 	public final ArenaFunctions					arenaFunctions			= new ArenaFunctions(this);
-	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener(this);
+	private final NoExplodeListener				noExplodeListener		= new NoExplodeListener();
 	private final ChestInteractListener			chestInteractListener	= new ChestInteractListener(this);
 	private final FenceListener					fenceListener			= new FenceListener(this);
 	private final ChestBlockListener			chestBlockListener		= new ChestBlockListener(this);
@@ -109,6 +110,7 @@ public class MagickMod extends JavaPlugin {
 	public final ShopFunctions					shopFunctions			= new ShopFunctions(maindirectory + "ItemShop.conf");
 	public File									shopFile				= new File(maindirectory + "ItemShop.conf");
 	public File									PluginFile				= new File(maindirectory + "MagickMod.conf");
+	public static Boolean						autocartStatus			= false;
 
 	@Override
 	public void onDisable() {
@@ -137,6 +139,7 @@ public class MagickMod extends JavaPlugin {
 		setupDatabase();
 		registerEvents();
 		// Command Executors
+		getCommand("autocart").setExecutor(new AutocartToggleCommand());
 		getCommand("zap").setExecutor(new ZapCommand());
 		getCommand("restoreinventory").setExecutor(new RestoreInventoryCommand());
 		getCommand("direction").setExecutor(new GetDirectionCommand());
@@ -252,6 +255,14 @@ public class MagickMod extends JavaPlugin {
 		list.add(BankData.class);
 		// list.add(InventoryData.class);
 		return list;
+	}
+
+	public static void setAutocartStatus(Boolean autocartStatus) {
+		MagickMod.autocartStatus = autocartStatus;
+	}
+
+	public static Boolean getAutocartStatus() {
+		return autocartStatus;
 	}
 
 }
